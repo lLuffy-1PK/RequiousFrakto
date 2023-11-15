@@ -137,7 +137,7 @@ public class EntitySpark extends Entity {
         double targetY = dest.y;
         double targetZ = dest.z;
         Vec3d targetVector = new Vec3d(targetX-posX,targetY-posY,targetZ-posZ);
-        double length = targetVector.lengthVector();
+        double length = targetVector.length();
         if(length != 0) {
             targetVector = targetVector.scale(0.3 / length);
             double weight = 0;

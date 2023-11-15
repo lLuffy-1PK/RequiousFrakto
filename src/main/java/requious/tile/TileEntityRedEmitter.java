@@ -122,7 +122,7 @@ public class TileEntityRedEmitter extends TileEntityEmitter {
             ISparkValue value = new ValueForgeEnergy(energy);
             if (targetTile instanceof ISparkAcceptor && ((ISparkAcceptor) targetTile).canAccept(value)) {
                 EntitySpark spark = new EntitySpark(world);
-                Vec3d velocity = getBurstVelocity(getFacing()).addVector((random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3);
+                Vec3d velocity = getBurstVelocity(getFacing()).add((random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3);
                 spark.init(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, velocity.x, velocity.y, velocity.z, new TargetTile(targetTile), value);
                 spark.pushHistory(pos);
                 world.spawnEntity(spark);

@@ -65,7 +65,7 @@ public class ModelShape implements IModel {
 
         @Override
         public boolean accepts(ResourceLocation modelLocation) {
-            return modelLocation.getResourceDomain().equals(resourceLocation.getResourceDomain()) && modelLocation.getResourcePath().contains(resourceLocation.getResourcePath());
+            return modelLocation.getNamespace().equals(resourceLocation.getNamespace()) && modelLocation.getPath().contains(resourceLocation.getPath());
         }
 
         @Override

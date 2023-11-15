@@ -155,9 +155,9 @@ public class ComponentLaser extends ComponentBase {
             int vz = vec.getZ();
 
             return new BlockPos(
-                    vx * x.getFrontOffsetX() + vx * y.getFrontOffsetX() + vx * z.getFrontOffsetX(),
-                    vy * x.getFrontOffsetY() + vy * y.getFrontOffsetY() + vy * z.getFrontOffsetY(),
-                    vz * x.getFrontOffsetZ() + vz * y.getFrontOffsetZ() + vz * z.getFrontOffsetZ()
+                    vx * x.getXOffset() + vx * y.getXOffset() + vx * z.getXOffset(),
+                    vy * x.getYOffset() + vy * y.getYOffset() + vy * z.getYOffset(),
+                    vz * x.getZOffset() + vz * y.getZOffset() + vz * z.getZOffset()
             );
         }
 

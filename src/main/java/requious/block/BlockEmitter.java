@@ -47,7 +47,7 @@ public abstract class BlockEmitter extends Block implements IDynamicModel {
 
     @Override
     public IBlockState getStateFromMeta(int meta){
-        return getDefaultState().withProperty(facing, EnumFacing.getFront(meta));
+        return getDefaultState().withProperty(facing, EnumFacing.byIndex(meta));
     }
 
     @Override
@@ -71,7 +71,7 @@ public abstract class BlockEmitter extends Block implements IDynamicModel {
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

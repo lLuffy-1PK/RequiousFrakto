@@ -116,7 +116,7 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
             ISparkValue value = new ValueFluid(fluid);
             if (targetTile instanceof ISparkAcceptor && ((ISparkAcceptor) targetTile).canAccept(value)) {
                 currentSpark = new EntitySpark(world);
-                Vec3d velocity = getBurstVelocity(getFacing()).addVector((random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3);
+                Vec3d velocity = getBurstVelocity(getFacing()).add((random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3, (random.nextDouble() - 0.5) * 0.3);
                 currentSpark.init(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, velocity.x, velocity.y, velocity.z, new TargetTile(targetTile), value);
                 currentSpark.pushHistory(pos);
                 world.spawnEntity(currentSpark);

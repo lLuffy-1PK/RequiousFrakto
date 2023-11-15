@@ -142,19 +142,19 @@ public class Registry {
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> event) {
         for (RedEmitterData data : RED_EMITTER_DATA) {
-            BlockRedEmitter emitter = (BlockRedEmitter) new BlockRedEmitter(Material.IRON, data).setRegistryName(Requious.MODID, data.resourceName).setUnlocalizedName(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE).setHardness(5.0F).setResistance(10.0F);
+            BlockRedEmitter emitter = (BlockRedEmitter) new BlockRedEmitter(Material.IRON, data).setRegistryName(Requious.MODID, data.resourceName).setTranslationKey(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE).setHardness(5.0F).setResistance(10.0F);
             event.getRegistry().register(emitter);
             RED_EMITTERS.add(emitter);
         }
 
         for (FluidEmitterData data : FLUID_EMITTER_DATA) {
-            BlockFluidEmitter emitter = (BlockFluidEmitter) new BlockFluidEmitter(Material.IRON, data).setRegistryName(Requious.MODID, data.resourceName).setUnlocalizedName(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE).setHardness(5.0F).setResistance(10.0F);
+            BlockFluidEmitter emitter = (BlockFluidEmitter) new BlockFluidEmitter(Material.IRON, data).setRegistryName(Requious.MODID, data.resourceName).setTranslationKey(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE).setHardness(5.0F).setResistance(10.0F);
             event.getRegistry().register(emitter);
             FLUID_EMITTERS.add(emitter);
         }
 
         for (AssemblyData data : ASSEMBLY_DATA) {
-            BlockAssembly assembly = (BlockAssembly) new BlockAssembly(Material.IRON, data).setRegistryName(Requious.MODID, data.resourceName).setUnlocalizedName(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE).setHardness(5.0F).setResistance(10.0F);
+            BlockAssembly assembly = (BlockAssembly) new BlockAssembly(Material.IRON, data).setRegistryName(Requious.MODID, data.resourceName).setTranslationKey(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE).setHardness(5.0F).setResistance(10.0F);
             event.getRegistry().register(assembly);
             data.setBlock(assembly);
         }
@@ -174,18 +174,18 @@ public class Registry {
         }
 
         for (FluidCellData data : FLUID_CELL_DATA) {
-            ItemFluidCell cell = (ItemFluidCell) new ItemFluidCell(data).setRegistryName(data.resourceName).setUnlocalizedName(data.resourceName).setCreativeTab(CreativeTabs.BREWING);
+            ItemFluidCell cell = (ItemFluidCell) new ItemFluidCell(data).setRegistryName(data.resourceName).setTranslationKey(data.resourceName).setCreativeTab(CreativeTabs.BREWING);
             event.getRegistry().register(cell);
             data.setItem(cell);
         }
         for (BatteryData data : BATTERY_DATA) {
-            ItemBattery cell = (ItemBattery) new ItemBattery(data).setRegistryName(data.resourceName).setUnlocalizedName(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE);
+            ItemBattery cell = (ItemBattery) new ItemBattery(data).setRegistryName(data.resourceName).setTranslationKey(data.resourceName).setCreativeTab(CreativeTabs.REDSTONE);
             event.getRegistry().register(cell);
             data.setItem(cell);
         }
 
-        event.getRegistry().register(TUNING_FORK = new ItemTuningFork().setRegistryName(new ResourceLocation(Requious.MODID, "tuning_fork")).setUnlocalizedName("tuning_fork").setCreativeTab(CreativeTabs.REDSTONE));
-        event.getRegistry().register(SHAPE = (ItemShape) new ItemShape().setRegistryName(new ResourceLocation(Requious.MODID, "shape")).setUnlocalizedName("shape").setCreativeTab(CreativeTabs.REDSTONE));
+        event.getRegistry().register(TUNING_FORK = new ItemTuningFork().setRegistryName(new ResourceLocation(Requious.MODID, "tuning_fork")).setTranslationKey("tuning_fork").setCreativeTab(CreativeTabs.REDSTONE));
+        event.getRegistry().register(SHAPE = (ItemShape) new ItemShape().setRegistryName(new ResourceLocation(Requious.MODID, "shape")).setTranslationKey("shape").setCreativeTab(CreativeTabs.REDSTONE));
     }
 
     @SideOnly(Side.CLIENT)

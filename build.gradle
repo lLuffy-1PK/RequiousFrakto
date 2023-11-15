@@ -1,41 +1,91 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven { url = "https://plugins.gradle.org/m2/" }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'com.wynprice.cursemaven:CurseMaven:1.2.3'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'com.wynprice.cursemaven'
+
+apply plugin: 'net.minecraftforge.gradle'
 
 version = "0.12"
-group= "requious" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "requious"
 archivesBaseName = "Requious Frakto"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
 
 minecraft {
-    version = "1.12.2-14.23.5.2838"
-    runDir = "run"
-    mappings = "snapshot_20171125"
-    replace "%VERSION%": "${project.version}"
-    useDepAts = true
+    mappings channel: 'stable', version: '39-1.12'
+    accessTransformer = file('/src/main/resources/META-INF/requious_at.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run_client')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                requious {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run_server')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                requious {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    maven {
+        url = uri("https://cursemaven.com")
+    }
+    maven {
+        url = uri("https://maven.blamejared.com/")
+    }
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+
+    compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
+    compileOnly(fg.deobf("curse.maven:had-enough-items-557549:4810661"))
+    compileOnly(fg.deobf("curse.maven:gregtech-ce-unofficial-557242:4799055"))
+    compileOnly(fg.deobf("curse.maven:CodeChickenLib-242818:2779848"))
+
+    implementation(fg.deobf("curse.maven:industrialcraft-2-242638:3078604"))
+    implementation(fg.deobf("curse.maven:applied-energistics-2-223794:2747063"))
+    implementation(fg.deobf("curse.maven:mystical-mechanics-api-300742:3006392"))
+}
+
+afterEvaluate {
+    tasks.findByName('prepareRuns')?.doLast {
+        copy {
+            from 'build/resources/main'
+            into '/build/classes/java/main'
+            duplicatesStrategy DuplicatesStrategy.INCLUDE
+        }
+    }
 }
 
 jar {
     manifest {
         attributes 'FMLAT': 'requious_at.cfg'
     }
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
 
 task deobfJar(type: Jar) {
@@ -46,47 +96,3 @@ task deobfJar(type: Jar) {
 artifacts {
     archives deobfJar
 }
-
-repositories {
-    maven { url "https://minecraft.curseforge.com/api/maven" }
-    maven { url 'http://dvs1.progwml6.com/files/maven' }
-    maven { url "http://blamejared.com/maven" }
-    maven { url "http://www.ryanliptak.com/maven/" }
-    maven { url "http://maven.amadornes.com/" }
-    maven { url "http://maven.ic2.player.to/" }
-    maven { url "http://ae2.ae-mod.info/Downloads" }
-}
-
-dependencies {
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.576"
-    deobfCompile "mezz.jei:jei_1.12.2:4.14.4.267"
-    deobfCompile "net.industrial-craft:industrialcraft-2:2.8.170-ex112:api"
-    deobfCompile "gregtechce:gregtech:1.12.2:1.8.4.419"
-    deobfCompile ("appeng:appliedenergistics2:rv6-stable-6"){
-        transitive = false
-    }
-    deobfCompile curse.resolveUrl("https://www.curseforge.com/minecraft/mc-mods/mysticalmechanics/files/3006392")
-    compile files('libs/')
-}
-
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
-idea { module { inheritOutputDirs = true } }

@@ -45,7 +45,7 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
         public void update(double targetX, double targetY, double targetZ)
         {
             Vec3d targetVector = new Vec3d(targetX-posX,targetY-posY,targetZ-posZ);
-            double length = targetVector.lengthVector();
+            double length = targetVector.length();
             targetVector = targetVector.scale(0.3/length);
             double weight  = 0;
             if (length <= 3){

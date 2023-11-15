@@ -93,7 +93,7 @@ public abstract class MachineVisual {
                     Vec3d rotation = variableRotation.getVector(assembly, partialTicks);
                     double scale = variableScale.getDouble(assembly, partialTicks);
                     if(!global) {
-                        pos = Misc.getLocalVector(pos.addVector(-0.5, -0.5,-0.5), facing).addVector(0.5,0.5,0.5);
+                        pos = Misc.getLocalVector(pos.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
                         rotation = Misc.getLocalVector(rotation, facing);
                     }
                     GL11.glTranslated(x + pos.x, y + pos.y, z + pos.z);
@@ -172,7 +172,7 @@ public abstract class MachineVisual {
                     Vec3d rotation = variableRotation.getVector(assembly, partialTicks);
                     double scale = variableScale.getDouble(assembly, partialTicks);
                     if(!global) {
-                        pos = Misc.getLocalVector(pos.addVector(-0.5, -0.5,-0.5), facing).addVector(0.5,0.5,0.5);
+                        pos = Misc.getLocalVector(pos.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
                         rotation = Misc.getLocalVector(rotation, facing);
                     }
                     GL11.glTranslated(x + pos.x, y + pos.y, z + pos.z);
@@ -257,8 +257,8 @@ public abstract class MachineVisual {
                 Vec3d end = variableEnd.getVector(assembly, partialTicks);
 
                 if(!global) {
-                    start = Misc.getLocalVector(start.addVector(-0.5, -0.5,-0.5), facing).addVector(0.5,0.5,0.5);
-                    end = Misc.getLocalVector(end.addVector(-0.5, -0.5,-0.5), facing).addVector(0.5,0.5,0.5);
+                    start = Misc.getLocalVector(start.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
+                    end = Misc.getLocalVector(end.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
                 }
 
                 EnumFacing direction = variableDirection.getFacing(assembly);
@@ -358,8 +358,8 @@ public abstract class MachineVisual {
                 Vec3d end = variableEnd.getVector(assembly, partialTicks);
 
                 if(!global) {
-                    start = Misc.getLocalVector(start.addVector(-0.5, -0.5,-0.5), facing).addVector(0.5,0.5,0.5);
-                    end = Misc.getLocalVector(end.addVector(-0.5, -0.5,-0.5), facing).addVector(0.5,0.5,0.5);
+                    start = Misc.getLocalVector(start.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
+                    end = Misc.getLocalVector(end.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
                 }
 
                 EnumFacing direction = variableDirection.getFacing(assembly);
@@ -455,7 +455,7 @@ public abstract class MachineVisual {
             lifetime = lifetime / 2 + random.nextInt(lifetime / 2);
 
             if (!global) {
-                offset = Misc.getLocalVector(offset.addVector(-0.5, -0.5, -0.5), assembly.getFacing()).addVector(0.5, 0.5, 0.5);
+                offset = Misc.getLocalVector(offset.add(-0.5, -0.5, -0.5), assembly.getFacing()).add(0.5, 0.5, 0.5);
                 velocity = Misc.getLocalVector(velocity, assembly.getFacing());
             }
 
@@ -503,7 +503,7 @@ public abstract class MachineVisual {
             lifetime = lifetime / 2 + random.nextInt(lifetime / 2);
 
             if (!global) {
-                offset = Misc.getLocalVector(offset.addVector(-0.5, -0.5, -0.5), assembly.getFacing()).addVector(0.5, 0.5, 0.5);
+                offset = Misc.getLocalVector(offset.add(-0.5, -0.5, -0.5), assembly.getFacing()).add(0.5, 0.5, 0.5);
                 velocity = Misc.getLocalVector(velocity, assembly.getFacing());
             }
 
