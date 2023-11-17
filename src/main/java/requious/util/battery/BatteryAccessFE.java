@@ -24,12 +24,12 @@ public class BatteryAccessFE implements IBatteryAccess {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        return storage.receiveEnergy(maxReceive,simulate);
+        return storage.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        return storage.extractEnergy(maxExtract,simulate);
+        return storage.extractEnergy(maxExtract, simulate);
     }
 
     @Override

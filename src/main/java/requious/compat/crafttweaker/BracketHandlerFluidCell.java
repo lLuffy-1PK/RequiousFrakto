@@ -5,7 +5,6 @@ import crafttweaker.annotations.BracketHandler;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.zenscript.IBracketHandler;
 import requious.Registry;
-import requious.data.AssemblyData;
 import requious.data.FluidCellData;
 import stanhebben.zenscript.compiler.IEnvironmentGlobal;
 import stanhebben.zenscript.expression.ExpressionCallStatic;
@@ -23,10 +22,10 @@ public class BracketHandlerFluidCell implements IBracketHandler {
 
     @Override
     public IZenSymbol resolve(IEnvironmentGlobal environment, List<Token> tokens) {
-        if(tokens == null || tokens.size() < 3 || !tokens.get(0).getValue().equalsIgnoreCase("fluidCell"))
+        if (tokens == null || tokens.size() < 3 || !tokens.get(0).getValue().equalsIgnoreCase("fluidCell"))
             return null;
         String name = tokens.get(2).getValue();
-        return position -> new ExpressionCallStatic(position,environment,method, new ExpressionString(position, name));
+        return position -> new ExpressionCallStatic(position, environment, method, new ExpressionString(position, name));
     }
 
     public static FluidCellData getFromString(String name) {

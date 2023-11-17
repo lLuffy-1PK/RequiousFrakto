@@ -10,12 +10,12 @@ import java.awt.*;
 public class FluidColor implements ICustomColor {
     @Override
     public Color get() {
-        return new Color(0,0,0,0);
+        return new Color(0, 0, 0, 0);
     }
 
     @Override
     public Color get(ItemStack stack) {
         FluidStack fluid = FluidUtil.getFluidContained(stack);
-        return new Color(FluidColorHelper.getColor(fluid),true);
+        return new Color(FluidColorHelper.getColor(fluid), true);
     }
 }

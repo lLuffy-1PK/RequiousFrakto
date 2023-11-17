@@ -5,20 +5,17 @@ import com.google.gson.annotations.SerializedName;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.mc1120.item.MCItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import requious.compat.crafttweaker.ColorCT;
 import requious.compat.crafttweaker.IFluidCondition;
 import requious.item.ItemFluidCell;
-import requious.util.IConversion;
-import requious.util.RatioConversion;
 import requious.util.color.FluidColor;
 import requious.util.color.ICustomColor;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ZenRegister
 @ZenClass("mods.requious.FluidCell")
@@ -95,7 +92,7 @@ public class FluidCellData extends ItemData {
     @ZenMethod
     public void addFuelValue(ILiquidStack liquid, int value) {
         FluidStack fluid = CraftTweakerMC.getLiquidStack(liquid);
-        fuelValues.add(new FuelData(fluid,value));
+        fuelValues.add(new FuelData(fluid, value));
     }
 
     public boolean hasBar() {
@@ -104,7 +101,7 @@ public class FluidCellData extends ItemData {
 
     public int getFuelValue(FluidStack fluid) {
         for (FuelData fuelData : fuelValues) {
-            if(fuelData.matches(fluid)) {
+            if (fuelData.matches(fluid)) {
                 int units = fluid.amount / fuelData.getUnit();
                 return units * fuelData.getFuel();
             }

@@ -2,14 +2,12 @@ package requious.data;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import requious.compat.crafttweaker.IWorldFunction;
 import requious.compat.crafttweaker.MachineContainer;
@@ -17,7 +15,6 @@ import requious.compat.crafttweaker.RecipeContainer;
 import requious.data.component.*;
 import requious.data.component.ComponentBase.Collector;
 import requious.data.component.ComponentBase.Slot;
-import requious.gui.slot.ItemSlot;
 import requious.recipe.AssemblyRecipe;
 import requious.recipe.ConsumptionResult;
 import requious.tile.TileEntityAssembly;
@@ -64,7 +61,7 @@ public class AssemblyProcessor {
     }
 
     public EnumFacing getFacing() {
-        if(tile instanceof TileEntityAssembly)
+        if (tile instanceof TileEntityAssembly)
             return ((TileEntityAssembly) tile).getFacing();
         return EnumFacing.UP;
     }
@@ -77,7 +74,7 @@ public class AssemblyProcessor {
 
     public String getCommandName() {
         Object commandName = getVariable("commandName");
-        if(commandName != null)
+        if (commandName != null)
             return commandName.toString();
         else
             return "@";
@@ -88,7 +85,7 @@ public class AssemblyProcessor {
     }
 
     public void setVariable(String name, Object value) {
-        variables.put(name,value);
+        variables.put(name, value);
         tile.markDirty();
     }
 
@@ -117,9 +114,9 @@ public class AssemblyProcessor {
 
     public ItemStack insertItem(String group, ItemStack stack) {
         for (Slot slot : getSlots()) {
-            if(slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
+            if (slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
                 ItemStack remainder = ((ComponentItem.Slot) slot).getItem().insert(stack, false);
-                if(remainder.getCount() < stack.getCount())
+                if (remainder.getCount() < stack.getCount())
                     return remainder;
             }
         }
@@ -128,10 +125,10 @@ public class AssemblyProcessor {
 
     public ItemStack extractItem(String group, Predicate<ItemStack> filter, int n) {
         for (Slot slot : getSlots()) {
-            if(slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
+            if (slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
                 ComponentItem.Slot itemSlot = (ComponentItem.Slot) slot;
                 ItemStack extracted = itemSlot.getItem().extract(n, true);
-                if(extracted.getCount() >= n && filter.test(extracted)) {
+                if (extracted.getCount() >= n && filter.test(extracted)) {
                     itemSlot.getItem().extract(n, false);
                     return extracted;
                 }
@@ -142,9 +139,9 @@ public class AssemblyProcessor {
 
     public FluidStack insertFluid(String group, FluidStack stack) {
         for (Slot slot : getSlots()) {
-            if(slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
+            if (slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
                 int filled = ((ComponentFluid.Slot) slot).fill(stack, false);
-                if(filled > 0) {
+                if (filled > 0) {
                     stack.amount = Math.max(0, stack.amount - filled);
                     if (stack.amount > 0)
                         return stack;
@@ -158,10 +155,10 @@ public class AssemblyProcessor {
 
     public FluidStack extractFluid(String group, Predicate<FluidStack> filter, int n) {
         for (Slot slot : getSlots()) {
-            if(slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
+            if (slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
                 ComponentFluid.Slot fluidSlot = (ComponentFluid.Slot) slot;
                 FluidStack extracted = fluidSlot.drain(n, true);
-                if(extracted != null && extracted.amount >= n && filter.test(extracted)) {
+                if (extracted != null && extracted.amount >= n && filter.test(extracted)) {
                     fluidSlot.drain(n, false);
                     return extracted;
                 }
@@ -172,9 +169,9 @@ public class AssemblyProcessor {
 
     public int insertEnergy(String group, int energy) {
         for (Slot slot : getSlots()) {
-            if(slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
+            if (slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
                 int filled = ((ComponentEnergy.Slot) slot).receive(energy, false);
-                if(filled > 0)
+                if (filled > 0)
                     return energy - filled;
             }
         }
@@ -183,9 +180,9 @@ public class AssemblyProcessor {
 
     public int extractEnergy(String group, int energy) {
         for (Slot slot : getSlots()) {
-            if(slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
+            if (slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
                 int filled = ((ComponentEnergy.Slot) slot).extract(energy, false);
-                if(filled > 0)
+                if (filled > 0)
                     return filled;
             }
         }
@@ -216,21 +213,21 @@ public class AssemblyProcessor {
     }
 
     private NBTBase serializeVariable(Object value) {
-        if(value instanceof Integer) {
-            return new NBTTagInt((int)value);
+        if (value instanceof Integer) {
+            return new NBTTagInt((int) value);
         }
-        if(value instanceof Double) {
-            return new NBTTagDouble((double)value);
+        if (value instanceof Double) {
+            return new NBTTagDouble((double) value);
         }
-        if(value instanceof String) {
-            return new NBTTagString((String)value);
+        if (value instanceof String) {
+            return new NBTTagString((String) value);
         }
-        if(value instanceof ItemStack) {
+        if (value instanceof ItemStack) {
             NBTTagCompound stackCompound = ((ItemStack) value).serializeNBT();
             stackCompound.setString("CompoundType", "ItemStack");
             return stackCompound;
         }
-        if(value instanceof FluidStack) {
+        if (value instanceof FluidStack) {
             NBTTagCompound stackCompound = ((FluidStack) value).writeToNBT(new NBTTagCompound());
             stackCompound.setString("CompoundType", "FluidStack");
             return stackCompound;
@@ -239,23 +236,23 @@ public class AssemblyProcessor {
     }
 
     private Object deserializeVariable(NBTBase nbt) {
-        if(nbt instanceof NBTTagInt) {
+        if (nbt instanceof NBTTagInt) {
             return ((NBTTagInt) nbt).getInt();
         }
-        if(nbt instanceof NBTTagDouble) {
+        if (nbt instanceof NBTTagDouble) {
             return ((NBTTagDouble) nbt).getDouble();
         }
-        if(nbt instanceof NBTTagString) {
+        if (nbt instanceof NBTTagString) {
             return ((NBTTagString) nbt).getString();
         }
-        if(nbt instanceof NBTTagCompound) {
+        if (nbt instanceof NBTTagCompound) {
             NBTTagCompound compound = (NBTTagCompound) nbt;
             String type = compound.getString("CompoundType");
 
-            if(type.equals("ItemStack")) {
+            if (type.equals("ItemStack")) {
                 return new ItemStack(compound);
             }
-            if(type.equals("FluidStack")) {
+            if (type.equals("FluidStack")) {
                 return FluidStack.loadFluidStackFromNBT(compound);
             }
         }
@@ -268,7 +265,7 @@ public class AssemblyProcessor {
             String key = entry.getKey();
             Object value = entry.getValue();
             NBTBase serialized = serializeVariable(value);
-            if(serialized != null)
+            if (serialized != null)
                 variableCompound.setTag(key, serialized);
         }
         return variableCompound;
@@ -279,7 +276,7 @@ public class AssemblyProcessor {
         for (String key : variableCompound.getKeySet()) {
             NBTBase variableEntry = variableCompound.getTag(key);
             Object deserialized = deserializeVariable(variableEntry);
-            if(deserialized != null)
+            if (deserialized != null)
                 variables.put(key, deserialized);
         }
     }
@@ -291,7 +288,7 @@ public class AssemblyProcessor {
             CheckCache cache = entry.getValue();
             cacheEntry.setLong("time", cache.getCheckTime());
             cacheEntry.setBoolean("result", cache.getResult());
-            cacheCompound.setTag(entry.getKey(),cacheEntry);
+            cacheCompound.setTag(entry.getKey(), cacheEntry);
         }
         return cacheCompound;
     }
@@ -300,15 +297,15 @@ public class AssemblyProcessor {
         cache.clear();
         for (String key : cacheCompound.getKeySet()) {
             NBTTagCompound cacheEntry = cacheCompound.getCompoundTag(key);
-            cache.put(key,new CheckCache(cacheEntry.getBoolean("result"), cacheEntry.getLong("time")));
+            cache.put(key, new CheckCache(cacheEntry.getBoolean("result"), cacheEntry.getLong("time")));
         }
     }
 
     public void setComponent(ComponentBase[][] components) {
-        for(int x = 0; x < components.length; x++) {
+        for (int x = 0; x < components.length; x++) {
             for (int y = 0; y < components[x].length; y++) {
                 ComponentBase component = components[x][y];
-                if(component != null)
+                if (component != null)
                     slots[x][y] = component.createSlot();
             }
         }
@@ -322,10 +319,10 @@ public class AssemblyProcessor {
     }
 
     public void setup() {
-        for(int x = 0; x < slots.length; x++) {
-            for(int y = 0; y < slots[x].length; y++) {
+        for (int x = 0; x < slots.length; x++) {
+            for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null)
+                if (slot != null)
                     addToCollector(slot);
             }
         }
@@ -340,17 +337,17 @@ public class AssemblyProcessor {
     }
 
     public Slot getSlot(int x, int y) {
-        if(x < 0 || x >= slots.length || y < 0 || y >= slots[x].length)
+        if (x < 0 || x >= slots.length || y < 0 || y >= slots[x].length)
             return null;
         return slots[x][y];
     }
 
     public List<Slot> getSlots() {
         List<Slot> rList = new ArrayList<>();
-        for(int x = 0; x < slots.length; x++) {
+        for (int x = 0; x < slots.length; x++) {
             for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null)
+                if (slot != null)
                     rList.add(slot);
             }
         }
@@ -358,11 +355,11 @@ public class AssemblyProcessor {
     }
 
     public void update() {
-        container.setInteger("active", container.getInteger("active")-1);
-        for(int x = 0; x < slots.length; x++) {
+        container.setInteger("active", container.getInteger("active") - 1);
+        for (int x = 0; x < slots.length; x++) {
             for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null) {
+                if (slot != null) {
                     slot.update();
                 }
             }
@@ -371,7 +368,7 @@ public class AssemblyProcessor {
             collector.update();
         }
         boolean recipeCrafted = false;
-        for(List<AssemblyRecipe> recipes : data.recipes.values()) {
+        for (List<AssemblyRecipe> recipes : data.recipes.values()) {
             for (AssemblyRecipe recipe : recipes) {
                 RecipeContainer container = new RecipeContainer(this.container);
                 List<ConsumptionResult> results = recipe.matches(this, container);
@@ -391,22 +388,22 @@ public class AssemblyProcessor {
     }
 
     public void machineBroken(World world, Vec3d position) {
-        for(int x = 0; x < slots.length; x++) {
+        for (int x = 0; x < slots.length; x++) {
             for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null) {
-                    slot.machineBroken(world,position);
+                if (slot != null) {
+                    slot.machineBroken(world, position);
                 }
             }
         }
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        for(int x = 0; x < slots.length; x++) {
+        for (int x = 0; x < slots.length; x++) {
             for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null)
-                    compound.setTag(x+"_"+y, slot.serializeNBT());
+                if (slot != null)
+                    compound.setTag(x + "_" + y, slot.serializeNBT());
             }
         }
         compound.setTag("variables", serializeVariables());
@@ -415,11 +412,11 @@ public class AssemblyProcessor {
     }
 
     public void readFromNBT(NBTTagCompound compound) {
-        for(int x = 0; x < slots.length; x++) {
+        for (int x = 0; x < slots.length; x++) {
             for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null)
-                    slot.deserializeNBT(compound.getCompoundTag(x+"_"+y));
+                if (slot != null)
+                    slot.deserializeNBT(compound.getCompoundTag(x + "_" + y));
             }
         }
         deserializeVariables(compound.getCompoundTag("variables"));
@@ -428,7 +425,7 @@ public class AssemblyProcessor {
 
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
         for (Collector collector : collectors) {
-            if(collector.hasCapability() && collector.hasCapability(capability,localSide,globalSide))
+            if (collector.hasCapability() && collector.hasCapability(capability, localSide, globalSide))
                 return true;
         }
         return false;
@@ -438,9 +435,9 @@ public class AssemblyProcessor {
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
         T instance = null;
         for (Collector collector : collectors) {
-            if(collector.hasCapability())
-                instance = collector.getCapability(capability,localSide,globalSide);
-            if(instance != null)
+            if (collector.hasCapability())
+                instance = collector.getCapability(capability, localSide, globalSide);
+            if (instance != null)
                 break;
         }
         return instance;
@@ -448,7 +445,7 @@ public class AssemblyProcessor {
 
     public ILaserStorage getLaserAcceptor(EnumFacing localSide, EnumFacing globalSide) {
         for (Collector collector : collectors) {
-            if(collector instanceof ComponentLaser.Collector && ((ComponentLaser.Collector)collector).getFace().matches(localSide,globalSide))
+            if (collector instanceof ComponentLaser.Collector && ((ComponentLaser.Collector) collector).getFace().matches(localSide, globalSide))
                 return (ILaserStorage) collector;
         }
         return null;
@@ -456,7 +453,7 @@ public class AssemblyProcessor {
 
     public ComponentEnergy.CollectorIC2 getIC2Handler() {
         for (Collector collector : collectors) {
-            if(collector instanceof ComponentEnergy.CollectorIC2)
+            if (collector instanceof ComponentEnergy.CollectorIC2)
                 return (ComponentEnergy.CollectorIC2) collector;
         }
         return null;
@@ -464,10 +461,10 @@ public class AssemblyProcessor {
 
     public boolean isDirty() {
         boolean dirty = false;
-        for(int x = 0; x < slots.length; x++) {
+        for (int x = 0; x < slots.length; x++) {
             for (int y = 0; y < slots[x].length; y++) {
                 Slot slot = slots[x][y];
-                if(slot != null && slot.isDirty()) {
+                if (slot != null && slot.isDirty()) {
                     dirty = true;
                     slot.markClean();
                 }

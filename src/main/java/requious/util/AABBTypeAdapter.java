@@ -5,7 +5,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class AABBTypeAdapter extends TypeAdapter<AxisAlignedBB> {
@@ -56,6 +55,6 @@ public class AABBTypeAdapter extends TypeAdapter<AxisAlignedBB> {
             }
         }
         in.endObject();
-        return new AxisAlignedBB(x1,y1,z1,x2,y2,z2);
+        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
     }
 }

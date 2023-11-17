@@ -38,7 +38,7 @@ public class FluidSlot extends JEISlot {
 
     @Override
     public JEISlot copy() {
-        FluidSlot fluidSlot = new FluidSlot(x,y,group);
+        FluidSlot fluidSlot = new FluidSlot(x, y, group);
         fluidSlot.normalizer = normalizer;
         return fluidSlot;
     }
@@ -46,24 +46,24 @@ public class FluidSlot extends JEISlot {
     @Override
     public void getIngredients(IngredientCollector collector) {
         for (FluidStack fluid : fluids) {
-            if(isInput())
-                collector.addInput(VanillaTypes.FLUID,fluid);
+            if (isInput())
+                collector.addInput(VanillaTypes.FLUID, fluid);
             else
-                collector.addOutput(VanillaTypes.FLUID,fluid);
+                collector.addOutput(VanillaTypes.FLUID, fluid);
         }
     }
 
     @Override
     public void render(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID,"textures/gui/assembly_slots.png"));
-        Misc.drawTexturedModalRect(x*18,y*18, 18, 0, 18,18);
+        minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID, "textures/gui/assembly_slots.png"));
+        Misc.drawTexturedModalRect(x * 18, y * 18, 18, 0, 18, 18);
     }
 
     public static class FillNormalizer {
         int highestFill;
 
         public void add(int amount) {
-            if(amount > highestFill)
+            if (amount > highestFill)
                 highestFill = amount;
         }
 

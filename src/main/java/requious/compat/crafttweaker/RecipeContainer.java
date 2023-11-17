@@ -20,7 +20,7 @@ import java.util.Map;
 @ZenRegister
 @ZenClass("mods.requious.RecipeContainer")
 public class RecipeContainer {
-    public Map<String,Object> inputs = new HashMap<>();
+    public Map<String, Object> inputs = new HashMap<>();
     public List<ResultBase> outputs = new ArrayList<>();
     public MachineContainer container;
     public boolean jei;
@@ -34,15 +34,15 @@ public class RecipeContainer {
     }
 
     public void addInput(String mark, ItemStack object) {
-        inputs.put(mark,object);
+        inputs.put(mark, object);
     }
 
     public void addInput(String mark, FluidStack object) {
-        inputs.put(mark,object);
+        inputs.put(mark, object);
     }
 
     public void addInput(String mark, int object) {
-        inputs.put(mark,object);
+        inputs.put(mark, object);
     }
 
     public List<ResultBase> getResults() {
@@ -67,35 +67,35 @@ public class RecipeContainer {
     @ZenMethod
     public void addItemOutput(String group, IItemStack istack) {
         ItemStack stack = CraftTweakerMC.getItemStack(istack);
-        outputs.add(new ResultItem(group,stack));
+        outputs.add(new ResultItem(group, stack));
     }
 
     @ZenMethod
     public void addItemOutput(String group, IItemStack istack, int minInsert) {
         ItemStack stack = CraftTweakerMC.getItemStack(istack);
-        outputs.add(new ResultItem(group,stack,minInsert));
+        outputs.add(new ResultItem(group, stack, minInsert));
     }
 
     @ZenMethod
     public void addFluidOutput(String group, ILiquidStack istack) {
         FluidStack stack = CraftTweakerMC.getLiquidStack(istack);
-        outputs.add(new ResultFluid(group,stack));
+        outputs.add(new ResultFluid(group, stack));
     }
 
     @ZenMethod
     public void addFluidOutput(String group, ILiquidStack istack, int minInsert) {
         FluidStack stack = CraftTweakerMC.getLiquidStack(istack);
-        outputs.add(new ResultFluid(group,stack,minInsert));
+        outputs.add(new ResultFluid(group, stack, minInsert));
     }
 
     @ZenMethod
     public void addEnergyOutput(String group, int energy) {
-        outputs.add(new ResultEnergy(group,energy));
+        outputs.add(new ResultEnergy(group, energy));
     }
 
     @ZenMethod
     public void addEnergyOutput(String group, int energy, int minInsert) {
-        outputs.add(new ResultEnergy(group,energy,minInsert));
+        outputs.add(new ResultEnergy(group, energy, minInsert));
     }
 
     @ZenMethod
@@ -110,7 +110,7 @@ public class RecipeContainer {
 
     @ZenMethod
     public void addLaserOutput(String group, String type, int amount, LaserVisualCT visual, @Optional SlotVisualCT slotVisual) {
-        outputs.add(new ResultLaser(group,type,amount,visual.get(),SlotVisualCT.unpack(slotVisual)));
+        outputs.add(new ResultLaser(group, type, amount, visual.get(), SlotVisualCT.unpack(slotVisual)));
     }
 
     @ZenMethod
@@ -120,18 +120,18 @@ public class RecipeContainer {
 
     @ZenMethod
     public void addJEIInfo(String group, String langKey, SlotVisualCT slotVisual) {
-        outputs.add(new ResultJEI(group,langKey,SlotVisualCT.unpack(slotVisual)));
+        outputs.add(new ResultJEI(group, langKey, SlotVisualCT.unpack(slotVisual)));
     }
 
     @ZenMethod
     public IItemStack getItem(String mark) {
-        ItemStack stack = (ItemStack) inputs.getOrDefault(mark,ItemStack.EMPTY);
+        ItemStack stack = (ItemStack) inputs.getOrDefault(mark, ItemStack.EMPTY);
         return CraftTweakerMC.getIItemStack(stack);
     }
 
     @ZenMethod
     public ILiquidStack getFluid(String mark) {
-        FluidStack stack = (FluidStack) inputs.getOrDefault(mark,null);
+        FluidStack stack = (FluidStack) inputs.getOrDefault(mark, null);
         return CraftTweakerMC.getILiquidStack(stack);
     }
 

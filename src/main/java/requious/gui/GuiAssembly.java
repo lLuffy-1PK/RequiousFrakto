@@ -40,11 +40,10 @@ public class GuiAssembly extends GuiContainer {
         this.renderHoveredToolTip(mouseX, mouseY);
     }
 
-    private boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY)
-    {
+    private boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
         int width = 16;
         int height = 16;
-        if(slotIn instanceof BaseSlot) {
+        if (slotIn instanceof BaseSlot) {
             Vec3i size = ((BaseSlot) slotIn).getSize();
             width = size.getX();
             height = size.getY();
@@ -52,18 +51,15 @@ public class GuiAssembly extends GuiContainer {
         return this.isPointInRegion(slotIn.xPos, slotIn.yPos, width, height, mouseX, mouseY);
     }
 
-    public Slot getSlotAtPosition(int x, int y)
-    {
-        for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i)
-        {
+    public Slot getSlotAtPosition(int x, int y) {
+        for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i) {
             Slot slot = this.inventorySlots.inventorySlots.get(i);
 
-            if (this.isMouseOverSlot(slot, x, y))
-            {
+            if (this.isMouseOverSlot(slot, x, y)) {
                 boolean enabled = slot.isEnabled();
-                if(slot instanceof BaseSlot)
+                if (slot instanceof BaseSlot)
                     enabled = ((BaseSlot) slot).isHoverEnabled();
-                if(enabled)
+                if (enabled)
                     return slot;
             }
         }
@@ -147,7 +143,7 @@ public class GuiAssembly extends GuiContainer {
                 drawRect(i, j, i + 16, j + 16, -2130706433);
             }
 
-            if(s == null)
+            if (s == null)
                 s = Misc.getCountString(itemstack);
 
             GlStateManager.enableDepth();

@@ -33,7 +33,7 @@ public class AssemblyData extends BaseData {
     @Expose(serialize = false, deserialize = false)
     public transient ComponentBase[][] slots = new ComponentBase[9][5];
     @Expose(serialize = false, deserialize = false)
-    public transient Map<String,List<AssemblyRecipe>> recipes = new HashMap<>();
+    public transient Map<String, List<AssemblyRecipe>> recipes = new HashMap<>();
 
     public PlaceType placeType = PlaceType.Any;
     public LayerType layerType = LayerType.Cutout;
@@ -57,7 +57,7 @@ public class AssemblyData extends BaseData {
         processor.setup();
         return processor;
     }
-    
+
     public Collection<AssemblyJEIWrapper> getJeiWrappers() {
         return jeiRecipes.stream().map(AssemblyJEIWrapper::new).collect(Collectors.toList());
     }
@@ -81,7 +81,7 @@ public class AssemblyData extends BaseData {
 
     private void setSlot(int x, int y, ComponentBase component) {
         slots[x][y] = component;
-        component.setPosition(x,y);
+        component.setPosition(x, y);
     }
 
     private void setJEISlot(JEISlot slot) {
@@ -93,8 +93,8 @@ public class AssemblyData extends BaseData {
         int min = Integer.MAX_VALUE;
         int max = 0;
         for (JEISlot slot : jeiSlots) {
-            min = Math.min(min,slot.x);
-            max = Math.max(max,slot.x+1);
+            min = Math.min(min, slot.x);
+            max = Math.max(max, slot.x + 1);
         }
         return max - min;
     }
@@ -103,30 +103,30 @@ public class AssemblyData extends BaseData {
         int min = Integer.MAX_VALUE;
         int max = 0;
         for (JEISlot slot : jeiSlots) {
-            min = Math.min(min,slot.y);
-            max = Math.max(max,slot.y+1);
+            min = Math.min(min, slot.y);
+            max = Math.max(max, slot.y + 1);
         }
         return max - min;
     }
 
     @ZenMethod
     public ComponentItem setItemSlot(int x, int y, ComponentFaceCT face, int capacity) {
-        ComponentItem component = new ComponentItem(face.get(),capacity);
-        setSlot(x,y,component);
+        ComponentItem component = new ComponentItem(face.get(), capacity);
+        setSlot(x, y, component);
         return component;
     }
 
     @ZenMethod
     public ComponentFluid setFluidSlot(int x, int y, ComponentFaceCT face, int capacity) {
-        ComponentFluid component = new ComponentFluid(face.get(),capacity);
-        setSlot(x,y,component);
+        ComponentFluid component = new ComponentFluid(face.get(), capacity);
+        setSlot(x, y, component);
         return component;
     }
 
     @ZenMethod
     public ComponentEnergy setEnergySlot(int x, int y, ComponentFaceCT face, int capacity) {
-        ComponentEnergy component = new ComponentEnergy(face.get(),capacity);
-        setSlot(x,y,component);
+        ComponentEnergy component = new ComponentEnergy(face.get(), capacity);
+        setSlot(x, y, component);
         return component;
     }
 
@@ -138,35 +138,35 @@ public class AssemblyData extends BaseData {
     @ZenMethod
     public ComponentLaser setLaserSlot(int x, int y, ComponentFaceCT face) {
         ComponentLaser component = new ComponentLaser(face.get());
-        setSlot(x,y,component);
+        setSlot(x, y, component);
         return component;
     }
 
     @ZenMethod
     public ComponentSelection setSelectionSlot(int x, int y, String selectionGroup, int index) {
-        ComponentSelection component = new ComponentSelection(selectionGroup,index);
-        setSlot(x,y,component);
+        ComponentSelection component = new ComponentSelection(selectionGroup, index);
+        setSlot(x, y, component);
         return component;
     }
 
     @ZenMethod
     public ComponentDuration setDurationSlot(int x, int y) {
         ComponentDuration component = new ComponentDuration();
-        setSlot(x,y,component);
+        setSlot(x, y, component);
         return component;
     }
 
     @ZenMethod
     public ComponentDecoration setDecorationSlot(int x, int y, SlotVisualCT visual) {
         ComponentDecoration component = new ComponentDecoration(SlotVisualCT.unpack(visual));
-        setSlot(x,y,component);
+        setSlot(x, y, component);
         return component;
     }
 
     @ZenMethod
     public ComponentText setTextSlot(int x, int y) {
         ComponentText component = new ComponentText();
-        setSlot(x,y,component);
+        setSlot(x, y, component);
         return component;
     }
 
@@ -177,54 +177,54 @@ public class AssemblyData extends BaseData {
 
     @ZenMethod
     public void addRecipe(AssemblyRecipe recipe) {
-        recipes.computeIfAbsent(recipe.processGroup,k -> new ArrayList<>()).add(recipe);
+        recipes.computeIfAbsent(recipe.processGroup, k -> new ArrayList<>()).add(recipe);
     }
 
     @ZenMethod
     public void setJEIItemSlot(int x, int y, String group, @Optional SlotVisualCT visual) {
-        setJEISlot(new ItemSlot(x,y,group,SlotVisualCT.unpack(visual)));
+        setJEISlot(new ItemSlot(x, y, group, SlotVisualCT.unpack(visual)));
     }
 
     @ZenMethod
     public void setJEIFluidSlot(int x, int y, String group) {
-        setJEISlot(new FluidSlot(x,y,group));
+        setJEISlot(new FluidSlot(x, y, group));
     }
 
     @ZenMethod
     public void setJEIEnergySlot(int x, int y, String group, @Optional String unit) {
-        if(unit == null)
+        if (unit == null)
             unit = "none";
-        setJEISlot(new EnergySlot(x,y,group,unit));
+        setJEISlot(new EnergySlot(x, y, group, unit));
     }
 
     @ZenMethod
     public void setJEILaserSlot(int x, int y, String group) {
-        setJEISlot(new LaserSlot(x,y,group));
+        setJEISlot(new LaserSlot(x, y, group));
     }
 
     @ZenMethod
     public void setJEISelectionSlot(int x, int y, String group, @Optional SlotVisualCT visual) {
-        setJEISlot(new SelectionSlot(x,y,group,SlotVisualCT.unpack(visual)));
+        setJEISlot(new SelectionSlot(x, y, group, SlotVisualCT.unpack(visual)));
     }
 
     @ZenMethod
     public void setJEIDecoration(int x, int y, String group, @Optional SlotVisualCT visual) {
-        setJEISlot(new DecorationSlot(x,y,group,SlotVisualCT.unpack(visual)));
+        setJEISlot(new DecorationSlot(x, y, group, SlotVisualCT.unpack(visual)));
     }
 
     @ZenMethod
     public void setJEIDurationSlot(int x, int y, String group, SlotVisualCT visual) {
-        setJEISlot(new DurationSlot(x,y,group,SlotVisualCT.unpack(visual)));
+        setJEISlot(new DurationSlot(x, y, group, SlotVisualCT.unpack(visual)));
     }
 
     @ZenMethod
     public void setJEIInfoSlot(int x, int y, String group) {
-        setJEISlot(new JEIInfoSlot(x,y,group));
+        setJEISlot(new JEIInfoSlot(x, y, group));
     }
 
     @ZenMethod
     public void addJEIRecipe(AssemblyRecipe recipe) {
-        if(recipe.hasJEICategory()) {
+        if (recipe.hasJEICategory()) {
             CraftTweakerAPI.logError("Recipe already has a JEI category.");
             return;
         }
@@ -238,7 +238,7 @@ public class AssemblyData extends BaseData {
     }
 
     public Iterable<ItemStack> getJEICatalysts() {
-        if(jeiCatalysts.isEmpty())
+        if (jeiCatalysts.isEmpty())
             return Lists.newArrayList(new ItemStack(getBlock()));
         return jeiCatalysts;
     }
@@ -253,10 +253,10 @@ public class AssemblyData extends BaseData {
         int minY = Integer.MAX_VALUE;
         int maxY = 0;
         for (JEISlot slot : jeiSlots) {
-            minX = Math.min(minX,slot.x);
-            maxX = Math.max(maxX,slot.x+1);
-            minY = Math.min(minY,slot.y);
-            maxY = Math.max(maxY,slot.y+1);
+            minX = Math.min(minX, slot.x);
+            maxX = Math.max(maxX, slot.x + 1);
+            minY = Math.min(minY, slot.y);
+            maxY = Math.max(maxY, slot.y + 1);
         }
         for (JEISlot slot : jeiSlots) {
             slot.x -= minX;

@@ -26,19 +26,19 @@ public abstract class ItemComponentHelper {
     }
 
     public int getAmount() {
-        if(item.isEmpty())
+        if (item.isEmpty())
             return 0;
-        return Math.max(0,amount);
+        return Math.max(0, amount);
     }
 
     public abstract int getCapacity();
 
     public ItemStack extract(int maxExtract, boolean simulate) {
         ItemStack copy = item.copy();
-        copy.setCount(Math.min(maxExtract,amount));
-        if(!simulate) {
-            amount -= Math.min(maxExtract,amount);
-            if(amount <= 0)
+        copy.setCount(Math.min(maxExtract, amount));
+        if (!simulate) {
+            amount -= Math.min(maxExtract, amount);
+            if (amount <= 0)
                 item = ItemStack.EMPTY;
             markDirty();
         }
@@ -46,11 +46,11 @@ public abstract class ItemComponentHelper {
     }
 
     public ItemStack insert(ItemStack stack, boolean simulate) {
-        if(!canStack(stack) || stack.isEmpty())
+        if (!canStack(stack) || stack.isEmpty())
             return stack;
         stack = stack.copy();
         ItemStack inserted = stack.splitStack(getCapacity() - amount);
-        if(!simulate) {
+        if (!simulate) {
             amount += inserted.getCount();
             item = inserted;
             item.setCount(1);
@@ -60,8 +60,8 @@ public abstract class ItemComponentHelper {
     }
 
     public int insert(int stack, boolean simulate) {
-        int inserted = Math.min(stack,getCapacity() - amount);
-        if(!simulate) {
+        int inserted = Math.min(stack, getCapacity() - amount);
+        if (!simulate) {
             amount += inserted;
             markDirty();
         }
@@ -84,20 +84,22 @@ public abstract class ItemComponentHelper {
         dirty = true;
     }
 
-    public void markClean() { dirty = false; }
+    public void markClean() {
+        dirty = false;
+    }
 
     public void spawnInWorld(World world, Vec3d pos) {
-        for(int i = amount; i > 0; i -= item.getMaxStackSize()) {
+        for (int i = amount; i > 0; i -= item.getMaxStackSize()) {
             ItemStack stack = item.copy();
-            stack.setCount(Math.min(i,item.getMaxStackSize()));
-            EntityItem item = new EntityItem(world,pos.x,pos.y,pos.z,stack);
+            stack.setCount(Math.min(i, item.getMaxStackSize()));
+            EntityItem item = new EntityItem(world, pos.x, pos.y, pos.z, stack);
             world.spawnEntity(item);
         }
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setTag("stack", item.serializeNBT());
-        nbt.setInteger("amount",amount);
+        nbt.setInteger("amount", amount);
         return nbt;
     }
 

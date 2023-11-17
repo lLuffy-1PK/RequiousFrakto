@@ -13,7 +13,7 @@ public class ValueFluid implements ISparkValue {
     public static class Deserializer implements ISparkValue.Deserializer {
         @Override
         public ISparkValue deserialize(NBTTagCompound compound) {
-            if(compound.hasKey("fluid"))
+            if (compound.hasKey("fluid"))
                 return new ValueFluid();
             return null;
         }
@@ -33,7 +33,7 @@ public class ValueFluid implements ISparkValue {
     }
 
     public int getAmount() {
-        if(fluid == null)
+        if (fluid == null)
             return 0;
         return fluid.amount;
     }
@@ -45,7 +45,7 @@ public class ValueFluid implements ISparkValue {
 
     @Override
     public Color getColor(EntitySpark spark) {
-        return new Color(FluidColorHelper.getColor(fluid),true);
+        return new Color(FluidColorHelper.getColor(fluid), true);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ValueFluid implements ISparkValue {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        compound.setTag("fluid",fluid.writeToNBT(new NBTTagCompound()));
+        compound.setTag("fluid", fluid.writeToNBT(new NBTTagCompound()));
     }
 
     @Override

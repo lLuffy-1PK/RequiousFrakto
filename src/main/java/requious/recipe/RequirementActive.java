@@ -1,6 +1,5 @@
 package requious.recipe;
 
-import requious.compat.crafttweaker.IWorldFunction;
 import requious.compat.crafttweaker.RecipeContainer;
 import requious.compat.jei.JEISlot;
 import requious.data.AssemblyProcessor;
@@ -16,7 +15,7 @@ public class RequirementActive extends RequirementBase {
 
     @Override
     public MatchResult matches(AssemblyProcessor assembly, ConsumptionResult result) {
-        assembly.setVariable("active",time);
+        assembly.setVariable("active", time);
         return MatchResult.MATCHED;
     }
 
@@ -37,7 +36,7 @@ public class RequirementActive extends RequirementBase {
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this,0);
+        return new ConsumptionResult.Integer(this, 0);
     }
 
     @Override

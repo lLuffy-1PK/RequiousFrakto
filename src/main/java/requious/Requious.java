@@ -23,8 +23,7 @@ import java.io.File;
 
 @Mod(modid = Requious.MODID, name = Requious.MODNAME, acceptedMinecraftVersions = "[1.12, 1.13)")
 @Mod.EventBusSubscriber
-public class Requious
-{
+public class Requious {
     public static final String MODID = "requious";
     public static final String MODNAME = "Requious Frakto";
 
@@ -59,7 +58,7 @@ public class Requious
 
         int id = 0;
 
-        EntityRegistry.registerModEntity(new ResourceLocation(Requious.MODID,"spear"), EntitySpark.class, "spark", id++, this, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(Requious.MODID, "spear"), EntitySpark.class, "spark", id++, this, 64, 1, true);
 
         Registry.init();
 

@@ -45,10 +45,10 @@ public class MessageScrollSlot implements IMessage {
             WorldServer world = player.getServerWorld();
             world.addScheduledTask(() -> {
                 Container container = player.openContainer;
-                if(container instanceof ContainerAssembly) {
+                if (container instanceof ContainerAssembly) {
                     Slot slot = container.getSlot(message.slot);
-                    if(slot instanceof BaseSlot)
-                        ((BaseSlot)slot).serverScroll(message.scroll);
+                    if (slot instanceof BaseSlot)
+                        ((BaseSlot) slot).serverScroll(message.scroll);
                 }
             });
             return null;

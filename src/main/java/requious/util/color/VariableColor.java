@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import requious.util.Misc;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.List;
 
 public class VariableColor implements ICustomColor {
@@ -21,17 +21,17 @@ public class VariableColor implements ICustomColor {
 
     @Override
     public Color get() {
-        return new Color(0,0,0,0);
+        return new Color(0, 0, 0, 0);
     }
 
     @Override
     public Color get(ItemStack stack) {
         IItemPropertyGetter getter = stack.getItem().getPropertyGetter(variableId);
         float lerp = 0;
-        if(getter != null)
-            lerp = getter.apply(stack,null,null);
+        if (getter != null)
+            lerp = getter.apply(stack, null, null);
 
-        if(hsbMix)
+        if (hsbMix)
             return Misc.lerpColorHSB(colors, lerp);
         else
             return Misc.lerpColorRGB(colors, lerp);

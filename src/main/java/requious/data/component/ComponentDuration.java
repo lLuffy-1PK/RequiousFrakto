@@ -74,12 +74,12 @@ public class ComponentDuration extends ComponentBase {
 
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new DurationSlot(assembly,this, x, y);
+            return new DurationSlot(assembly, this, x, y);
         }
 
         @Override
         public void update() {
-            if(active) {
+            if (active) {
                 time++;
                 if (time > duration)
                     time = duration;
@@ -97,7 +97,7 @@ public class ComponentDuration extends ComponentBase {
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
-            compound.setBoolean("active",active);
+            compound.setBoolean("active", active);
             compound.setInteger("time", time);
             compound.setInteger("duration", duration);
             return compound;
@@ -110,8 +110,7 @@ public class ComponentDuration extends ComponentBase {
             duration = compound.getInteger("duration");
         }
 
-        public SlotVisual getVisual()
-        {
+        public SlotVisual getVisual() {
             return component.visual;
         }
 

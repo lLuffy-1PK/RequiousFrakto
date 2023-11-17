@@ -9,9 +9,6 @@ import requious.compat.jei.ingredient.Energy;
 import requious.compat.jei.ingredient.IngredientTypes;
 import requious.util.Misc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EnergySlot extends JEISlot {
     public Energy input;
     public Energy output;
@@ -42,11 +39,11 @@ public class EnergySlot extends JEISlot {
 
     @Override
     public void getIngredients(IngredientCollector collector) {
-        if(input != null) {
-            collector.addInput(IngredientTypes.ENERGY,input);
+        if (input != null) {
+            collector.addInput(IngredientTypes.ENERGY, input);
         }
-        if(output != null) {
-            collector.addOutput(IngredientTypes.ENERGY,output);
+        if (output != null) {
+            collector.addOutput(IngredientTypes.ENERGY, output);
         }
     }
 
@@ -58,12 +55,12 @@ public class EnergySlot extends JEISlot {
 
     public Energy getEnergy() {
         int energy = 0;
-        if(input != null) {
+        if (input != null) {
             energy -= input.energy;
         }
-        if(output != null) {
+        if (output != null) {
             energy += output.energy;
         }
-        return new Energy(energy,unit);
+        return new Energy(energy, unit);
     }
 }

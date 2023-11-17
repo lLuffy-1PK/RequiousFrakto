@@ -17,27 +17,27 @@ public class FluidColorHelper implements IResourceManagerReloadListener {
     static Map<String, Integer> cache = new HashMap<>();
 
     public static int getColor(FluidStack stack) {
-        if(stack == null)
+        if (stack == null)
             return 0;
         Fluid fluid = stack.getFluid();
-        if(fluid == null)
+        if (fluid == null)
             return -1;
         ResourceLocation still = fluid.getStill(stack);
-        if(still == null)
+        if (still == null)
             return -1;
         TextureMap textureMapBlocks = Minecraft.getMinecraft().getTextureMapBlocks();
         TextureAtlasSprite sprite = textureMapBlocks.getTextureExtry(still.toString());
-        if(sprite == null)
+        if (sprite == null)
             return -1;
-        if(sprite.getFrameCount() == 0)
+        if (sprite.getFrameCount() == 0)
             return -1;
         String cacheKey = fluid.getName() + sprite.frameCounter % sprite.getFrameCount();
         if (cache.containsKey(cacheKey))
             return finalizeColor(stack, cache.get(cacheKey));
 
         int totalColor = calculateColor(sprite);
-        cache.put(cacheKey,totalColor);
-        return finalizeColor(stack,  totalColor);
+        cache.put(cacheKey, totalColor);
+        return finalizeColor(stack, totalColor);
     }
 
     private static int calculateColor(TextureAtlasSprite sprite) {
@@ -49,8 +49,7 @@ public class FluidColorHelper implements IResourceManagerReloadListener {
         long totalBlue = 0;
         long totalAlpha = 0;
         for (int i = 0; i < pixelData.length; i++)
-            for (int j = 0; j < pixelData[i].length; j++)
-            {
+            for (int j = 0; j < pixelData[i].length; j++) {
                 int pixel = pixelData[i][j];
                 totalRed += (pixel >> 16) & 0xFF;
                 totalGreen += (pixel >> 8) & 0xFF;
@@ -67,8 +66,8 @@ public class FluidColorHelper implements IResourceManagerReloadListener {
     }
 
     public static int finalizeColor(FluidStack stack, int color) {
-        Color fluidColor = new Color(color,true);
-        Color fluidTint = new Color(stack.getFluid().getColor(stack),true);
+        Color fluidColor = new Color(color, true);
+        Color fluidTint = new Color(stack.getFluid().getColor(stack), true);
 
         return new Color((fluidColor.getRed() * fluidTint.getRed()) / 255,
                 (fluidColor.getGreen() * fluidTint.getGreen()) / 255,

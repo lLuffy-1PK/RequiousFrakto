@@ -3,12 +3,7 @@ package requious.compat.jei.slot;
 import net.minecraft.client.Minecraft;
 import requious.compat.jei.IngredientCollector;
 import requious.compat.jei.JEISlot;
-import requious.compat.jei.ingredient.IngredientTypes;
 import requious.compat.jei.ingredient.JEIInfo;
-import requious.compat.jei.ingredient.Laser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class JEIInfoSlot extends JEISlot {
     public JEIInfo info;
@@ -24,7 +19,7 @@ public class JEIInfoSlot extends JEISlot {
 
     @Override
     public JEISlot copy() {
-        return new JEIInfoSlot(x,y,group);
+        return new JEIInfoSlot(x, y, group);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ResultWorld extends ResultBase {
 
     @Override
     public boolean matches(AssemblyProcessor assembly) {
-        if(assembly.getTile().getWorld().isRemote)
+        if (assembly.getTile().getWorld().isRemote)
             return true;
         return assembly.run(worldCheck);
     }

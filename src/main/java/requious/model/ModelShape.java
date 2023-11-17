@@ -3,18 +3,21 @@ package requious.model;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Vector3d;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.BakedItemModel;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
@@ -23,7 +26,6 @@ import requious.item.Shape;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
-import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 import java.awt.*;
 import java.util.*;
@@ -82,16 +84,14 @@ public class ModelShape implements IModel {
         private static final float NORTH_Z = 7.498f / 16f;
         private static final float SOUTH_Z = 8.502f / 16f;
 
-        BakingModel(ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, IModelState state, VertexFormat format)
-        {
+        BakingModel(ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, IModelState state, VertexFormat format) {
             super(quads, particle, Maps.immutableEnumMap(PerspectiveMapWrapper.getTransforms(state)), OverrideList.INSTANCE, state.apply(Optional.empty()).orElse(TRSRTransformation.identity()).isIdentity());
             this.state = state;
             this.format = format;
         }
 
         @Override
-        public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType)
-        {
+        public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
             return PerspectiveMapWrapper.handlePerspective(this, transforms, cameraTransformType);
         }
 
@@ -100,27 +100,27 @@ public class ModelShape implements IModel {
 
             bakeShape(shape, builder, bakedTextureGetter, 0);
 
-            return new ModelShapeBaked(builder.build(),state);
+            return new ModelShapeBaked(builder.build(), state);
         }
 
         private void bakeShape(Shape shape, ImmutableList.Builder<BakedQuad> builder, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter, int scale) {
-            if(shape == null)
+            if (shape == null)
                 return;
 
             TRSRTransformation transform = state.apply(Optional.empty()).orElse(TRSRTransformation.identity());
 
             transform = scale(transform, scale);
 
-            bakePart(shape.getPart(Shape.Piece.TOP_LEFT), bakedTextureGetter.apply(TOP_LEFT), builder, bakedTextureGetter,transform);
-            bakePart(shape.getPart(Shape.Piece.TOP_RIGHT), bakedTextureGetter.apply(TOP_RIGHT), builder, bakedTextureGetter,transform);
-            bakePart(shape.getPart(Shape.Piece.BOTTOM_LEFT), bakedTextureGetter.apply(BOTTOM_LEFT), builder, bakedTextureGetter,transform);
-            bakePart(shape.getPart(Shape.Piece.BOTTOM_RIGHT), bakedTextureGetter.apply(BOTTOM_RIGHT), builder, bakedTextureGetter,transform);
+            bakePart(shape.getPart(Shape.Piece.TOP_LEFT), bakedTextureGetter.apply(TOP_LEFT), builder, bakedTextureGetter, transform);
+            bakePart(shape.getPart(Shape.Piece.TOP_RIGHT), bakedTextureGetter.apply(TOP_RIGHT), builder, bakedTextureGetter, transform);
+            bakePart(shape.getPart(Shape.Piece.BOTTOM_LEFT), bakedTextureGetter.apply(BOTTOM_LEFT), builder, bakedTextureGetter, transform);
+            bakePart(shape.getPart(Shape.Piece.BOTTOM_RIGHT), bakedTextureGetter.apply(BOTTOM_RIGHT), builder, bakedTextureGetter, transform);
 
             bakeShape(shape.getInner(), builder, bakedTextureGetter, scale + 1);
         }
 
         private void bakePart(Shape.Part part, TextureAtlasSprite mask, ImmutableList.Builder<BakedQuad> builder, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter, TRSRTransformation transform) {
-            if(part == null)
+            if (part == null)
                 return;
 
             TextureAtlasSprite sprite = bakedTextureGetter.apply(part.getTexture());
@@ -134,7 +134,7 @@ public class ModelShape implements IModel {
             float scale = (float) Math.pow(r, scaleMod);
             float offset = (1 - scale);
 
-            TRSRTransformation multTransform = new TRSRTransformation(new Vector3f(offset / 2, offset / 2, -0.005f * scaleMod), null, new Vector3f(scale,scale,1.0f + 0.01f * scaleMod), null);
+            TRSRTransformation multTransform = new TRSRTransformation(new Vector3f(offset / 2, offset / 2, -0.005f * scaleMod), null, new Vector3f(scale, scale, 1.0f + 0.01f * scaleMod), null);
 
             matrix.mul(multTransform.getMatrix());
 
@@ -152,13 +152,13 @@ public class ModelShape implements IModel {
 
         @Override
         public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
-            BakingModel model = (BakingModel)originalModel;
+            BakingModel model = (BakingModel) originalModel;
 
             //model.cache.clear();
 
-            ResourceLocation circle = new ResourceLocation(Requious.MODID,"items/shape_circle");
-            ResourceLocation square = new ResourceLocation(Requious.MODID,"items/shape_square");
-            ResourceLocation star = new ResourceLocation(Requious.MODID,"items/shape_star");
+            ResourceLocation circle = new ResourceLocation(Requious.MODID, "items/shape_circle");
+            ResourceLocation square = new ResourceLocation(Requious.MODID, "items/shape_square");
+            ResourceLocation star = new ResourceLocation(Requious.MODID, "items/shape_star");
 
             Shape shapeInnerInner = new Shape();
             shapeInnerInner.setPart(Shape.Piece.BOTTOM_LEFT, new Shape.Part(circle, "iron", Color.YELLOW));
@@ -180,8 +180,7 @@ public class ModelShape implements IModel {
             shape.setPart(Shape.Piece.TOP_LEFT, new Shape.Part(star, "iron", Color.BLACK));
             shape.setInner(shapeInner);
 
-            if (!model.cache.containsKey(shape))
-            {
+            if (!model.cache.containsKey(shape)) {
                 Function<ResourceLocation, TextureAtlasSprite> textureGetter;
                 textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
 

@@ -23,7 +23,7 @@ public abstract class ConsumptionResult<T> {
     }
 
     public void consume() {
-        requirement.consume(slot,this);
+        requirement.consume(slot, this);
     }
 
     public static class Integer extends ConsumptionResult<java.lang.Integer> {

@@ -113,12 +113,12 @@ public class ComponentLaser extends ComponentBase {
         }
 
         public void updateLaser(World world, BlockPos pos, EnumFacing tileFacing) {
-            EnumFacing side = TileEntityAssembly.toSide(tileFacing,getFace().getSide(currentFacing));
+            EnumFacing side = TileEntityAssembly.toSide(tileFacing, getFace().getSide(currentFacing));
             util.setEmitter(world, pos, side, emitType, emitVisual);
-            if(canOutput()) {
+            if (canOutput()) {
                 util.setTarget(component.areaStart, component.areaEnd);
                 util.setMultiTarget(component.minTargets, component.maxTargets);
-                if(util.hasTargets()) {
+                if (util.hasTargets()) {
                     util.fire(emitAmount);
                     markDirty();
                     emitType = null;
@@ -233,7 +233,7 @@ public class ComponentLaser extends ComponentBase {
         }
 
         public int receive(String type, int i, boolean simulate) {
-            if(type == null || !canInput())
+            if (type == null || !canInput())
                 return 0;
             int received = i >= component.minReceive ? Math.min(i, component.maxReceive) : 0;
             if (!simulate) {

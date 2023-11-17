@@ -105,7 +105,7 @@ public class ComponentItem extends ComponentBase {
     @ReturnsSelf
     @ZenMethod
     public ComponentItem pushItem(int size, int slot) {
-        this.pushItem = new IOParameters(size,slot);
+        this.pushItem = new IOParameters(size, slot);
         return this;
     }
 
@@ -138,7 +138,7 @@ public class ComponentItem extends ComponentBase {
             item = new ItemComponentHelper() {
                 @Override
                 public int getCapacity() {
-                    if(canOverfill() && getAmount() == 0)
+                    if (canOverfill() && getAmount() == 0)
                         return Integer.MAX_VALUE;
                     return component.capacity;
                 }
@@ -149,12 +149,13 @@ public class ComponentItem extends ComponentBase {
         public void addCollectors(List<ComponentBase.Collector> collectors) {
             Collector item = new Collector(getFace());
 
-            if(!collectors.contains(item))
+            if (!collectors.contains(item))
                 collectors.add(item);
         }
+
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new ItemSlot(assembly,this,x,y);
+            return new ItemSlot(assembly, this, x, y);
         }
 
         @Override
@@ -164,7 +165,7 @@ public class ComponentItem extends ComponentBase {
 
         @Override
         public void machineBroken(World world, Vec3d position) {
-            if(component.dropsOnBreak) {
+            if (component.dropsOnBreak) {
                 item.spawnInWorld(world, position);
                 item.setStack(ItemStack.EMPTY);
             }
@@ -173,7 +174,7 @@ public class ComponentItem extends ComponentBase {
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
-            compound.setTag("item",item.writeToNBT(new NBTTagCompound()));
+            compound.setTag("item", item.writeToNBT(new NBTTagCompound()));
             return compound;
         }
 
@@ -273,7 +274,7 @@ public class ComponentItem extends ComponentBase {
 
         @Override
         public boolean accept(ComponentBase.Slot slot) {
-            if(slot.getFace() == face && slot instanceof IItemSlot) {
+            if (slot.getFace() == face && slot instanceof IItemSlot) {
                 addSlot((IItemSlot) slot);
                 return true;
             }
@@ -287,22 +288,22 @@ public class ComponentItem extends ComponentBase {
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
-            if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && face.matches(localSide,globalSide))
+            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && face.matches(localSide, globalSide))
                 return true;
-            return super.hasCapability(capability, localSide,globalSide);
+            return super.hasCapability(capability, localSide, globalSide);
         }
 
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
-            if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && face.matches(localSide,globalSide))
+            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && face.matches(localSide, globalSide))
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this);
-            return super.getCapability(capability, localSide,globalSide);
+            return super.getCapability(capability, localSide, globalSide);
         }
 
         private boolean canAutoOutput() {
             for (IItemSlot slot : slots) {
-                if(slot.getPushItem().active)
+                if (slot.getPushItem().active)
                     return true;
             }
             return false;
@@ -310,31 +311,31 @@ public class ComponentItem extends ComponentBase {
 
         @Override
         public void update() {
-            if(canAutoOutput() && tile instanceof TileEntityAssembly) {
+            if (canAutoOutput() && tile instanceof TileEntityAssembly) {
                 World world = tile.getWorld();
                 BlockPos pos = tile.getPos();
-                EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(),face.getSide(pushIndex));
+                EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), face.getSide(pushIndex));
 
                 TileEntity checkTile = world.getTileEntity(pos.offset(facing));
-                if(checkTile != null && checkTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,facing.getOpposite())) {
-                    IItemHandler inventory = checkTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,facing.getOpposite());
+                if (checkTile != null && checkTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
+                    IItemHandler inventory = checkTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                     for (IItemSlot slot : slots) {
-                        if(slot.getPushItem().active) {
+                        if (slot.getPushItem().active) {
                             int maxSize = slot.getPushItem().size;
                             int targetSlot = slot.getPushItem().slot;
-                            ItemStack insertStack = slot.getItem().extract(maxSize,true);
+                            ItemStack insertStack = slot.getItem().extract(maxSize, true);
                             int startSize = insertStack.getCount();
-                            if(targetSlot < 0) {
-                                for(int i = 0; i < inventory.getSlots(); i++) {
-                                    insertStack = inventory.insertItem(i,insertStack,false);
-                                    if(insertStack.isEmpty())
+                            if (targetSlot < 0) {
+                                for (int i = 0; i < inventory.getSlots(); i++) {
+                                    insertStack = inventory.insertItem(i, insertStack, false);
+                                    if (insertStack.isEmpty())
                                         break;
                                 }
                             } else {
-                                insertStack = inventory.insertItem(targetSlot,insertStack,false);
+                                insertStack = inventory.insertItem(targetSlot, insertStack, false);
                             }
-                            if(insertStack.getCount() < startSize) {
-                                slot.getItem().extract(startSize - insertStack.getCount(),false);
+                            if (insertStack.getCount() < startSize) {
+                                slot.getItem().extract(startSize - insertStack.getCount(), false);
                             }
                         }
                     }
@@ -357,7 +358,7 @@ public class ComponentItem extends ComponentBase {
 
         private boolean hasItemStored(ItemStack stack) {
             for (IItemSlot slot : slots) {
-                if(!slot.getItem().isEmpty() && slot.getItem().canStack(stack))
+                if (!slot.getItem().isEmpty() && slot.getItem().canStack(stack))
                     return true;
             }
             return false;
@@ -367,8 +368,8 @@ public class ComponentItem extends ComponentBase {
         @Override
         public ItemStack insertItem(int i, @Nonnull ItemStack stack, boolean simulate) {
             IItemSlot slot = slots.get(i);
-            if(slot.canInputItem() && slot.acceptsItem(stack) && (slot.canSplit() || (!slot.getItem().isEmpty() && slot.getItem().canStack(stack)) || !hasItemStored(stack)))
-                return slot.getItem().insert(stack,simulate);
+            if (slot.canInputItem() && slot.acceptsItem(stack) && (slot.canSplit() || (!slot.getItem().isEmpty() && slot.getItem().canStack(stack)) || !hasItemStored(stack)))
+                return slot.getItem().insert(stack, simulate);
             else
                 return stack;
         }
@@ -377,8 +378,8 @@ public class ComponentItem extends ComponentBase {
         @Override
         public ItemStack extractItem(int i, int amount, boolean simulate) {
             IItemSlot slot = slots.get(i);
-            if(slot.canOutputItem())
-                return slot.getItem().extract(amount,simulate);
+            if (slot.canOutputItem())
+                return slot.getItem().extract(amount, simulate);
             else
                 return ItemStack.EMPTY;
         }
@@ -391,7 +392,7 @@ public class ComponentItem extends ComponentBase {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof Collector)
+            if (obj instanceof Collector)
                 return face.equals(((Collector) obj).face);
             return false;
         }

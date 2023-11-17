@@ -3,7 +3,6 @@ package requious.compat.crafttweaker;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.block.IBlock;
 import crafttweaker.api.block.IBlockState;
-import crafttweaker.api.command.ICommandManager;
 import crafttweaker.api.command.ICommandSender;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -110,8 +109,8 @@ public class MachineContainer implements ICommandSender {
     @ZenMethod
     public int getInteger(String name) {
         Object value = assembly.getVariable(name);
-        if(value instanceof Integer)
-            return (int)value;
+        if (value instanceof Integer)
+            return (int) value;
         else
             return 0;
     }
@@ -119,8 +118,8 @@ public class MachineContainer implements ICommandSender {
     @ZenMethod
     public double getDouble(String name) {
         Object value = assembly.getVariable(name);
-        if(value instanceof Double)
-            return (double)value;
+        if (value instanceof Double)
+            return (double) value;
         else
             return 0;
     }
@@ -128,8 +127,8 @@ public class MachineContainer implements ICommandSender {
     @ZenMethod
     public String getString(String name) {
         Object value = assembly.getVariable(name);
-        if(value instanceof String)
-            return (String)value;
+        if (value instanceof String)
+            return (String) value;
         else
             return "";
     }
@@ -137,7 +136,7 @@ public class MachineContainer implements ICommandSender {
     @ZenMethod
     public IItemStack getItem(String name) {
         Object value = assembly.getVariable(name);
-        if(value instanceof ItemStack)
+        if (value instanceof ItemStack)
             return CraftTweakerMC.getIItemStack((ItemStack) value);
         else
             return CraftTweakerMC.getIItemStack(ItemStack.EMPTY);
@@ -146,7 +145,7 @@ public class MachineContainer implements ICommandSender {
     @ZenMethod
     public ILiquidStack getFluid(String name) {
         Object value = assembly.getVariable(name);
-        if(value instanceof FluidStack)
+        if (value instanceof FluidStack)
             return CraftTweakerMC.getILiquidStack((FluidStack) value);
         else
             return CraftTweakerMC.getILiquidStack(null);
@@ -155,7 +154,7 @@ public class MachineContainer implements ICommandSender {
     @ZenMethod
     public IVector3d getVector(String name) {
         Object value = assembly.getVariable(name);
-        if(value instanceof Vec3d)
+        if (value instanceof Vec3d)
             return CraftTweakerMC.getIVector3d((Vec3d) value);
         else
             return CraftTweakerMC.getIVector3d(Vec3d.ZERO);
@@ -163,42 +162,42 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public void setInteger(String name, int value) {
-        assembly.setVariable(name,value);
+        assembly.setVariable(name, value);
     }
 
     @ZenMethod
     public void setDouble(String name, double value) {
-        assembly.setVariable(name,value);
+        assembly.setVariable(name, value);
     }
 
     @ZenMethod
     public void setString(String name, String value) {
-        assembly.setVariable(name,value);
+        assembly.setVariable(name, value);
     }
 
     @ZenMethod
     public void setFacing(String name, IFacing value) {
-        assembly.setVariable(name,value.getInternal());
+        assembly.setVariable(name, value.getInternal());
     }
 
     @ZenMethod
     public void setColor(String name, ColorCT value) {
-        assembly.setVariable(name,value.get());
+        assembly.setVariable(name, value.get());
     }
 
     @ZenMethod
     public void setItem(String name, IItemStack value) {
-        assembly.setVariable(name,CraftTweakerMC.getItemStack(value));
+        assembly.setVariable(name, CraftTweakerMC.getItemStack(value));
     }
 
     @ZenMethod
     public void setFluid(String name, ILiquidStack value) {
-        assembly.setVariable(name,CraftTweakerMC.getLiquidStack(value));
+        assembly.setVariable(name, CraftTweakerMC.getLiquidStack(value));
     }
 
     @ZenMethod
     public void setVector(String name, double x, double y, double z) {
-        assembly.setVariable(name,new Vec3d(x,y,z));
+        assembly.setVariable(name, new Vec3d(x, y, z));
     }
 
     //Accessing specific slots
@@ -214,9 +213,9 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public ILiquidStack getFluid(int x, int y) {
-        ComponentBase.Slot slot = assembly.getSlot(x,y);
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
         FluidStack stack = null;
-        if(slot instanceof ComponentFluid.Slot) {
+        if (slot instanceof ComponentFluid.Slot) {
             stack = ((ComponentFluid.Slot) slot).getContents();
         }
         return CraftTweakerMC.getILiquidStack(stack);
@@ -224,8 +223,8 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public int getEnergy(int x, int y) {
-        ComponentBase.Slot slot = assembly.getSlot(x,y);
-        if(slot instanceof ComponentEnergy.Slot) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
             return ((ComponentEnergy.Slot) slot).getAmount();
         }
         return 0;

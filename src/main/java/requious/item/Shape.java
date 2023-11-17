@@ -3,10 +3,8 @@ package requious.item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import requious.compat.crafttweaker.IShape;
-import requious.compat.crafttweaker.ShapeBase;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +42,7 @@ public class Shape {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof Part) {
+            if (obj instanceof Part) {
                 Part other = (Part) obj;
                 return other.material.equals(material) && other.texture.equals(texture) && other.color.equals(color);
             }
@@ -60,11 +58,12 @@ public class Shape {
     Shape inner;
     Part[] parts = new Part[4];
 
-    public Shape() {}
+    public Shape() {
+    }
 
     public Shape(ItemStack stack) {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound != null && tagCompound.hasKey("shape",10))
+        if (tagCompound != null && tagCompound.hasKey("shape", 10))
             readFromNBT(tagCompound.getCompoundTag("shape"));
     }
 
@@ -74,7 +73,7 @@ public class Shape {
 
     public boolean isEmpty() {
         for (int i = 0; i < parts.length; i++) {
-            if(parts[i] != null)
+            if (parts[i] != null)
                 return false;
         }
         return inner == null || inner.isEmpty();
@@ -105,7 +104,7 @@ public class Shape {
 
     public List<Shape> split() {
         List<Shape> shapes = new ArrayList<>();
-        for(Shape piece = this; piece != null; piece = piece.getInner()) {
+        for (Shape piece = this; piece != null; piece = piece.getInner()) {
             shapes.add(piece);
         }
         return shapes;
@@ -113,10 +112,10 @@ public class Shape {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Shape) {
+        if (obj instanceof Shape) {
             Shape other = (Shape) obj;
             for (int i = 0; i < parts.length; i++) {
-                if(!Objects.equals(parts[i],other.parts[i]))
+                if (!Objects.equals(parts[i], other.parts[i]))
                     return false;
             }
             return Objects.equals(inner, other.inner);
@@ -130,9 +129,9 @@ public class Shape {
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        for(int i = 0; i < parts.length; i++) {
+        for (int i = 0; i < parts.length; i++) {
             Part part = parts[i];
-            if(part != null) {
+            if (part != null) {
                 tag.setInteger("color" + i, part.getColor().getRGB());
                 tag.setString("material" + i, part.getMaterial());
                 tag.setString("texture" + i, part.getTexture().toString());
@@ -143,15 +142,15 @@ public class Shape {
     }
 
     public void readFromNBT(NBTTagCompound tag) {
-        for(int i = 0; i < parts.length; i++) {
-            if(!tag.hasKey("color"+i))
+        for (int i = 0; i < parts.length; i++) {
+            if (!tag.hasKey("color" + i))
                 continue;
-            Color color = new Color(tag.getInteger("color"+i));
-            String material = tag.getString("material"+i);
-            ResourceLocation texture = new ResourceLocation(tag.getString("texture"+i));
-            parts[i] = new Part(texture,material,color);
+            Color color = new Color(tag.getInteger("color" + i));
+            String material = tag.getString("material" + i);
+            ResourceLocation texture = new ResourceLocation(tag.getString("texture" + i));
+            parts[i] = new Part(texture, material, color);
         }
-        if(tag.hasKey("inner")) {
+        if (tag.hasKey("inner")) {
             inner = new Shape(tag.getCompoundTag("inner"));
         }
     }

@@ -23,16 +23,16 @@ public class LaserSlot extends JEISlot {
 
     @Override
     public JEISlot copy() {
-        return new LaserSlot(x,y,group);
+        return new LaserSlot(x, y, group);
     }
 
     @Override
     public void getIngredients(IngredientCollector collector) {
         for (Laser energy : energies) {
-            if(isInput())
-                collector.addInput(IngredientTypes.LASER,energy);
+            if (isInput())
+                collector.addInput(IngredientTypes.LASER, energy);
             else
-                collector.addOutput(IngredientTypes.LASER,energy);
+                collector.addOutput(IngredientTypes.LASER, energy);
         }
     }
 

@@ -19,11 +19,11 @@ public class RequirementSelection extends RequirementBase {
 
     @Override
     public MatchResult matches(ComponentBase.Slot slot, ConsumptionResult result) {
-        if(slot instanceof ComponentSelection.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentSelection.Slot && slot.isGroup(group)) {
             ComponentSelection.Slot selectionSlot = (ComponentSelection.Slot) slot;
             selectionSlot.addSelection(icon);
             ItemStack stack = selectionSlot.getSelection();
-            if(selectionSlot.isSelected() && ItemStack.areItemStacksEqual(stack,icon) && stack.getCount() == icon.getCount()) {
+            if (selectionSlot.isSelected() && ItemStack.areItemStacksEqual(stack, icon) && stack.getCount() == icon.getCount()) {
                 return MatchResult.MATCHED;
             }
         }
@@ -37,10 +37,10 @@ public class RequirementSelection extends RequirementBase {
 
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
-        if(slot instanceof ComponentSelection.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentSelection.Slot && slot.isGroup(group)) {
             ComponentSelection.Slot selectionSlot = (ComponentSelection.Slot) slot;
             ItemStack stack = selectionSlot.getSelection();
-            if(reset && selectionSlot.isSelected() && ItemStack.areItemStacksEqual(stack,icon) && stack.getCount() == icon.getCount()) {
+            if (reset && selectionSlot.isSelected() && ItemStack.areItemStacksEqual(stack, icon) && stack.getCount() == icon.getCount()) {
                 selectionSlot.unselect();
             }
         }
@@ -48,12 +48,12 @@ public class RequirementSelection extends RequirementBase {
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this,0);
+        return new ConsumptionResult.Integer(this, 0);
     }
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof SelectionSlot && slot.group.equals(group) && !slot.isFilled()) {
+        if (slot instanceof SelectionSlot && slot.group.equals(group) && !slot.isFilled()) {
             SelectionSlot selectionSlot = (SelectionSlot) slot;
             selectionSlot.items.add(icon);
             return true;

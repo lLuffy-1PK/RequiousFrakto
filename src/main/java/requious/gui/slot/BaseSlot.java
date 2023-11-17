@@ -35,7 +35,7 @@ public abstract class BaseSlot<T extends ComponentBase.Slot> extends Slot {
 
     @Override
     public boolean isSameInventory(Slot other) {
-        if(other instanceof BaseSlot) //TODO: better check
+        if (other instanceof BaseSlot) //TODO: better check
             return true;
         return false;
     }
@@ -92,6 +92,6 @@ public abstract class BaseSlot<T extends ComponentBase.Slot> extends Slot {
     }
 
     public Vec3i getSize() {
-        return new Vec3i(16,16,0);
+        return new Vec3i(16, 16, 0);
     }
 }

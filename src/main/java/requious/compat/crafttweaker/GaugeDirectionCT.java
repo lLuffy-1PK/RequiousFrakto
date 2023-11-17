@@ -2,7 +2,6 @@ package requious.compat.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
 import requious.gui.GaugeDirection;
-import requious.util.ComponentFace;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

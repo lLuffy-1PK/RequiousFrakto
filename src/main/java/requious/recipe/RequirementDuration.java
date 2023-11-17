@@ -2,9 +2,7 @@ package requious.recipe;
 
 import requious.compat.crafttweaker.RecipeContainer;
 import requious.compat.jei.JEISlot;
-import requious.compat.jei.ingredient.Energy;
 import requious.compat.jei.slot.DurationSlot;
-import requious.compat.jei.slot.EnergySlot;
 import requious.data.component.ComponentBase;
 import requious.data.component.ComponentDuration;
 
@@ -22,12 +20,12 @@ public class RequirementDuration extends RequirementBase {
 
     @Override
     public MatchResult matches(ComponentBase.Slot slot, ConsumptionResult result) {
-        if(slot instanceof ComponentDuration.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentDuration.Slot && slot.isGroup(group)) {
             ComponentDuration.Slot selectionSlot = (ComponentDuration.Slot) slot;
-            if(selectionSlot.getCurrentRecipe() != null && selectionSlot.getCurrentRecipe() != this)
+            if (selectionSlot.getCurrentRecipe() != null && selectionSlot.getCurrentRecipe() != this)
                 return MatchResult.NOT_MATCHED;
             selectionSlot.setCurrentRecipe(this);
-            if(selectionSlot.isDone())
+            if (selectionSlot.isDone())
                 return MatchResult.MATCHED;
             return MatchResult.CANCEL;
         }
@@ -41,7 +39,7 @@ public class RequirementDuration extends RequirementBase {
 
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
-        if(slot instanceof ComponentDuration.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentDuration.Slot && slot.isGroup(group)) {
             ComponentDuration.Slot selectionSlot = (ComponentDuration.Slot) slot;
             selectionSlot.reset();
         }
@@ -49,12 +47,12 @@ public class RequirementDuration extends RequirementBase {
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this,0);
+        return new ConsumptionResult.Integer(this, 0);
     }
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof DurationSlot) {
+        if (slot instanceof DurationSlot) {
             DurationSlot durationSlot = (DurationSlot) slot;
             durationSlot.duration += duration;
             durationSlot.setInput(true);

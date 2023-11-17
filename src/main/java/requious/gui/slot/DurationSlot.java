@@ -24,8 +24,7 @@ public class DurationSlot extends BaseSlot<ComponentDuration.Slot> {
 
     @Override
     @Nonnull
-    public ItemStack getStack()
-    {
+    public ItemStack getStack() {
         return ItemStack.EMPTY;
     }
 
@@ -64,7 +63,7 @@ public class DurationSlot extends BaseSlot<ComponentDuration.Slot> {
         SlotVisual visual = binding.getVisual();
         int energy = binding.getTime();
         int capacity = binding.getDuration();
-        visual.render(assembly.mc,x-1, y-1, 100, new Fill(energy,capacity));
+        visual.render(assembly.mc, x - 1, y - 1, 100, new Fill(energy, capacity));
     }
 
     @Override

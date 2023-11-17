@@ -1,8 +1,6 @@
 package requious.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleCloud;
-import net.minecraft.client.particle.ParticleSmokeLarge;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -75,7 +73,7 @@ public abstract class MachineVisual {
         @SideOnly(Side.CLIENT)
         public void render(TileEntityAssembly tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
             AssemblyProcessor assembly = tile.getProcessor();
-            if(!isActive(assembly))
+            if (!isActive(assembly))
                 return;
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             ModelResourceLocation model = new ModelResourceLocation(variableModel.getString(assembly));
@@ -92,8 +90,8 @@ public abstract class MachineVisual {
                     Vec3d pos = variablePosition.getVector(assembly, partialTicks);
                     Vec3d rotation = variableRotation.getVector(assembly, partialTicks);
                     double scale = variableScale.getDouble(assembly, partialTicks);
-                    if(!global) {
-                        pos = Misc.getLocalVector(pos.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
+                    if (!global) {
+                        pos = Misc.getLocalVector(pos.add(-0.5, -0.5, -0.5), facing).add(0.5, 0.5, 0.5);
                         rotation = Misc.getLocalVector(rotation, facing);
                     }
                     GL11.glTranslated(x + pos.x, y + pos.y, z + pos.z);
@@ -102,7 +100,7 @@ public abstract class MachineVisual {
                     GL11.glRotated(rotation.y, 0, 1, 0);
                     GL11.glRotated(rotation.z, 0, 0, 1);
 
-                    switch(facing) {
+                    switch (facing) {
                         case DOWN:
                             GlStateManager.rotate(180, 1, 0, 0);
                             break;
@@ -158,7 +156,7 @@ public abstract class MachineVisual {
         @SideOnly(Side.CLIENT)
         public void render(TileEntityAssembly tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
             AssemblyProcessor assembly = tile.getProcessor();
-            if(!isActive(assembly))
+            if (!isActive(assembly))
                 return;
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             ItemStack stack = variableItem.getItem(assembly);
@@ -171,8 +169,8 @@ public abstract class MachineVisual {
                     Vec3d pos = variablePosition.getVector(assembly, partialTicks);
                     Vec3d rotation = variableRotation.getVector(assembly, partialTicks);
                     double scale = variableScale.getDouble(assembly, partialTicks);
-                    if(!global) {
-                        pos = Misc.getLocalVector(pos.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
+                    if (!global) {
+                        pos = Misc.getLocalVector(pos.add(-0.5, -0.5, -0.5), facing).add(0.5, 0.5, 0.5);
                         rotation = Misc.getLocalVector(rotation, facing);
                     }
                     GL11.glTranslated(x + pos.x, y + pos.y, z + pos.z);
@@ -181,7 +179,7 @@ public abstract class MachineVisual {
                     GL11.glRotated(rotation.y, 0, 1, 0);
                     GL11.glRotated(rotation.z, 0, 0, 1);
 
-                    switch(facing) {
+                    switch (facing) {
                         case DOWN:
                             GlStateManager.rotate(180, 1, 0, 0);
                             break;
@@ -240,25 +238,25 @@ public abstract class MachineVisual {
         public void render(TileEntityAssembly tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
             super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
             AssemblyProcessor assembly = tile.getProcessor();
-            if(!isActive(assembly))
+            if (!isActive(assembly))
                 return;
             FluidStack stack = variableFluid.getFluid(assembly);
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
-            if(stack != null) {
+            if (stack != null) {
                 EnumFacing facing = assembly.getFacing();
                 Fluid fluid = stack.getFluid();
-                int capacity = variableCapacity.getInteger(assembly,partialTicks);
+                int capacity = variableCapacity.getInteger(assembly, partialTicks);
                 int amount = stack.amount;
                 int c = fluid.getColor(stack);
-                double slide = (double)amount / capacity;
+                double slide = (double) amount / capacity;
 
                 Vec3d start = variableStart.getVector(assembly, partialTicks);
                 Vec3d end = variableEnd.getVector(assembly, partialTicks);
 
-                if(!global) {
-                    start = Misc.getLocalVector(start.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
-                    end = Misc.getLocalVector(end.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
+                if (!global) {
+                    start = Misc.getLocalVector(start.add(-0.5, -0.5, -0.5), facing).add(0.5, 0.5, 0.5);
+                    end = Misc.getLocalVector(end.add(-0.5, -0.5, -0.5), facing).add(0.5, 0.5, 0.5);
                 }
 
                 EnumFacing direction = variableDirection.getFacing(assembly);
@@ -342,24 +340,24 @@ public abstract class MachineVisual {
         public void render(TileEntityAssembly tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
             super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
             AssemblyProcessor assembly = tile.getProcessor();
-            if(!isActive(assembly))
+            if (!isActive(assembly))
                 return;
             ResourceLocation texture = new ResourceLocation(variableTexture.getString(assembly));
             GlStateManager.pushMatrix();
             GlStateManager.translate(x, y, z);
-            if(texture != null) {
+            if (texture != null) {
                 EnumFacing facing = assembly.getFacing();
-                int capacity = variableCapacity.getInteger(assembly,partialTicks);
-                int amount = variableAmount.getInteger(assembly,partialTicks);
+                int capacity = variableCapacity.getInteger(assembly, partialTicks);
+                int amount = variableAmount.getInteger(assembly, partialTicks);
                 int c = 0xFFFFFFFF;
-                double slide = (double)amount / capacity;
+                double slide = (double) amount / capacity;
 
                 Vec3d start = variableStart.getVector(assembly, partialTicks);
                 Vec3d end = variableEnd.getVector(assembly, partialTicks);
 
-                if(!global) {
-                    start = Misc.getLocalVector(start.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
-                    end = Misc.getLocalVector(end.add(-0.5, -0.5,-0.5), facing).add(0.5,0.5,0.5);
+                if (!global) {
+                    start = Misc.getLocalVector(start.add(-0.5, -0.5, -0.5), facing).add(0.5, 0.5, 0.5);
+                    end = Misc.getLocalVector(end.add(-0.5, -0.5, -0.5), facing).add(0.5, 0.5, 0.5);
                 }
 
                 EnumFacing direction = variableDirection.getFacing(assembly);
@@ -437,7 +435,7 @@ public abstract class MachineVisual {
         @Override
         public void update(TileEntityAssembly tile) {
             AssemblyProcessor assembly = tile.getProcessor();
-            if(!isActive(assembly))
+            if (!isActive(assembly))
                 return;
             BlockPos pos = tile.getPos();
             Vec3d start = variableStart.getVector(assembly);
@@ -487,7 +485,7 @@ public abstract class MachineVisual {
         @Override
         public void update(TileEntityAssembly tile) {
             AssemblyProcessor assembly = tile.getProcessor();
-            if(!isActive(assembly))
+            if (!isActive(assembly))
                 return;
             BlockPos pos = tile.getPos();
             Vec3d start = variableStart.getVector(assembly);

@@ -121,7 +121,7 @@ public class AssemblyRecipe {
 
     @ZenMethod
     public AssemblyRecipe requireRandomChance(String group, double chance, int interval) {
-        requirements.add(new RequirementWorld(group, container -> doesRandomApply(container.getTile().getWorld(),interval,chance), 0));
+        requirements.add(new RequirementWorld(group, container -> doesRandomApply(container.getTile().getWorld(), interval, chance), 0));
         return this;
     }
 
@@ -132,7 +132,7 @@ public class AssemblyRecipe {
 
     @ZenMethod
     public AssemblyRecipe addJEIInfo(String group, String langKey, SlotVisualCT slotVisual) {
-        requirements.add(new RequirementJEI(group,langKey,SlotVisualCT.unpack(slotVisual)));
+        requirements.add(new RequirementJEI(group, langKey, SlotVisualCT.unpack(slotVisual)));
         return this;
     }
 
@@ -149,33 +149,33 @@ public class AssemblyRecipe {
         return this;
     }
 
-    public  List<ConsumptionResult> matches(AssemblyProcessor assembly, RecipeContainer container) {
+    public List<ConsumptionResult> matches(AssemblyProcessor assembly, RecipeContainer container) {
         List<ComponentBase.Slot> slots = assembly.getSlots();
         List<ConsumptionResult> results = new ArrayList<>();
 
-        for(RequirementBase requirement : requirements) {
+        for (RequirementBase requirement : requirements) {
             ConsumptionResult result = requirement.createResult();
             results.add(result);
             boolean matched = false;
             MatchResult worldMatch = requirement.matches(assembly, result);
-            if(worldMatch == MatchResult.MATCHED)
+            if (worldMatch == MatchResult.MATCHED)
                 matched = true;
-            if(worldMatch == MatchResult.CANCEL)
+            if (worldMatch == MatchResult.CANCEL)
                 return null;
-            if(!matched)
+            if (!matched)
                 for (int i = 0; i < slots.size(); i++) {
                     ComponentBase.Slot slot = slots.get(i);
                     MatchResult match = requirement.matches(slot, result);
-                    if(match == MatchResult.MATCHED) {
+                    if (match == MatchResult.MATCHED) {
                         matched = true;
                         result.setSlot(slot);
                         requirement.fillContainer(slot, result, container);
                         break;
-                    } else if(match == MatchResult.CANCEL) {
+                    } else if (match == MatchResult.CANCEL) {
                         break;
                     }
                 }
-            if(!matched)
+            if (!matched)
                 return null;
         }
 
@@ -185,20 +185,20 @@ public class AssemblyRecipe {
     public boolean fitsResults(AssemblyProcessor assembly, RecipeContainer container) {
         List<ComponentBase.Slot> slots = assembly.getSlots();
         HashSet<Integer> blockedSlots = new HashSet<>(); //You can't insert into the same slot twice, it's illegal.
-        for(ResultBase result : container.getResults()) {
+        for (ResultBase result : container.getResults()) {
             boolean matched = false;
-            if(result.matches(assembly)) {
+            if (result.matches(assembly)) {
                 matched = true;
             }
-            if(!matched)
+            if (!matched)
                 for (int i = 0; i < slots.size(); i++) {
                     ComponentBase.Slot slot = slots.get(i);
-                    if(blockedSlots.contains(i) || !result.matches(slot))
+                    if (blockedSlots.contains(i) || !result.matches(slot))
                         continue;
                     blockedSlots.add(i);
                     matched = true;
                 }
-            if(!matched)
+            if (!matched)
                 return false;
         }
         return true;
@@ -212,7 +212,7 @@ public class AssemblyRecipe {
 
     public void produceResults(AssemblyProcessor assembly, RecipeContainer container) {
         List<ComponentBase.Slot> slots = assembly.getSlots();
-        for(ResultBase result : container.getResults()) {
+        for (ResultBase result : container.getResults()) {
             result.produce(assembly);
             for (ComponentBase.Slot slot : slots) {
                 if (result.matches(slot)) {
@@ -232,14 +232,14 @@ public class AssemblyRecipe {
     }
 
     public void generateJEI() {
-        if(!jeiGenerated) {
+        if (!jeiGenerated) {
             for (JEISlot slot : jeiCategory.jeiSlots) {
                 jeiSlots.add(slot.copy());
             }
             for (RequirementBase requirement : requirements) {
                 for (JEISlot slot : jeiSlots) {
                     boolean filled = requirement.fillJEI(slot);
-                    if(filled)
+                    if (filled)
                         break;
                 }
             }
@@ -248,14 +248,13 @@ public class AssemblyRecipe {
             for (ResultBase result : container.getResults()) {
                 for (JEISlot slot : jeiSlots) {
                     boolean filled = result.fillJEI(slot);
-                    if(filled)
+                    if (filled)
                         break;
                 }
             }
             jeiGenerated = true;
         }
     }
-
 
 
     public boolean hasJEICategory() {

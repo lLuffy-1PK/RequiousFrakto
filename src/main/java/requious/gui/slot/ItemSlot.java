@@ -23,8 +23,7 @@ public class ItemSlot extends BaseSlot<ComponentItem.Slot> {
 
     @Override
     @Nonnull
-    public ItemStack getStack()
-    {
+    public ItemStack getStack() {
         return binding.getItem().getStack();
     }
 
@@ -46,38 +45,38 @@ public class ItemSlot extends BaseSlot<ComponentItem.Slot> {
 
     @Override
     public int getItemStackLimit(ItemStack stack) {
-        if(!binding.canPut())
+        if (!binding.canPut())
             return binding.getItem().getAmount();
         return binding.getItem().getCapacity();
     }
 
     @Override
     public boolean canTakeStack(EntityPlayer playerIn) {
-        if(!binding.canTake())
+        if (!binding.canTake())
             return false;
         return !binding.getItem().extract(1, true).isEmpty();
     }
 
     @Override
     public void incrStack(int n) {
-        binding.getItem().insert(n,false);
+        binding.getItem().insert(n, false);
     }
 
     @Override
     public void renderBackground(GuiAssembly assembly, int x, int y, float partialTicks, int mousex, int mousey) {
         SlotVisual background = binding.getBackground();
-        background.render(assembly.mc,x-1, y-1, 100, new Fill(0,0));
+        background.render(assembly.mc, x - 1, y - 1, 100, new Fill(0, 0));
     }
 
     @Override
     public void renderForeground(GuiAssembly assembly, int x, int y, int mousex, int mousey) {
         SlotVisual foreground = binding.getForeground();
-        foreground.render(assembly.mc,x-1, y-1, 1000, new Fill(0,0));
+        foreground.render(assembly.mc, x - 1, y - 1, 1000, new Fill(0, 0));
     }
 
     @Override
     public ItemStack decrStackSize(int amount) {
-        return binding.getItem().extract(amount,false);
+        return binding.getItem().extract(amount, false);
     }
 
     @Override

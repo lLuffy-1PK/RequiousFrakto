@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import requious.compat.crafttweaker.ColorCT;
-import requious.item.ItemFluidCell;
 import requious.util.color.ICustomColor;
 import requious.util.color.NormalColor;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -21,7 +20,7 @@ public abstract class BaseData {
     @SerializedName("model")
     public ResourceLocation model;
     @SerializedName("colors")
-    public Color[] colorsSerialized = new Color[]{ Color.WHITE};
+    public Color[] colorsSerialized = new Color[]{Color.WHITE};
     @SerializedName("hardness")
     public float hardness = 5.0f;
     @SerializedName("blastResistance")
@@ -36,7 +35,7 @@ public abstract class BaseData {
 
     public void init() {
         for (int i = 0; i < colorsSerialized.length; i++)
-            colors.put(i,new NormalColor(colorsSerialized[i]));
+            colors.put(i, new NormalColor(colorsSerialized[i]));
     }
 
     protected void setBaseColor(ICustomColor color) {
@@ -45,12 +44,12 @@ public abstract class BaseData {
 
     @ZenMethod
     public void setColor(int index, ColorCT color) {
-        colors.put(index,color.get());
+        colors.put(index, color.get());
     }
 
     public Color getColor(int index) {
         ICustomColor color = colors.get(index);
-        if(color == null)
+        if (color == null)
             return baseColor.get();
         else
             return color.get();

@@ -109,7 +109,7 @@ public class ComponentFluid extends ComponentBase {
     @ReturnsSelf
     @ZenMethod
     public ComponentFluid pushItem(int size, int slot) {
-        this.pushItem = new IOParameters(size,slot);
+        this.pushItem = new IOParameters(size, slot);
         return this;
     }
 
@@ -156,7 +156,6 @@ public class ComponentFluid extends ComponentBase {
         }
 
 
-
         @Override
         public void addCollectors(List<ComponentBase.Collector> collectors) {
             Collector fluid = new Collector(getFace());
@@ -170,7 +169,7 @@ public class ComponentFluid extends ComponentBase {
 
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new FluidSlot(assembly,this, x, y);
+            return new FluidSlot(assembly, this, x, y);
         }
 
         @Override
@@ -306,7 +305,7 @@ public class ComponentFluid extends ComponentBase {
             int amount = getAmount();
             int toInsert = Math.min(resource.amount, getCapacity() - amount);
             if (!simulate) {
-                if(fluid == null)
+                if (fluid == null)
                     fluid = resource.copy();
                 fluid.amount = amount + toInsert;
                 markDirty();
@@ -322,14 +321,14 @@ public class ComponentFluid extends ComponentBase {
         }
 
         public FluidStack drain(int amount, boolean simulate) {
-            if(fluid == null)
+            if (fluid == null)
                 return null;
             FluidStack copy = fluid.copy();
             copy.amount = Math.min(amount, getAmount());
             if (!simulate) {
                 fluid.amount -= copy.amount;
-                if(fluid.amount <= 0)
-                     fluid = null;
+                if (fluid.amount <= 0)
+                    fluid = null;
                 markDirty();
             }
             return copy;
@@ -384,9 +383,9 @@ public class ComponentFluid extends ComponentBase {
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
-            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && face.matches(localSide,globalSide))
+            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && face.matches(localSide, globalSide))
                 return true;
-            return super.hasCapability(capability, localSide,globalSide);
+            return super.hasCapability(capability, localSide, globalSide);
         }
 
         @Nullable
@@ -394,7 +393,7 @@ public class ComponentFluid extends ComponentBase {
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
             if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && face.matches(localSide, globalSide))
                 return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
-            return super.getCapability(capability, localSide,globalSide);
+            return super.getCapability(capability, localSide, globalSide);
         }
 
         private boolean canAutoOutput() {
@@ -447,7 +446,7 @@ public class ComponentFluid extends ComponentBase {
 
         private boolean hasFluidStored(FluidStack stack) {
             for (Slot slot : slots) {
-                if(slot.fluid != null && slot.fluid.isFluidEqual(stack))
+                if (slot.fluid != null && slot.fluid.isFluidEqual(stack))
                     return true;
             }
             return false;

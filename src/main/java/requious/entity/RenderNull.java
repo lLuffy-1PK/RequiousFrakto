@@ -16,7 +16,7 @@ public class RenderNull extends RenderEntity {
     }
 
     @Override
-    public void doRenderShadowAndFire(Entity entity, double x, double y, double z, float yaw, float pTicks){
+    public void doRenderShadowAndFire(Entity entity, double x, double y, double z, float yaw, float pTicks) {
         //
     }
 

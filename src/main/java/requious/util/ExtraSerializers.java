@@ -22,7 +22,7 @@ public class ExtraSerializers {
 
         @Override
         public DataParameter<SparkEffect> createKey(int id) {
-            return new DataParameter<>(id,this);
+            return new DataParameter<>(id, this);
         }
 
         @Override

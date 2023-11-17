@@ -25,7 +25,7 @@ public class ShapeItemStack implements IShape {
 
     @Override
     public IItemStack toItem() {
-        if(shape.isEmpty())
+        if (shape.isEmpty())
             return CraftTweakerMC.getIItemStack(stack);
         else
             return IShape.super.toItem();

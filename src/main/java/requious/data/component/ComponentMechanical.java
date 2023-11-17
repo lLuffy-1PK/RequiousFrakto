@@ -128,7 +128,7 @@ public class ComponentMechanical extends ComponentBase {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof ComponentItem.Collector)
+            if (obj instanceof ComponentItem.Collector)
                 return face.equals(((ComponentItem.Collector) obj).face);
             return false;
         }

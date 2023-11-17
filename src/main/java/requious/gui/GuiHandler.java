@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import requious.tile.TileEntityAssembly;
 
-public class GuiHandler  implements IGuiHandler {
+public class GuiHandler implements IGuiHandler {
     public static final int ASSEMBLY = 0;
 
     @Override

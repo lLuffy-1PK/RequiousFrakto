@@ -24,10 +24,10 @@ public class IngredientCollector {
 
     public void collect(IIngredients ingredients) {
         for (IIngredientType key : inputs.keySet()) {
-            ingredients.setInputs(key,inputs.get(key));
+            ingredients.setInputs(key, inputs.get(key));
         }
         for (IIngredientType key : outputs.keySet()) {
-            ingredients.setOutputs(key,outputs.get(key));
+            ingredients.setOutputs(key, outputs.get(key));
         }
     }
 }

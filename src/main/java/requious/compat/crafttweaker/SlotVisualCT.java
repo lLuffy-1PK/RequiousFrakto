@@ -2,7 +2,6 @@ package requious.compat.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
 import net.minecraft.util.ResourceLocation;
-import requious.util.LaserVisual;
 import requious.util.Misc;
 import requious.util.SlotVisual;
 import stanhebben.zenscript.annotations.Optional;
@@ -21,7 +20,7 @@ public class SlotVisualCT {
     }
 
     public static SlotVisual unpack(SlotVisualCT visual) {
-        if(visual != null)
+        if (visual != null)
             return visual.get();
         return SlotVisual.EMPTY;
     }

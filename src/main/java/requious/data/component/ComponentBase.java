@@ -7,7 +7,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import requious.data.AssemblyProcessor;
 import requious.tile.TileEntityAssembly;
@@ -26,7 +25,7 @@ import java.util.List;
 public abstract class ComponentBase {
     public ComponentFace face;
     public HashSet<String> groups = new HashSet<>();
-    public int x,y;
+    public int x, y;
     public boolean hidden;
 
     public ComponentBase(ComponentFace face) {
@@ -76,7 +75,7 @@ public abstract class ComponentBase {
         public abstract void machineBroken(World world, Vec3d position);
 
         public boolean isGroup(String group) {
-            if(group == null)
+            if (group == null)
                 return true;
             return component.groups.contains(group);
         }
@@ -93,7 +92,9 @@ public abstract class ComponentBase {
             dirty = true;
         }
 
-        public void markClean() { dirty = false; }
+        public void markClean() {
+            dirty = false;
+        }
 
         public boolean canShift() {
             return false;
@@ -140,7 +141,7 @@ public abstract class ComponentBase {
         }
 
         public EnumFacing getTileFacing() {
-            if(tile instanceof TileEntityAssembly) //TODO: better
+            if (tile instanceof TileEntityAssembly) //TODO: better
                 return ((TileEntityAssembly) tile).getFacing();
             return EnumFacing.UP;
         }

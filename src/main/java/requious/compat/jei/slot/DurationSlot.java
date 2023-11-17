@@ -22,7 +22,7 @@ public class DurationSlot extends JEISlot {
 
     @Override
     public JEISlot copy() {
-        return new DurationSlot(x,y,group,visual);
+        return new DurationSlot(x, y, group, visual);
     }
 
     @Override
@@ -32,15 +32,15 @@ public class DurationSlot extends JEISlot {
 
     @Override
     public void render(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        visual.render(minecraft,x*18,y*18, 100, new Fill(0,0));
+        visual.render(minecraft, x * 18, y * 18, 100, new Fill(0, 0));
     }
 
     @Override
     public void getTooltip(List<String> tooltip, ITooltipFlag.TooltipFlags tooltipFlag) {
-        if(duration <= 0)
+        if (duration <= 0)
             tooltip.add(I18n.format("requious.duration.instant"));
         else {
-            if(duration >= 20) {
+            if (duration >= 20) {
                 if (duration < 1200)
                     tooltip.add(I18n.format("requious.duration.seconds", String.format("%.1f", duration / 20.0)));
                 else if (duration < 72000)
@@ -48,7 +48,7 @@ public class DurationSlot extends JEISlot {
                 else
                     tooltip.add(I18n.format("requious.duration.hours", String.format("%.1f", duration / 72000.0)));
             }
-            tooltip.add(TextFormatting.GRAY+I18n.format("requious.duration.ticks",duration));
+            tooltip.add(TextFormatting.GRAY + I18n.format("requious.duration.ticks", duration));
         }
     }
 }

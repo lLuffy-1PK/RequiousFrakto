@@ -1,6 +1,5 @@
 package requious.util.color;
 
-import net.minecraft.item.ItemStack;
 import requious.util.Misc;
 
 import java.awt.*;
@@ -27,7 +26,7 @@ public class TimeColor implements ICustomColor {
         else
             lerp = Math.sin(System.currentTimeMillis() / pulseLength) * 0.5 + 0.5;
 
-        if(hsbMix)
+        if (hsbMix)
             return Misc.lerpColorHSB(colors, lerp);
         else
             return Misc.lerpColorRGB(colors, lerp);

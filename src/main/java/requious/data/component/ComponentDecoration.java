@@ -39,7 +39,7 @@ public class ComponentDecoration extends ComponentBase {
 
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new DecorationSlot(assembly,this,x,y);
+            return new DecorationSlot(assembly, this, x, y);
         }
 
         @Override

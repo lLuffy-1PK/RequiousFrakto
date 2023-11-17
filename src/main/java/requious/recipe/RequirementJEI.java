@@ -3,9 +3,7 @@ package requious.recipe;
 import requious.compat.crafttweaker.RecipeContainer;
 import requious.compat.jei.JEISlot;
 import requious.compat.jei.ingredient.JEIInfo;
-import requious.compat.jei.ingredient.Laser;
 import requious.compat.jei.slot.JEIInfoSlot;
-import requious.compat.jei.slot.LaserSlot;
 import requious.data.component.ComponentBase;
 import requious.util.SlotVisual;
 
@@ -36,14 +34,14 @@ public class RequirementJEI extends RequirementBase {
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this,0);
+        return new ConsumptionResult.Integer(this, 0);
     }
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof JEIInfoSlot && slot.group.equals(group) && !slot.isFilled()) {
+        if (slot instanceof JEIInfoSlot && slot.group.equals(group) && !slot.isFilled()) {
             JEIInfoSlot laserSlot = (JEIInfoSlot) slot;
-            laserSlot.info = new JEIInfo(langKey,slotVisual);
+            laserSlot.info = new JEIInfo(langKey, slotVisual);
             return true;
         }
 

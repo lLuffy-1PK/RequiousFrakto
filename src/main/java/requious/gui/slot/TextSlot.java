@@ -25,8 +25,7 @@ public class TextSlot extends BaseSlot<ComponentText.Slot> {
 
     @Override
     @Nonnull
-    public ItemStack getStack()
-    {
+    public ItemStack getStack() {
         return ItemStack.EMPTY;
     }
 
@@ -69,24 +68,24 @@ public class TextSlot extends BaseSlot<ComponentText.Slot> {
     public void renderBackground(GuiAssembly assembly, int x, int y, float partialTicks, int mousex, int mousey) {
         SlotVisual visual = binding.getVisual();
 
-        if(visual != null)
-            visual.render(assembly.mc,x-1, y-1, 100, binding.getFill(this.assembly));
+        if (visual != null)
+            visual.render(assembly.mc, x - 1, y - 1, 100, binding.getFill(this.assembly));
     }
 
     @Override
     public void renderForeground(GuiAssembly assembly, int x, int y, int mousex, int mousey) {
         SlotVisual visual = binding.getVisual();
         ComponentText.TextPart renderText = binding.getRenderText();
-        if(renderText != null) {
+        if (renderText != null) {
             int left = 0;
             int right = 18 * visual.getWidth() - 2;
             FontRenderer renderer = assembly.mc.fontRenderer;
             String[] text = localize(renderText).split("\n");
-            for(int i = 0; i < text.length; i++) {
+            for (int i = 0; i < text.length; i++) {
                 int width = renderer.getStringWidth(text[i]);
                 int height = renderer.FONT_HEIGHT;
                 int align = (right - left) - width;
-                switch(binding.getAlignment()) {
+                switch (binding.getAlignment()) {
                     case LEFT:
                         align *= 0; //Left
                         break;
@@ -111,7 +110,7 @@ public class TextSlot extends BaseSlot<ComponentText.Slot> {
     @Override
     public List<String> getTooltip() {
         List<String> tooltip = new ArrayList<>();
-        for(ComponentText.TextPart part : binding.getToolTip()) {
+        for (ComponentText.TextPart part : binding.getToolTip()) {
             tooltip.add(localize(part));
         }
         return tooltip;
@@ -120,7 +119,7 @@ public class TextSlot extends BaseSlot<ComponentText.Slot> {
     private String localize(ComponentText.TextPart part) {
         String[] variableNames = part.getVariables();
         Object[] variableValues = new Object[variableNames.length];
-        for(int i = 0; i < variableNames.length; i++) {
+        for (int i = 0; i < variableNames.length; i++) {
             variableValues[i] = assembly.getVariable(variableNames[i]);
         }
         return I18n.format(part.getText(), variableValues);

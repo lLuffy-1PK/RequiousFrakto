@@ -23,7 +23,6 @@ import requious.block.BlockAssembly;
 import requious.data.AssemblyData;
 import requious.data.AssemblyProcessor;
 import requious.data.component.ComponentEnergy;
-import requious.recipe.AssemblyRecipe;
 import requious.util.Facing;
 import requious.util.ILaserStorage;
 import requious.util.MachineVisual;
@@ -107,7 +106,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     public static EnumFacing toSide(EnumFacing facing, Facing side) {
-        if(side.isGlobal())
+        if (side.isGlobal())
             return side.getFacing();
         else
             return toGlobalSide(facing, side.getFacing());
@@ -120,7 +119,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         }
         boolean hasCapability = false;
         if (processor != null)
-            hasCapability = processor.hasCapability(capability, toLocalSide(getFacing(),facing), facing);
+            hasCapability = processor.hasCapability(capability, toLocalSide(getFacing(), facing), facing);
         if (!hasCapability)
             hasCapability = super.hasCapability(capability, facing);
         return hasCapability;
@@ -131,7 +130,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         T instance = null;
         if (processor != null)
-            instance = processor.getCapability(capability, toLocalSide(getFacing(),facing), facing);
+            instance = processor.getCapability(capability, toLocalSide(getFacing(), facing), facing);
         if (instance == null)
             instance = super.getCapability(capability, facing);
         return instance;
@@ -143,7 +142,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     public void breakBlock(World world, BlockPos pos) {
-        processor.machineBroken(world,new Vec3d(pos.getX()+0.5,pos.getY()+0.5,pos.getZ()+0.5));
+        processor.machineBroken(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
     }
 
     @Override
@@ -198,13 +197,13 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
             if (processor.isDirty())
                 markDirty();
             boolean newActive = processor.isActive();
-            if(newActive != active) {
+            if (newActive != active) {
                 IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,2);
+                world.notifyBlockUpdate(pos, state, state, 2);
                 active = newActive;
             }
         }
-        if(shouldSync)
+        if (shouldSync)
             Misc.syncTE(this, false);
         if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
             addedToEnet = true;
@@ -215,7 +214,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     private void initProcessor() {
         processor = getData().constructProcessor();
         processor.setTile(this);
-        if(owner != null)
+        if (owner != null)
             processor.setOwner(owner);
     }
 
@@ -228,10 +227,10 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     public void setOwner(EntityPlayer player) {
-        if(player == null)
+        if (player == null)
             return;
 
-        if(processor != null)
+        if (processor != null)
             processor.setOwner(player);
         else
             owner = player;
@@ -239,8 +238,8 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
 
     @Override
     public ILaserStorage getLaserStorage(EnumFacing laserDirection) {
-        if(processor == null) return null;
-        return processor.getLaserAcceptor(toLocalSide(getFacing(),laserDirection.getOpposite()),laserDirection.getOpposite());
+        if (processor == null) return null;
+        return processor.getLaserAcceptor(toLocalSide(getFacing(), laserDirection.getOpposite()), laserDirection.getOpposite());
     }
 
     @Override
@@ -256,7 +255,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     @Override
     public boolean emitsEnergyTo(IEnergyAcceptor acceptor, EnumFacing side) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
-        return handler.canOutputEnergy(toLocalSide(getFacing(),side),side);
+        return handler.canOutputEnergy(toLocalSide(getFacing(), side), side);
     }
 
     @Override
@@ -274,13 +273,13 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     @Override
     public double injectEnergy(EnumFacing side, double amount, double voltage) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
-        return handler.inject(toLocalSide(getFacing(),side),side,amount,voltage);
+        return handler.inject(toLocalSide(getFacing(), side), side, amount, voltage);
     }
 
     @Override
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
-        return handler.canInputEnergy(toLocalSide(getFacing(),side),side);
+        return handler.canInputEnergy(toLocalSide(getFacing(), side), side);
     }
 
     @Override
@@ -304,9 +303,9 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     @Override
     public String toString() {
         String dataName = "NO DATA";
-        if(getData() != null)
+        if (getData() != null)
             dataName = getData().resourceName;
-        return String.format("%s (%s)",super.toString(),dataName);
+        return String.format("%s (%s)", super.toString(), dataName);
     }
 
     @Override

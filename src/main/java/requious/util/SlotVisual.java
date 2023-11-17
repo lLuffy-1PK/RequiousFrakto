@@ -2,7 +2,6 @@ package requious.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import requious.Requious;
 import requious.gui.GaugeDirection;

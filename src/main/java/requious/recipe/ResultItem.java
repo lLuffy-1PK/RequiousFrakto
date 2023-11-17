@@ -1,7 +1,5 @@
 package requious.recipe;
 
-import crafttweaker.api.item.IItemStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 import requious.compat.jei.JEISlot;
 import requious.compat.jei.slot.ItemSlot;
@@ -13,7 +11,7 @@ public class ResultItem extends ResultBase {
     int minInsert;
 
     public ResultItem(String group, ItemStack stack) {
-        this(group,stack,stack.getCount());
+        this(group, stack, stack.getCount());
     }
 
     public ResultItem(String group, ItemStack stack, int minInsert) {
@@ -24,10 +22,10 @@ public class ResultItem extends ResultBase {
 
     @Override
     public boolean matches(ComponentBase.Slot slot) {
-        if(slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
             ItemStack remainder = ((ComponentItem.Slot) slot).getItem().insert(stack, true);
             int filled = stack.getCount() - remainder.getCount();
-            if(filled >= minInsert)
+            if (filled >= minInsert)
                 return true;
         }
         return false;
@@ -35,12 +33,12 @@ public class ResultItem extends ResultBase {
 
     @Override
     public void produce(ComponentBase.Slot slot) {
-        ((ComponentItem.Slot) slot).getItem().insert(stack,false);
+        ((ComponentItem.Slot) slot).getItem().insert(stack, false);
     }
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof ItemSlot && slot.group.equals(group) && !slot.isFilled()) {
+        if (slot instanceof ItemSlot && slot.group.equals(group) && !slot.isFilled()) {
             ItemSlot itemSlot = (ItemSlot) slot;
             itemSlot.items.add(stack);
             return true;

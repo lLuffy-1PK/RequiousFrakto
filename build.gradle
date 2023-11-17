@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
@@ -53,7 +53,10 @@ repositories {
         url = uri("https://cursemaven.com")
     }
     maven {
-        url = uri("https://maven.blamejared.com/")
+        url 'https://maven.blamejared.com'
+    }
+    maven {
+        url "https://dvs1.progwml6.com/files/maven"
     }
     flatDir { dirs 'libs' }
 }
@@ -61,7 +64,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 
-    compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
+    implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     compileOnly(fg.deobf("curse.maven:had-enough-items-557549:4810661"))
     compileOnly(fg.deobf("curse.maven:gregtech-ce-unofficial-557242:4799055"))
     compileOnly(fg.deobf("curse.maven:CodeChickenLib-242818:2779848"))

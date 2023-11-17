@@ -28,7 +28,7 @@ public interface IShape {
     default IShape[] cut() {
         Shape shape = getShape();
         List<IShape> shapes = new ArrayList<>();
-        for(Shape piece = shape; piece != null; piece = piece.getInner()) {
+        for (Shape piece = shape; piece != null; piece = piece.getInner()) {
             shapes.add(new ShapeCut(piece, Shape.Piece.TOP_LEFT));
             shapes.add(new ShapeCut(piece, Shape.Piece.TOP_RIGHT));
             shapes.add(new ShapeCut(piece, Shape.Piece.BOTTOM_LEFT));
@@ -41,7 +41,7 @@ public interface IShape {
     default IShape[] unstack() {
         Shape shape = getShape();
         List<IShape> shapes = new ArrayList<>();
-        for(Shape piece = shape; piece != null; piece = piece.getInner()) {
+        for (Shape piece = shape; piece != null; piece = piece.getInner()) {
             shapes.add(new ShapeBase(piece));
         }
         return shapes.toArray(new IShape[shapes.size()]);
@@ -55,7 +55,7 @@ public interface IShape {
 
     @ZenOperator(OperatorType.ADD)
     default IShape stack(IShape other) {
-        return new ShapeStacked(Lists.newArrayList(getShape(),other.getShape()));
+        return new ShapeStacked(Lists.newArrayList(getShape(), other.getShape()));
     }
 
     @ZenMethodStatic

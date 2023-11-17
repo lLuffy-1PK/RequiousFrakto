@@ -22,8 +22,7 @@ public class DecorationSlot extends BaseSlot<ComponentDecoration.Slot> {
 
     @Override
     @Nonnull
-    public ItemStack getStack()
-    {
+    public ItemStack getStack() {
         return ItemStack.EMPTY;
     }
 
@@ -65,8 +64,8 @@ public class DecorationSlot extends BaseSlot<ComponentDecoration.Slot> {
     @Override
     public void renderBackground(GuiAssembly assembly, int x, int y, float partialTicks, int mousex, int mousey) {
         SlotVisual visual = binding.getVisual();
-        if(visual != null)
-            visual.render(assembly.mc,x-1, y-1, 100, new Fill(0,0));
+        if (visual != null)
+            visual.render(assembly.mc, x - 1, y - 1, 100, new Fill(0, 0));
     }
 
     @Override

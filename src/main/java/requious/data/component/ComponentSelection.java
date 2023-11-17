@@ -71,13 +71,14 @@ public class ComponentSelection extends ComponentBase {
         public void addCollectors(List<ComponentBase.Collector> collectors) {
             Collector item = new Collector(this, getSelectionGroup());
 
-            if(!collectors.contains(item)) {
+            if (!collectors.contains(item)) {
                 collectors.add(item);
             }
         }
+
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new SelectSlot(assembly,this,x,y);
+            return new SelectSlot(assembly, this, x, y);
         }
 
         @Override
@@ -94,7 +95,7 @@ public class ComponentSelection extends ComponentBase {
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
 
-            if(isMaster()) {
+            if (isMaster()) {
                 selectionList.serializeNBT(compound);
             }
 
@@ -103,7 +104,7 @@ public class ComponentSelection extends ComponentBase {
 
         @Override
         public void deserializeNBT(NBTTagCompound compound) {
-            if(isMaster()) {
+            if (isMaster()) {
                 selectionList.deserializeNBT(compound);
             }
         }
@@ -185,7 +186,7 @@ public class ComponentSelection extends ComponentBase {
 
         @Override
         public boolean accept(ComponentBase.Slot slot) {
-            if(slot instanceof Slot && selectionGroup.equals(((Slot) slot).getSelectionGroup())) {
+            if (slot instanceof Slot && selectionGroup.equals(((Slot) slot).getSelectionGroup())) {
                 addSlot((Slot) slot);
                 return true;
             }
@@ -204,7 +205,7 @@ public class ComponentSelection extends ComponentBase {
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof Collector)
+            if (obj instanceof Collector)
                 return selectionGroup.equals(((Collector) obj).selectionGroup);
             return false;
         }
@@ -223,7 +224,7 @@ public class ComponentSelection extends ComponentBase {
         }
 
         public void setProperties(Slot slot) {
-            if(slot.component.maxSelection != null)
+            if (slot.component.maxSelection != null)
                 maxSelection = slot.component.maxSelection;
         }
 
@@ -232,7 +233,7 @@ public class ComponentSelection extends ComponentBase {
         }
 
         public boolean isSelected(int index) {
-            if(index < selectedItems.size())
+            if (index < selectedItems.size())
                 return true;
             else
                 return false;
@@ -241,13 +242,13 @@ public class ComponentSelection extends ComponentBase {
         public ItemStack get(int index) {
             int maxIndex = 0;
             for (ItemStack stack : items) {
-                if(!listContains(selectedItems,stack))
+                if (!listContains(selectedItems, stack))
                     maxIndex++;
             }
             maxIndex += selectedItems.size();
-            if(index >= maxIndex)
+            if (index >= maxIndex)
                 return ItemStack.EMPTY;
-            if(index < selectedItems.size())
+            if (index < selectedItems.size())
                 return getSelected(index);
             else
                 return getUnselected(index - selectedItems.size());
@@ -259,7 +260,7 @@ public class ComponentSelection extends ComponentBase {
 
         private boolean isSelected(ItemStack stack) {
             for (ItemStack selection : selectedItems) {
-                if(ItemStack.areItemStacksEqual(selection,stack) && selection.getCount() == stack.getCount())
+                if (ItemStack.areItemStacksEqual(selection, stack) && selection.getCount() == stack.getCount())
                     return true;
             }
             return false;
@@ -268,11 +269,11 @@ public class ComponentSelection extends ComponentBase {
         public ItemStack getUnselected(int index) {
             //if(selectedItems.size() > items.size()) //prevent division by 0
             //    return ItemStack.EMPTY;
-            index = positiveModulo(index + scroll, Math.max(items.size() - selectedItems.size(),1));
+            index = positiveModulo(index + scroll, Math.max(items.size() - selectedItems.size(), 1));
             for (ItemStack selection : items) {
                 if (isSelected(selection))
                     continue;
-                if(index <= 0)
+                if (index <= 0)
                     return selection;
                 index--;
             }
@@ -290,13 +291,13 @@ public class ComponentSelection extends ComponentBase {
         }
 
         public void add(ItemStack item) {
-            if(!listContains(items, item))
+            if (!listContains(items, item))
                 items.add(item);
         }
 
         public void select(ItemStack item) {
-            if(!item.isEmpty() && !listContains(selectedItems, item)) {
-                if(selectedItems.size() >= maxSelection)
+            if (!item.isEmpty() && !listContains(selectedItems, item)) {
+                if (selectedItems.size() >= maxSelection)
                     selectedItems.remove(0);
                 selectedItems.add(item);
                 master.markDirty();
@@ -305,7 +306,7 @@ public class ComponentSelection extends ComponentBase {
 
         private boolean listContains(List<ItemStack> items, ItemStack check) {
             for (ItemStack stack : items) {
-                if(ItemStack.areItemStacksEqual(stack,check) && stack.getCount() == check.getCount())
+                if (ItemStack.areItemStacksEqual(stack, check) && stack.getCount() == check.getCount())
                     return true;
             }
             return false;
@@ -322,15 +323,15 @@ public class ComponentSelection extends ComponentBase {
             for (ItemStack stack : selectedItems) {
                 list.appendTag(stack.serializeNBT());
             }
-            compound.setTag("selected",list);
-            compound.setInteger("scroll",scroll);
+            compound.setTag("selected", list);
+            compound.setInteger("scroll", scroll);
             return compound;
         }
 
         public void deserializeNBT(NBTTagCompound compound) {
             selectedItems.clear();
             NBTTagList list = compound.getTagList("selected", 10);
-            for(NBTBase element : list) {
+            for (NBTBase element : list) {
                 selectedItems.add(new ItemStack((NBTTagCompound) element));
             }
             scroll = compound.getInteger("scroll");

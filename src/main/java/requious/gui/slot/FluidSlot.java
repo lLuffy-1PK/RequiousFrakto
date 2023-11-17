@@ -41,7 +41,7 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY,null);
+        return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
     }
 
     @Override
@@ -90,20 +90,20 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
     @Override
     public void renderBackground(GuiAssembly assembly, int x, int y, float partialTicks, int mousex, int mousey) {
         SlotVisual background = binding.getBackground();
-        background.render(assembly.mc,x-1, y-1, 100, getFill());
+        background.render(assembly.mc, x - 1, y - 1, 100, getFill());
         //assembly.drawTexturedModalRect(x-1, y-1, 176+18, 0, 18, 18);
     }
 
     private Fill getFill() {
-        return new Fill(binding.getAmount(),binding.getCapacity());
+        return new Fill(binding.getAmount(), binding.getCapacity());
     }
 
     @Override
-    public void renderForeground(GuiAssembly assembly,int x, int y, int mousex, int mousey) {
+    public void renderForeground(GuiAssembly assembly, int x, int y, int mousex, int mousey) {
         SlotVisual foreground = binding.getForeground();
         SlotVisual background = binding.getBackground();
         FluidStack contents = binding.getContents();
-        if(contents != null) {
+        if (contents != null) {
             assembly.mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             TextureAtlasSprite textureSprite = assembly.mc.getTextureMapBlocks().getAtlasSprite(contents.getFluid().getStill(contents).toString());
 
@@ -120,23 +120,23 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
 
             int zLevel = 100;
             double fill = (double) contents.amount / binding.getCapacity();
-            double v = MathHelper.clampedLerp(textureSprite.getMinV(),textureSprite.getMaxV(),fill);
-            double heightLevel = MathHelper.clampedLerp(0,heightIn, fill);
+            double v = MathHelper.clampedLerp(textureSprite.getMinV(), textureSprite.getMaxV(), fill);
+            double heightLevel = MathHelper.clampedLerp(0, heightIn, fill);
 
             double xCoord = x;
             double yCoord = y + heightIn - heightLevel;
 
             Color color = new Color(contents.getFluid().getColor(contents));
-            GlStateManager.color(color.getRed() / 255f,color.getGreen() / 255f,color.getBlue() / 255f,color.getAlpha() / 255f);
+            GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
 
-            bufferbuilder.pos(xCoord + 0, yCoord + heightLevel, (double)zLevel).tex((double)textureSprite.getMinU(), v).endVertex();
-            bufferbuilder.pos(xCoord + widthIn, yCoord + heightLevel, (double)zLevel).tex((double)textureSprite.getMaxU(), v).endVertex();
-            bufferbuilder.pos(xCoord + widthIn, yCoord + 0, (double)zLevel).tex((double)textureSprite.getMaxU(), (double)textureSprite.getMinV()).endVertex();
-            bufferbuilder.pos(xCoord + 0, yCoord + 0, (double)zLevel).tex((double)textureSprite.getMinU(), (double)textureSprite.getMinV()).endVertex();
+            bufferbuilder.pos(xCoord + 0, yCoord + heightLevel, (double) zLevel).tex((double) textureSprite.getMinU(), v).endVertex();
+            bufferbuilder.pos(xCoord + widthIn, yCoord + heightLevel, (double) zLevel).tex((double) textureSprite.getMaxU(), v).endVertex();
+            bufferbuilder.pos(xCoord + widthIn, yCoord + 0, (double) zLevel).tex((double) textureSprite.getMaxU(), (double) textureSprite.getMinV()).endVertex();
+            bufferbuilder.pos(xCoord + 0, yCoord + 0, (double) zLevel).tex((double) textureSprite.getMinU(), (double) textureSprite.getMinV()).endVertex();
             tessellator.draw();
         }
-        if(foreground != null)
-            foreground.render(assembly.mc,x-1, y-1, 1000, getFill());
+        if (foreground != null)
+            foreground.render(assembly.mc, x - 1, y - 1, 1000, getFill());
     }
 
     @Override
@@ -156,10 +156,10 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
         FluidStack fluid = binding.getContents();
         int capacity = binding.getCapacity();
 
-        if(fluid == null)
+        if (fluid == null)
             tooltip.add(I18n.format("requious.fluid.empty"));
         else
-            tooltip.add(I18n.format("requious.fluid",fluid.getLocalizedName(),fluid.amount,capacity));
+            tooltip.add(I18n.format("requious.fluid", fluid.getLocalizedName(), fluid.amount, capacity));
 
         return tooltip;
     }
@@ -197,7 +197,7 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
         ItemStack actualStack = player.inventory.getItemStack();
         if (!actualStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
             return;
-        if(clickType == ClickType.PICKUP) {
+        if (clickType == ClickType.PICKUP) {
             handleFluidItem(player, actualStack);
         }
     }
@@ -207,16 +207,16 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
         ItemStack actualStack = player.inventory.getItemStack();
         if (!actualStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
             return;
-        if(clickType == ClickType.PICKUP) {
+        if (clickType == ClickType.PICKUP) {
             handleFluidItem(player, actualStack);
         }
     }
 
     private void handleFluidItem(EntityPlayer player, ItemStack actualStack) {
         SlotFluidHandler handler = new SlotFluidHandler();
-        if(binding.canTake() && binding.getAmount() > 0) { //Empty
+        if (binding.canTake() && binding.getAmount() > 0) { //Empty
             FluidActionResult result = FluidUtil.tryFillContainer(actualStack, handler, Integer.MAX_VALUE, player, false);
-            if(result.isSuccess()) {
+            if (result.isSuccess()) {
                 ItemStack resultStack = result.getResult();
                 returnItem(player, resultStack);
                 FluidUtil.tryFillContainer(actualStack, handler, Integer.MAX_VALUE, player, true);
@@ -226,9 +226,9 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
             }
         }
 
-        if(binding.canPut()) { //Fill
+        if (binding.canPut()) { //Fill
             FluidActionResult result = FluidUtil.tryEmptyContainer(actualStack, handler, Integer.MAX_VALUE, player, false);
-            if(result.isSuccess()) {
+            if (result.isSuccess()) {
                 ItemStack resultStack = result.getResult();
                 returnItem(player, resultStack);
                 FluidUtil.tryEmptyContainer(actualStack, handler, Integer.MAX_VALUE, player, true);
@@ -241,15 +241,15 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
 
     private void returnItem(EntityPlayer player, ItemStack resultStack) {
         boolean added = player.inventory.addItemStackToInventory(resultStack);
-        if(!added) {
-            player.world.spawnEntity(new EntityItem(player.world, player.posX, player.posY + (double)(player.height / 2.0F), player.posZ, resultStack));
+        if (!added) {
+            player.world.spawnEntity(new EntityItem(player.world, player.posX, player.posY + (double) (player.height / 2.0F), player.posZ, resultStack));
         }
     }
 
     public class SlotFluidHandler implements IFluidHandler {
         @Override
         public IFluidTankProperties[] getTankProperties() {
-            return new IFluidTankProperties[] { binding };
+            return new IFluidTankProperties[]{binding};
         }
 
         @Override

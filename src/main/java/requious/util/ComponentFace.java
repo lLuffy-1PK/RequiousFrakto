@@ -8,11 +8,11 @@ public enum ComponentFace {
     None(new Facing[0]),
     Front(new Facing[]{Facing.UP_LOCAL}),
     Back(new Facing[]{Facing.DOWN_LOCAL}),
-    Side(new Facing[]{Facing.NORTH_LOCAL,Facing.SOUTH_LOCAL,Facing.EAST_LOCAL,Facing.WEST_LOCAL}),
-    FrontBack(new Facing[]{Facing.UP_LOCAL,Facing.DOWN_LOCAL}),
-    FrontSide(new Facing[]{Facing.UP_LOCAL,Facing.NORTH_LOCAL,Facing.SOUTH_LOCAL,Facing.EAST_LOCAL,Facing.WEST_LOCAL}),
-    BackSide(new Facing[]{Facing.DOWN_LOCAL,Facing.NORTH_LOCAL,Facing.SOUTH_LOCAL,Facing.EAST_LOCAL,Facing.WEST_LOCAL}),
-    All(new Facing[]{Facing.UP_LOCAL,Facing.DOWN_LOCAL,Facing.NORTH_LOCAL,Facing.SOUTH_LOCAL,Facing.EAST_LOCAL,Facing.WEST_LOCAL}),
+    Side(new Facing[]{Facing.NORTH_LOCAL, Facing.SOUTH_LOCAL, Facing.EAST_LOCAL, Facing.WEST_LOCAL}),
+    FrontBack(new Facing[]{Facing.UP_LOCAL, Facing.DOWN_LOCAL}),
+    FrontSide(new Facing[]{Facing.UP_LOCAL, Facing.NORTH_LOCAL, Facing.SOUTH_LOCAL, Facing.EAST_LOCAL, Facing.WEST_LOCAL}),
+    BackSide(new Facing[]{Facing.DOWN_LOCAL, Facing.NORTH_LOCAL, Facing.SOUTH_LOCAL, Facing.EAST_LOCAL, Facing.WEST_LOCAL}),
+    All(new Facing[]{Facing.UP_LOCAL, Facing.DOWN_LOCAL, Facing.NORTH_LOCAL, Facing.SOUTH_LOCAL, Facing.EAST_LOCAL, Facing.WEST_LOCAL}),
     Up(new Facing[]{Facing.UP_GLOBAL}),
     Down(new Facing[]{Facing.DOWN_GLOBAL}),
     North(new Facing[]{Facing.NORTH_GLOBAL}),
@@ -29,7 +29,7 @@ public enum ComponentFace {
     ComponentFace(Facing[] sides) {
         this.sides = sides;
         for (Facing side : sides) {
-            if(side.isGlobal())
+            if (side.isGlobal())
                 globalFacings.add(side.getFacing());
             else
                 localFacings.add(side.getFacing());
@@ -66,9 +66,9 @@ public enum ComponentFace {
             case EAST:
                 return this == East || this == Horizontal;
         }*/
-        if(localFacings.contains(sideLocal))
+        if (localFacings.contains(sideLocal))
             return true;
-        if(globalFacings.contains(sideGlobal))
+        if (globalFacings.contains(sideGlobal))
             return true;
         return false;
     }

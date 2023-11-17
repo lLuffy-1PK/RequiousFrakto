@@ -11,7 +11,7 @@ public class ValueForgeEnergy implements ISparkValue {
     public static class Deserializer implements ISparkValue.Deserializer {
         @Override
         public ISparkValue deserialize(NBTTagCompound compound) {
-            if(compound.hasKey("fe"))
+            if (compound.hasKey("fe"))
                 return new ValueForgeEnergy();
             return null;
         }
@@ -37,7 +37,7 @@ public class ValueForgeEnergy implements ISparkValue {
 
     @Override
     public Color getColor(EntitySpark spark) {
-        return new Color(255,16,16);
+        return new Color(255, 16, 16);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ValueForgeEnergy implements ISparkValue {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("fe",energy);
+        compound.setInteger("fe", energy);
     }
 
     @Override

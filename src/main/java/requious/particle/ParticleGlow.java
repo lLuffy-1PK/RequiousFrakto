@@ -23,12 +23,13 @@ public class ParticleGlow extends Particle implements ISpecialParticle {
     public float initAlpha;
     public float partialTime;
     public ResourceLocation texture = new ResourceLocation("requious:entity/particle_glow");
+
     public ParticleGlow(World worldIn, IParticleAnchor anchor, double x, double y, double z, double vx, double vy, double vz, Color color, float scaleMin, float scaleMax, int lifetime, float partialTime) {
-        super(worldIn, x,y,z,0,0,0);
+        super(worldIn, x, y, z, 0, 0, 0);
         this.anchor = anchor;
         this.color = color;
-        this.setRBGColorF(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f);
-        this.particleMaxAge = (int)((float)lifetime*0.5f);
+        this.setRBGColorF(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+        this.particleMaxAge = (int) ((float) lifetime * 0.5f);
         this.particleScale = scaleMin;
         this.minScale = scaleMin;
         this.maxScale = scaleMax;
@@ -36,35 +37,35 @@ public class ParticleGlow extends Particle implements ISpecialParticle {
         this.motionY = vy;
         this.motionZ = vz;
         this.canCollide = false;
-        this.initAlpha = color.getAlpha()/255f;
-        this.particleAngle = rand.nextFloat()*2.0f*(float)Math.PI;
+        this.initAlpha = color.getAlpha() / 255f;
+        this.particleAngle = rand.nextFloat() * 2.0f * (float) Math.PI;
         this.partialTime = partialTime;
         TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
         this.setParticleTexture(sprite);
     }
 
     @Override
-    public int getBrightnessForRender(float pTicks){
+    public int getBrightnessForRender(float pTicks) {
         return super.getBrightnessForRender(pTicks);
     }
 
     @Override
-    public boolean shouldDisableDepth(){
+    public boolean shouldDisableDepth() {
         return false;
     }
 
     @Override
-    public int getFXLayer(){
+    public int getFXLayer() {
         return 1;
     }
 
     @Override
-    public void onUpdate(){
+    public void onUpdate() {
         super.onUpdate();
-        float lifeCoeff = (particleAge + partialTime)/(float)particleMaxAge;
+        float lifeCoeff = (particleAge + partialTime) / (float) particleMaxAge;
         float dScale = (maxScale - minScale) / 2;
-        this.particleScale = minScale + dScale + dScale*(float)Math.sin(lifeCoeff*Math.PI);
-        this.particleAlpha = (float) MathHelper.clampedLerp(initAlpha,0, lifeCoeff);
+        this.particleScale = minScale + dScale + dScale * (float) Math.sin(lifeCoeff * Math.PI);
+        this.particleAlpha = (float) MathHelper.clampedLerp(initAlpha, 0, lifeCoeff);
         this.prevParticleAngle = particleAngle;
         particleAngle += 1.0f;
     }

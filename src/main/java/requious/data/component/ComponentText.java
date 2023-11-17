@@ -15,7 +15,6 @@ import stanhebben.zenscript.annotations.ReturnsSelf;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,18 +58,18 @@ public class ComponentText extends ComponentBase {
     @ReturnsSelf
     @ZenMethod
     public ComponentText setRenderText(String text, @Optional String[] variables) {
-        if(variables == null)
+        if (variables == null)
             variables = new String[0];
-        renderText = new TextPart(text,variables);
+        renderText = new TextPart(text, variables);
         return this;
     }
 
     @ReturnsSelf
     @ZenMethod
     public ComponentText addPart(String text, @Optional String[] variables) {
-        if(variables == null)
+        if (variables == null)
             variables = new String[0];
-        tooltip.add(new TextPart(text,variables));
+        tooltip.add(new TextPart(text, variables));
         return this;
     }
 
@@ -121,7 +120,7 @@ public class ComponentText extends ComponentBase {
 
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new TextSlot(assembly,this, x, y);
+            return new TextSlot(assembly, this, x, y);
         }
 
         @Override

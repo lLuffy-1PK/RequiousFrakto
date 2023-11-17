@@ -3,8 +3,6 @@ package requious.item;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,9 +28,9 @@ public class ItemBattery extends Item implements IDynamicItemModel {
     public ItemBattery(BatteryData data) {
         this.data = data;
         this.addPropertyOverride(new ResourceLocation(Requious.MODID, "energy"), (stack, worldIn, entityIn) -> {
-            IEnergyStorage battery = stack.getCapability(CapabilityEnergy.ENERGY,null);
-            if(battery != null)
-                return (float)battery.getEnergyStored() / battery.getMaxEnergyStored();
+            IEnergyStorage battery = stack.getCapability(CapabilityEnergy.ENERGY, null);
+            if (battery != null)
+                return (float) battery.getEnergyStored() / battery.getMaxEnergyStored();
             return 0;
         });
     }
@@ -47,8 +45,8 @@ public class ItemBattery extends Item implements IDynamicItemModel {
         int energy = getEnergy(stack);
         int capacity = getCapacity();
 
-        if(data.showToolip)
-            tooltip.add(I18n.format("requious.unit."+getUnit(),energy,capacity));
+        if (data.showToolip)
+            tooltip.add(I18n.format("requious.unit." + getUnit(), energy, capacity));
     }
 
     private String getUnit() {
@@ -78,7 +76,7 @@ public class ItemBattery extends Item implements IDynamicItemModel {
 
     @Override
     public int getRGBDurabilityForDisplay(ItemStack stack) {
-        double lerp = 1.0-getDurabilityForDisplay(stack);
+        double lerp = 1.0 - getDurabilityForDisplay(stack);
         return data.barColor.get(lerp).getRGB();
     }
 
@@ -128,7 +126,7 @@ public class ItemBattery extends Item implements IDynamicItemModel {
 
     @Override
     public Color getTint(ItemStack stack, int tintIndex) {
-        return data.getColor(stack,tintIndex);
+        return data.getColor(stack, tintIndex);
     }
 
     private class BatteryCapability implements ICapabilityProvider, IEnergyStorage {
@@ -146,7 +144,7 @@ public class ItemBattery extends Item implements IDynamicItemModel {
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-            if(capability == CapabilityEnergy.ENERGY)
+            if (capability == CapabilityEnergy.ENERGY)
                 return (T) this;
             return null;
         }
@@ -154,12 +152,12 @@ public class ItemBattery extends Item implements IDynamicItemModel {
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
             int energy = getEnergyStored();
-            int received = Math.min(maxReceive,getCapacity() - energy);
-            if(received < getMinInput())
+            int received = Math.min(maxReceive, getCapacity() - energy);
+            if (received < getMinInput())
                 return 0;
-            received = Math.min(received,getMaxInput());
-            if(!simulate)
-                setEnergy(stack,energy + received);
+            received = Math.min(received, getMaxInput());
+            if (!simulate)
+                setEnergy(stack, energy + received);
             return received;
         }
 
@@ -167,11 +165,11 @@ public class ItemBattery extends Item implements IDynamicItemModel {
         public int extractEnergy(int maxExtract, boolean simulate) {
             int energy = getEnergyStored();
             int extracted = Math.min(maxExtract, energy);
-            if(extracted < getMinOutput())
+            if (extracted < getMinOutput())
                 return 0;
-            extracted = Math.min(extracted,getMaxOutput());
-            if(!simulate)
-                setEnergy(stack,energy - extracted);
+            extracted = Math.min(extracted, getMaxOutput());
+            if (!simulate)
+                setEnergy(stack, energy - extracted);
             return extracted;
         }
 

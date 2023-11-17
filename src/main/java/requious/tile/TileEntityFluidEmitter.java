@@ -33,7 +33,7 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
     }
 
     public int getAmount() {
-        if(fluid == null)
+        if (fluid == null)
             return 0;
         return fluid.amount;
     }
@@ -65,9 +65,9 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
 
     @Override
     public void setTarget(World world, BlockPos pos, EnumFacing facing) {
-        if(world != this.world)
+        if (world != this.world)
             return;
-        if(pos.equals(this.pos))
+        if (pos.equals(this.pos))
             return;
         target = pos;
         markDirty();
@@ -75,7 +75,7 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return getFacing().getOpposite() == facing;
         return super.hasCapability(capability, facing);
     }
@@ -83,26 +83,26 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getFacing().getOpposite() == facing)
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getFacing().getOpposite() == facing)
             return (T) capability;
         return super.getCapability(capability, facing);
     }
 
     @Override
     void ioEnergy(EnumFacing dir, TileEntity attachedTile) {
-        if(attachedTile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,dir)) {
-            IFluidHandler storage = attachedTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,dir);
-            if(isEmitter()) {
-                FluidStack extracted = storage.drain(getCapacity() - getAmount(),true);
-                if(extracted != null)
-                    capability.fillInternal(extracted,true);
+        if (attachedTile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir)) {
+            IFluidHandler storage = attachedTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir);
+            if (isEmitter()) {
+                FluidStack extracted = storage.drain(getCapacity() - getAmount(), true);
+                if (extracted != null)
+                    capability.fillInternal(extracted, true);
                 markDirty();
             }
-            if(isReceiver()) {
-                FluidStack extracted = capability.drain(getAmount(),false);
-                if(extracted != null) {
+            if (isReceiver()) {
+                FluidStack extracted = capability.drain(getAmount(), false);
+                if (extracted != null) {
                     int inserted = storage.fill(extracted, true);
-                    capability.drain(inserted,true);
+                    capability.drain(inserted, true);
                 }
                 markDirty();
             }
@@ -111,7 +111,7 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
 
     @Override
     void sendPacket() {
-        if(getAmount() >= getCapacity() && isPacketDead()) {
+        if (getAmount() >= getCapacity() && isPacketDead()) {
             TileEntity targetTile = getTargetTile();
             ISparkValue value = new ValueFluid(fluid);
             if (targetTile instanceof ISparkAcceptor && ((ISparkAcceptor) targetTile).canAccept(value)) {
@@ -133,14 +133,14 @@ public class TileEntityFluidEmitter extends TileEntityEmitter {
     @Override
     void receivePacket(EntitySpark spark) {
         ISparkValue value = spark.value;
-        if(value instanceof ValueFluid) {
-            capability.fill(((ValueFluid) value).getFluid(),false);
+        if (value instanceof ValueFluid) {
+            capability.fill(((ValueFluid) value).getFluid(), false);
         }
     }
 
     @Override
     public boolean canAccept(ISparkValue value) {
-        if(value instanceof ValueFluid)
+        if (value instanceof ValueFluid)
             return ((ValueFluid) value).getAmount() <= getCapacity() - getAmount();
         return false;
     }

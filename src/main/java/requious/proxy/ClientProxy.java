@@ -43,20 +43,18 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void spawnLightning(World world, IParticleAnchor anchor, double x1, double y1, double z1, double x2, double y2, double z2, int segments, double wildness, Color color, double thickness, int lifetime)
-    {
+    public void spawnLightning(World world, IParticleAnchor anchor, double x1, double y1, double z1, double x2, double y2, double z2, int segments, double wildness, Color color, double thickness, int lifetime) {
         double prevx = x1;
         double prevy = y1;
         double prevz = z1;
 
-        for(int i = 1; i <= segments; i++)
-        {
-            double coeff = (double)i / segments;
+        for (int i = 1; i <= segments; i++) {
+            double coeff = (double) i / segments;
             double wildCoeff = Math.sin(Math.PI * coeff) * wildness;
             double currx = MathHelper.clampedLerp(x1, x2, coeff) + (random.nextDouble() - 0.5) * 2 * wildCoeff;
             double curry = MathHelper.clampedLerp(y1, y2, coeff) + (random.nextDouble() - 0.5) * 2 * wildCoeff;
             double currz = MathHelper.clampedLerp(z1, z2, coeff) + (random.nextDouble() - 0.5) * 2 * wildCoeff;
-            spawnSpark(world,anchor,prevx,prevy,prevz,currx,curry,currz, color, thickness, lifetime);
+            spawnSpark(world, anchor, prevx, prevy, prevz, currx, curry, currz, color, thickness, lifetime);
             prevx = currx;
             prevy = curry;
             prevz = currz;
@@ -64,26 +62,25 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void spawnSpark(World world, IParticleAnchor anchor, double x1, double y1, double z1, double x2, double y2, double z2, Color color, double thickness, int lifetime)
-    {
+    public void spawnSpark(World world, IParticleAnchor anchor, double x1, double y1, double z1, double x2, double y2, double z2, Color color, double thickness, int lifetime) {
         double dx = x2 - x1;
         double dy = y2 - y1;
         double dz = z2 - z1;
 
-        double dist = Math.sqrt(dx*dx+dy*dy+dz*dz);
+        double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
         double segments = Math.ceil(dist) * 10;
         for (int i = 0; i <= segments; i++) {
             double coeff = i / segments;
-            double sparkx = MathHelper.clampedLerp(x1,x2,coeff);
-            double sparky = MathHelper.clampedLerp(y1,y2,coeff);
-            double sparkz = MathHelper.clampedLerp(z1,z2,coeff);
-            emitGlow(world, anchor, sparkx, sparky, sparkz, 0, 0, 0, color, (float)thickness, (float)thickness, lifetime, 0);
+            double sparkx = MathHelper.clampedLerp(x1, x2, coeff);
+            double sparky = MathHelper.clampedLerp(y1, y2, coeff);
+            double sparkz = MathHelper.clampedLerp(z1, z2, coeff);
+            emitGlow(world, anchor, sparkx, sparky, sparkz, 0, 0, 0, color, (float) thickness, (float) thickness, lifetime, 0);
         }
     }
 
     @Override
     public void emitSmoke(World world, double x, double y, double z, double vx, double vy, double vz, Color color, int lifetime, boolean fullBright) {
-        ParticleSmokeNormal particle = new ParticleSmokeColored(world,x,y,z,vx,vy,vz,lifetime,color,fullBright);
+        ParticleSmokeNormal particle = new ParticleSmokeColored(world, x, y, z, vx, vy, vz, lifetime, color, fullBright);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 

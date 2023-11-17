@@ -36,30 +36,30 @@ public abstract class BlockEmitter extends Block implements IDynamicModel {
     }
 
     @Override
-    public BlockStateContainer createBlockState(){
+    public BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, facing);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state){
+    public int getMetaFromState(IBlockState state) {
         return state.getValue(facing).getIndex();
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta){
+    public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(facing, EnumFacing.byIndex(meta));
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing face, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing face, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getDefaultState().withProperty(facing, face);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
         BlockPos attachPos = pos.offset(state.getValue(facing), -1);
         IBlockState attachState = world.getBlockState(attachPos);
-        if (attachState.getBlock().isReplaceable(world, attachPos)){
+        if (attachState.getBlock().isReplaceable(world, attachPos)) {
             world.setBlockToAir(pos);
             this.dropBlockAsItem(world, pos, state, 0);
         }
@@ -91,22 +91,22 @@ public abstract class BlockEmitter extends Block implements IDynamicModel {
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos){
-        switch (state.getValue(facing)){
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        switch (state.getValue(facing)) {
             case UP:
-                return new AxisAlignedBB(0.25,0,0.25,0.75,0.5,0.75);
+                return new AxisAlignedBB(0.25, 0, 0.25, 0.75, 0.5, 0.75);
             case DOWN:
-                return new AxisAlignedBB(0.25,0.5,0.25,0.75,1.0,0.75);
+                return new AxisAlignedBB(0.25, 0.5, 0.25, 0.75, 1.0, 0.75);
             case NORTH:
-                return new AxisAlignedBB(0.25,0.25,0.5,0.75,0.75,1.0);
+                return new AxisAlignedBB(0.25, 0.25, 0.5, 0.75, 0.75, 1.0);
             case SOUTH:
-                return new AxisAlignedBB(0.25,0.25,0,0.75,0.75,0.5);
+                return new AxisAlignedBB(0.25, 0.25, 0, 0.75, 0.75, 0.5);
             case WEST:
-                return new AxisAlignedBB(0.5,0.25,0.25,1.0,0.75,0.75);
+                return new AxisAlignedBB(0.5, 0.25, 0.25, 1.0, 0.75, 0.75);
             case EAST:
-                return new AxisAlignedBB(0.0,0.25,0.25,0.5,0.75,0.75);
+                return new AxisAlignedBB(0.0, 0.25, 0.25, 0.5, 0.75, 0.75);
         }
-        return new AxisAlignedBB(0.25,0,0.25,0.75,0.5,0.75);
+        return new AxisAlignedBB(0.25, 0, 0.25, 0.75, 0.5, 0.75);
     }
 
     @Override

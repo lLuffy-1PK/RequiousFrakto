@@ -3,9 +3,6 @@ package requious.util.color;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import requious.util.FluidColorHelper;
 import requious.util.Misc;
 
 import java.awt.*;
@@ -27,14 +24,14 @@ public class EnergyColor implements ICustomColor {
 
     @Override
     public Color get(ItemStack stack) {
-        IEnergyStorage battery = stack.getCapability(CapabilityEnergy.ENERGY,null);
+        IEnergyStorage battery = stack.getCapability(CapabilityEnergy.ENERGY, null);
         double lerp = 0;
-        if(battery != null)
-            lerp = (double)battery.getEnergyStored() / battery.getMaxEnergyStored();
+        if (battery != null)
+            lerp = (double) battery.getEnergyStored() / battery.getMaxEnergyStored();
 
-        if(hsbMix)
-            return Misc.lerpColorHSB(colors,lerp);
+        if (hsbMix)
+            return Misc.lerpColorHSB(colors, lerp);
         else
-            return Misc.lerpColorRGB(colors,lerp);
+            return Misc.lerpColorRGB(colors, lerp);
     }
 }

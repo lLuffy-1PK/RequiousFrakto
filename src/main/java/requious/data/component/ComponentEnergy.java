@@ -89,7 +89,7 @@ public class ComponentEnergy extends ComponentBase {
         takeAllowed = output;
         dropsOnBreak = drops;
         shiftAllowed = shift;
-        if(ingredient != null)
+        if (ingredient != null)
             filter = CraftTweakerMC.getIngredient(ingredient);
         return this;
     }
@@ -153,14 +153,14 @@ public class ComponentEnergy extends ComponentBase {
 
     @ReturnsSelf
     @ZenMethod
-    public ComponentEnergy acceptFE(boolean accept){
+    public ComponentEnergy acceptFE(boolean accept) {
         acceptsFE = accept;
         return this;
     }
 
     @ReturnsSelf
     @ZenMethod
-    public ComponentEnergy acceptEU(boolean accept){
+    public ComponentEnergy acceptEU(boolean accept) {
         acceptsEU = accept;
         return this;
     }
@@ -238,7 +238,7 @@ public class ComponentEnergy extends ComponentBase {
 
         @Override
         public net.minecraft.inventory.Slot createGui(AssemblyProcessor assembly, int x, int y) {
-            return new EnergySlot(assembly,this, x, y);
+            return new EnergySlot(assembly, this, x, y);
         }
 
         @Override
@@ -338,7 +338,7 @@ public class ComponentEnergy extends ComponentBase {
             if (component.batteryAllowed) {
                 ItemStack battery = getItem().getStack();
                 if (battery.hasCapability(CapabilityEnergy.ENERGY, null)) {
-                    return new BatteryAccessFE(battery,battery.getCapability(CapabilityEnergy.ENERGY, null));
+                    return new BatteryAccessFE(battery, battery.getCapability(CapabilityEnergy.ENERGY, null));
                 }
             }
             return BatteryAccessEmpty.INSTANCE;
@@ -457,7 +457,7 @@ public class ComponentEnergy extends ComponentBase {
 
         public double inject(EnumFacing localSide, EnumFacing globalSide, double amount, double voltage) {
             for (Slot slot : slots) {
-                if (slot.canInput() && slot.getFace().matches(localSide,globalSide)) {
+                if (slot.canInput() && slot.getFace().matches(localSide, globalSide)) {
                     int inserted = slot.receive(slot.getEUConversion().getBase((int) Math.floor(amount)), false);
                     amount -= slot.getEUConversion().getUnit(inserted);
                 }
@@ -483,7 +483,7 @@ public class ComponentEnergy extends ComponentBase {
 
         public boolean canInputEnergy(EnumFacing localSide, EnumFacing globalSide) {
             for (Slot slot : slots) {
-                if (slot.canInput() && slot.getFace().matches(localSide,globalSide))
+                if (slot.canInput() && slot.getFace().matches(localSide, globalSide))
                     return true;
             }
             return false;
@@ -491,7 +491,7 @@ public class ComponentEnergy extends ComponentBase {
 
         public boolean canOutputEnergy(EnumFacing localSide, EnumFacing globalSide) {
             for (Slot slot : slots) {
-                if (slot.canOutputItem() && slot.getFace().matches(localSide,globalSide))
+                if (slot.canOutputItem() && slot.getFace().matches(localSide, globalSide))
                     return true;
             }
             return false;
@@ -501,7 +501,7 @@ public class ComponentEnergy extends ComponentBase {
             int toSend = 0;
             for (Slot slot : slots) {
                 if (slot.canOutputItem())
-                    toSend += Math.min( slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.energy);
+                    toSend += Math.min(slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.energy);
             }
             return toSend;
         }
@@ -510,7 +510,7 @@ public class ComponentEnergy extends ComponentBase {
             int toReceive = 0;
             for (Slot slot : slots) {
                 if (slot.canInput())
-                    toReceive +=  slot.getEUConversion().getUnit(slot.getCapacity() - slot.energy);
+                    toReceive += slot.getEUConversion().getUnit(slot.getCapacity() - slot.energy);
             }
             return toReceive;
         }

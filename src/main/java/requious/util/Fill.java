@@ -10,11 +10,11 @@ public class Fill {
     }
 
     public double getRatio(boolean inverse) {
-        if(capacity <= 0)
+        if (capacity <= 0)
             return 0;
-        if(amount >= capacity)
+        if (amount >= capacity)
             return 1;
-        if(amount <= 0)
+        if (amount <= 0)
             return 0;
         double ratio = amount / capacity;
         if (inverse)

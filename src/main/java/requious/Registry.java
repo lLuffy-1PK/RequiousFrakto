@@ -28,9 +28,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -129,11 +127,11 @@ public class Registry {
             blockColors.registerBlockColorHandler(Registry::colorMultiplierDynamicBlock, emitter);
             itemColors.registerItemColorHandler(Registry::colorMultiplierDynamicItemBlock, emitter);
         }
-        for(FluidCellData cell : FLUID_CELL_DATA) {
+        for (FluidCellData cell : FLUID_CELL_DATA) {
             ItemFluidCell emitter = cell.getItem();
             itemColors.registerItemColorHandler(Registry::colorMultiplierDynamicItem, emitter);
         }
-        for(BatteryData cell : BATTERY_DATA) {
+        for (BatteryData cell : BATTERY_DATA) {
             ItemBattery emitter = cell.getItem();
             itemColors.registerItemColorHandler(Registry::colorMultiplierDynamicItem, emitter);
         }
@@ -206,17 +204,17 @@ public class Registry {
         for (AssemblyData data : ASSEMBLY_DATA) {
             BlockAssembly assembly = data.getBlock();
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(assembly), 0, new ModelResourceLocation(assembly.getRedirect(), "inventory"));
-            for(int i = 0; i < data.extraVariants.length; i++) {
-                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(assembly), i+1, new ModelResourceLocation(data.extraVariants[i]));
+            for (int i = 0; i < data.extraVariants.length; i++) {
+                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(assembly), i + 1, new ModelResourceLocation(data.extraVariants[i]));
             }
             ModelLoader.setCustomStateMapper(assembly, new DynamicStateMapper());
         }
-        for(FluidCellData data : FLUID_CELL_DATA) {
+        for (FluidCellData data : FLUID_CELL_DATA) {
             ItemFluidCell cell = data.getItem();
             ModelLoader.setCustomModelResourceLocation(cell, 0, new ModelResourceLocation(data.model, "inventory"));
         }
 
-        for(BatteryData data : BATTERY_DATA) {
+        for (BatteryData data : BATTERY_DATA) {
             ItemBattery cell = data.getItem();
             ModelLoader.setCustomModelResourceLocation(cell, 0, new ModelResourceLocation(data.model, "inventory"));
         }
@@ -234,11 +232,11 @@ public class Registry {
     @SubscribeEvent
     public void onTextureStitch(TextureStitchEvent event) {
         TextureMap map = event.getMap();
-        map.registerSprite(new ResourceLocation(Requious.MODID,"items/shape_circle"));
-        map.registerSprite(new ResourceLocation(Requious.MODID,"items/shape_star"));
-        map.registerSprite(new ResourceLocation(Requious.MODID,"items/shape_square"));
-        map.registerSprite(new ResourceLocation(Requious.MODID,"items/shape_sideways"));
-        map.registerSprite(new ResourceLocation(Requious.MODID,"items/shape_windmill"));
+        map.registerSprite(new ResourceLocation(Requious.MODID, "items/shape_circle"));
+        map.registerSprite(new ResourceLocation(Requious.MODID, "items/shape_star"));
+        map.registerSprite(new ResourceLocation(Requious.MODID, "items/shape_square"));
+        map.registerSprite(new ResourceLocation(Requious.MODID, "items/shape_sideways"));
+        map.registerSprite(new ResourceLocation(Requious.MODID, "items/shape_windmill"));
     }
 
     private static int colorMultiplierDynamicBlock(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) {
@@ -258,7 +256,7 @@ public class Registry {
     private static int colorMultiplierDynamicItem(ItemStack stack, int tintIndex) {
         Item item = stack.getItem();
         if (item instanceof IDynamicItemModel) {
-            return ((IDynamicItemModel) item).getTint(stack,tintIndex).getRGB();
+            return ((IDynamicItemModel) item).getTint(stack, tintIndex).getRGB();
         }
         return -1;
     }
@@ -382,7 +380,7 @@ public class Registry {
         FluidCellData cell = new FluidCellData();
         cell.resourceName = "cell";
         cell.model = new ResourceLocation(Requious.MODID, "cell");
-        cell.colorsSerialized = new Color[] {new Color(255,255,255)};
+        cell.colorsSerialized = new Color[]{new Color(255, 255, 255)};
         cell.generateSubItems = true;
         cell.capacity = 1000;
         list.add(cell);
@@ -396,43 +394,43 @@ public class Registry {
         BatteryData cell = new BatteryData();
         cell.resourceName = "battery_copper";
         cell.model = new ResourceLocation(Requious.MODID, "battery_small");
-        cell.colorsSerialized = new Color[] {new Color(220,64,16), new Color(255,192,64)};
+        cell.colorsSerialized = new Color[]{new Color(220, 64, 16), new Color(255, 192, 64)};
         cell.capacity = 1000;
         list.add(cell);
         cell = new BatteryData();
         cell.resourceName = "battery_iron";
         cell.model = new ResourceLocation(Requious.MODID, "battery_medium_fill0");
-        cell.colorsSerialized = new Color[] {new Color(255,255,255), new Color(255,192,64), new Color(255,0,0)};
+        cell.colorsSerialized = new Color[]{new Color(255, 255, 255), new Color(255, 192, 64), new Color(255, 0, 0)};
         cell.capacity = 2000;
         list.add(cell);
         cell = new BatteryData();
         cell.resourceName = "energy_gem";
         cell.model = new ResourceLocation(Requious.MODID, "energy_diamond");
-        cell.colorsSerialized = new Color[] {new Color(255,0,0), new Color(255,192,192)};
+        cell.colorsSerialized = new Color[]{new Color(255, 0, 0), new Color(255, 192, 192)};
         cell.capacity = 64000;
         list.add(cell);
         cell = new BatteryData();
         cell.resourceName = "lapotron";
         cell.model = new ResourceLocation(Requious.MODID, "lapotron_diamond");
-        cell.colorsSerialized = new Color[] {new Color(0,0,255), new Color(192,192,255), new Color(255,255,255)};
+        cell.colorsSerialized = new Color[]{new Color(0, 0, 255), new Color(192, 192, 255), new Color(255, 255, 255)};
         cell.capacity = 256000;
         list.add(cell);
         cell = new BatteryData();
         cell.resourceName = "lapotron_orb";
         cell.model = new ResourceLocation(Requious.MODID, "containment_gem");
-        cell.colorsSerialized = new Color[] {new Color(255,255,255),new Color(0,0,255)};
-        cell.capacity = 256000*8;
+        cell.colorsSerialized = new Color[]{new Color(255, 255, 255), new Color(0, 0, 255)};
+        cell.capacity = 256000 * 8;
         list.add(cell);
         cell = new BatteryData();
         cell.resourceName = "quantron";
         cell.model = new ResourceLocation(Requious.MODID, "lapotron_emerald");
-        cell.colorsSerialized = new Color[] {new Color(128,255,0), new Color(255,255,192), new Color(64,64,64)};
+        cell.colorsSerialized = new Color[]{new Color(128, 255, 0), new Color(255, 255, 192), new Color(64, 64, 64)};
         cell.capacity = 68000000;
         list.add(cell);
         cell = new BatteryData();
         cell.resourceName = "positron_unit";
         cell.model = new ResourceLocation(Requious.MODID, "containment_fill0");
-        cell.colorsSerialized = new Color[] {new Color(128,255,192), new Color(255,255,0)};
+        cell.colorsSerialized = new Color[]{new Color(128, 255, 192), new Color(255, 255, 0)};
         cell.capacity = 1000000000;
         list.add(cell);
 

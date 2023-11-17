@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import requious.gui.ContainerAssembly;
-import requious.gui.slot.BaseSlot;
 import requious.gui.slot.SelectSlot;
 
 public class MessageSelectSlot implements IMessage {
@@ -46,10 +45,10 @@ public class MessageSelectSlot implements IMessage {
             WorldServer world = player.getServerWorld();
             world.addScheduledTask(() -> {
                 Container container = player.openContainer;
-                if(container instanceof ContainerAssembly) {
+                if (container instanceof ContainerAssembly) {
                     Slot slot = container.getSlot(message.slot);
-                    if(slot instanceof SelectSlot)
-                        ((SelectSlot)slot).setSelected(message.selected);
+                    if (slot instanceof SelectSlot)
+                        ((SelectSlot) slot).setSelected(message.selected);
                 }
             });
             return null;

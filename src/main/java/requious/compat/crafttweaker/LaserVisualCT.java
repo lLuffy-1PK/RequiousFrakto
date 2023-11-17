@@ -29,18 +29,18 @@ public class LaserVisualCT {
     @ZenMethod
     public static LaserVisualCT beam(int[] rgb, float thickness) {
         Color color = Misc.parseColor(rgb);
-        return new LaserVisualCT(new LaserVisual.Beam(color,thickness));
+        return new LaserVisualCT(new LaserVisual.Beam(color, thickness));
     }
 
     @ZenMethod
     public static LaserVisualCT lightning(int[] rgb, float thickness, float wildness, int segments) {
         Color color = Misc.parseColor(rgb);
-        return new LaserVisualCT(new LaserVisual.Lightning(color,thickness,wildness,segments));
+        return new LaserVisualCT(new LaserVisual.Lightning(color, thickness, wildness, segments));
     }
 
     @ZenMethod
     public static LaserVisualCT fireBeam(int[] rgb, float size, float wildness, float length, int amount, int time) {
         Color color = Misc.parseColor(rgb);
-        return new LaserVisualCT(new LaserVisual.FireBeam(color,size,wildness,length,amount,time));
+        return new LaserVisualCT(new LaserVisual.FireBeam(color, size, wildness, length, amount, time));
     }
 }

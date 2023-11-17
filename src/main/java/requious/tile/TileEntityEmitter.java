@@ -42,23 +42,22 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
             this.motionZ = motionZ;
         }
 
-        public void update(double targetX, double targetY, double targetZ)
-        {
-            Vec3d targetVector = new Vec3d(targetX-posX,targetY-posY,targetZ-posZ);
+        public void update(double targetX, double targetY, double targetZ) {
+            Vec3d targetVector = new Vec3d(targetX - posX, targetY - posY, targetZ - posZ);
             double length = targetVector.length();
-            targetVector = targetVector.scale(0.3/length);
-            double weight  = 0;
-            if (length <= 3){
-                weight = 0.9*((3.0-length)/3.0);
+            targetVector = targetVector.scale(0.3 / length);
+            double weight = 0;
+            if (length <= 3) {
+                weight = 0.9 * ((3.0 - length) / 3.0);
             }
-            motionX = (0.9-weight)*motionX+(0.1+weight)*targetVector.x;
-            motionY = (0.9-weight)*motionY+(0.1+weight)*targetVector.y;
-            motionZ = (0.9-weight)*motionZ+(0.1+weight)*targetVector.z;
+            motionX = (0.9 - weight) * motionX + (0.1 + weight) * targetVector.x;
+            motionY = (0.9 - weight) * motionY + (0.1 + weight) * targetVector.y;
+            motionZ = (0.9 - weight) * motionZ + (0.1 + weight) * targetVector.z;
             posX += motionX;
             posY += motionY;
             posZ += motionZ;
             double distanceSq = this.getDistanceSq(targetX, targetY, targetZ);
-            if (distanceSq < 0.1){
+            if (distanceSq < 0.1) {
                 arrived = true;
             }
         }
@@ -67,14 +66,14 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
             double dx = targetX - posX;
             double dy = targetY - posY;
             double dz = targetZ - posZ;
-            return dx*dx+dy*dy+dz*dz;
+            return dx * dx + dy * dy + dz * dz;
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag){
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        if (target != null){
+        if (target != null) {
             tag.setInteger("targetX", target.getX());
             tag.setInteger("targetY", target.getY());
             tag.setInteger("targetZ", target.getZ());
@@ -83,9 +82,9 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag){
+    public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        if (tag.hasKey("targetX")){
+        if (tag.hasKey("targetX")) {
             target = new BlockPos(tag.getInteger("targetX"), tag.getInteger("targetY"), tag.getInteger("targetZ"));
         }
     }
@@ -114,31 +113,31 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
 
     @Override
     public void update() {
-        this.ticksExisted ++;
+        this.ticksExisted++;
         EnumFacing facing = getFacing();
         TileEntity attachedTile = getWorld().getTileEntity(getPos().offset(facing.getOpposite()));
-        if (attachedTile != null && !getWorld().isRemote){
-            ioEnergy(facing,attachedTile);
+        if (attachedTile != null && !getWorld().isRemote) {
+            ioEnergy(facing, attachedTile);
         }
-        if ((this.ticksExisted+offset) % getInterval() == 0 && target != null && !getWorld().isRemote){
+        if ((this.ticksExisted + offset) % getInterval() == 0 && target != null && !getWorld().isRemote) {
             sendPacket();
         }
-        if(world.isRemote && target != null && Requious.PROXY.shouldRenderArcs()) {
-            double targetX = target.getX()+0.5;
-            double targetY = target.getY()+0.5;
-            double targetZ = target.getZ()+0.5;
-            if(visual != null) {
+        if (world.isRemote && target != null && Requious.PROXY.shouldRenderArcs()) {
+            double targetX = target.getX() + 0.5;
+            double targetY = target.getY() + 0.5;
+            double targetZ = target.getZ() + 0.5;
+            if (visual != null) {
                 int segments = 4;
-                for(int i = 0; i < segments; i++) {
-                    float partial = 1 - (float)i / segments;
+                for (int i = 0; i < segments; i++) {
+                    float partial = 1 - (float) i / segments;
                     visual.update(targetX, targetY, targetZ);
                     Requious.PROXY.emitGlow(world, IParticleAnchor.zero(), visual.posX, visual.posY, visual.posZ, 0, 0, 0, new Color(255, 255, 255), 0.5f, 2.0f, 20, partial);
                 }
-                if(visual.arrived)
+                if (visual.arrived)
                     visual = null;
             } else {
                 Vec3d velocity = getBurstVelocity(facing);
-                visual = new PathVisual(pos.getX()+0.5,pos.getY()+0.5,pos.getZ()+0.5,velocity.x,velocity.y,velocity.z);
+                visual = new PathVisual(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, velocity.x, velocity.y, velocity.z);
             }
         } else {
             visual = null;
@@ -146,7 +145,7 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
     }
 
     public TileEntity getTargetTile() {
-        if(target == null)
+        if (target == null)
             return null;
         return world.getTileEntity(target);
     }
@@ -173,8 +172,7 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
     }
 
     protected Vec3d getBurstVelocity(EnumFacing facing) {
-        switch(facing)
-        {
+        switch (facing) {
             case DOWN:
                 return new Vec3d(0, -0.5, 0);
             case UP:
@@ -194,7 +192,7 @@ public abstract class TileEntityEmitter extends TileEntity implements ITickable,
 
     @Override
     public void receive(EntitySpark spark) {
-        if(target != null) {
+        if (target != null) {
             spark.target = new TargetTile(target);
             spark.lifetime = spark.value.getLifetime(spark);
             spark.pushHistory(pos);

@@ -12,7 +12,7 @@ public class TargetTile implements ISparkTarget {
     public static class Deserializer implements ISparkTarget.Deserializer {
         @Override
         public ISparkTarget deserialize(NBTTagCompound compound) {
-            if(compound.hasKey("tileX"))
+            if (compound.hasKey("tileX"))
                 return new TargetTile();
             return null;
         }
@@ -35,7 +35,7 @@ public class TargetTile implements ISparkTarget {
     @Override
     public ISparkAcceptor getAcceptor(EntitySpark spark) {
         TileEntity tile = spark.getEntityWorld().getTileEntity(pos);
-        if(tile instanceof ISparkAcceptor)
+        if (tile instanceof ISparkAcceptor)
             return (ISparkAcceptor) tile;
         return null;
     }
@@ -43,7 +43,7 @@ public class TargetTile implements ISparkTarget {
     @Override
     public Vec3d getPosition(EntitySpark spark) {
         TileEntity tile = spark.getEntityWorld().getTileEntity(pos);
-        if(tile != null) {
+        if (tile != null) {
             BlockPos pos = tile.getPos();
             return new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         }
@@ -58,13 +58,13 @@ public class TargetTile implements ISparkTarget {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("tileX",pos.getX());
-        compound.setInteger("tileY",pos.getY());
-        compound.setInteger("tileZ",pos.getZ());
+        compound.setInteger("tileX", pos.getX());
+        compound.setInteger("tileY", pos.getY());
+        compound.setInteger("tileZ", pos.getZ());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        pos = new BlockPos(compound.getInteger("tileX"),compound.getInteger("tileY"),compound.getInteger("tileZ"));
+        pos = new BlockPos(compound.getInteger("tileX"), compound.getInteger("tileY"), compound.getInteger("tileZ"));
     }
 }

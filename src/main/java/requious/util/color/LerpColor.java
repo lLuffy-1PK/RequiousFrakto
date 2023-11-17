@@ -4,7 +4,6 @@ import requious.util.Misc;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
 
 public class LerpColor implements ICustomColor {
     List<Color> colors;
@@ -22,7 +21,7 @@ public class LerpColor implements ICustomColor {
 
     @Override
     public Color get(double lerp) {
-        if(hsbMix)
+        if (hsbMix)
             return Misc.lerpColorHSB(colors, lerp);
         else
             return Misc.lerpColorRGB(colors, lerp);

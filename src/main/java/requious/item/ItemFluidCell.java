@@ -13,8 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,7 +47,7 @@ public class ItemFluidCell extends Item implements IDynamicItemModel {
         FluidStack fluid = getFluid(stack);
         int capacity = getCapacity();
 
-        if(data.showToolip) {
+        if (data.showToolip) {
             if (fluid == null)
                 tooltip.add(I18n.format("requious.fluid.empty"));
             else
@@ -178,17 +176,17 @@ public class ItemFluidCell extends Item implements IDynamicItemModel {
                 return 0;
             FluidStack fluid = getFluid(container);
             int maxFill = Math.min(resource.amount, getMaxInput());
-            if(fluid != null) {
-                if(!fluid.isFluidEqual(resource))
+            if (fluid != null) {
+                if (!fluid.isFluidEqual(resource))
                     return 0;
-                maxFill = Math.min(maxFill,getCapacity() - fluid.amount);
+                maxFill = Math.min(maxFill, getCapacity() - fluid.amount);
             } else {
-                maxFill = Math.min(maxFill,getCapacity());
+                maxFill = Math.min(maxFill, getCapacity());
                 fluid = resource.copy();
                 fluid.amount = 0;
             }
 
-            if(maxFill < getMinInput())
+            if (maxFill < getMinInput())
                 return 0;
 
             fluid.amount += maxFill;

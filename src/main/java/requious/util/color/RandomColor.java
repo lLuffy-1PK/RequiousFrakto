@@ -1,6 +1,5 @@
 package requious.util.color;
 
-import net.minecraft.item.ItemStack;
 import requious.util.Misc;
 
 import java.awt.*;
@@ -18,6 +17,6 @@ public class RandomColor implements ICustomColor {
     @Override
     public Color get() {
         double lerp = random.nextDouble();
-        return Misc.lerpColorRGB(colors,lerp);
+        return Misc.lerpColorRGB(colors, lerp);
     }
 }

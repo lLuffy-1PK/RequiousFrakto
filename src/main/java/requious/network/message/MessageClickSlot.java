@@ -47,7 +47,7 @@ public class MessageClickSlot implements IMessage {
 
     private ClickType readClickType(int i) {
         ClickType[] values = ClickType.values();
-        if(i < 0 || i >= values.length)
+        if (i < 0 || i >= values.length)
             return ClickType.PICKUP;
         return values[i];
     }
@@ -62,7 +62,7 @@ public class MessageClickSlot implements IMessage {
     }
 
     private int writeClickType(ClickType clickType) {
-        if(clickType == null)
+        if (clickType == null)
             return 0;
         return clickType.ordinal();
     }
@@ -74,9 +74,9 @@ public class MessageClickSlot implements IMessage {
             WorldServer world = player.getServerWorld();
             world.addScheduledTask(() -> {
                 Container container = player.openContainer;
-                if(container instanceof ContainerAssembly) {
+                if (container instanceof ContainerAssembly) {
                     Slot slot = container.getSlot(message.slot);
-                    if(slot instanceof BaseSlot)
+                    if (slot instanceof BaseSlot)
                         ((BaseSlot) slot).serverClick(player, message.dragStack, message.mouseButton, message.clickType);
                 }
             });

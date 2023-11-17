@@ -1,7 +1,5 @@
 package requious.recipe;
 
-import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraftforge.fluids.FluidStack;
 import requious.compat.jei.JEISlot;
 import requious.compat.jei.slot.FluidSlot;
@@ -16,7 +14,7 @@ public class ResultFluid extends ResultBase {
     int minInsert;
 
     public ResultFluid(String group, @Nonnull FluidStack stack) {
-        this(group,stack,stack.amount);
+        this(group, stack, stack.amount);
     }
 
     public ResultFluid(String group, @Nonnull FluidStack stack, int minInsert) {
@@ -27,9 +25,9 @@ public class ResultFluid extends ResultBase {
 
     @Override
     public boolean matches(ComponentBase.Slot slot) {
-        if(slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
             int filled = ((ComponentFluid.Slot) slot).fill(stack, true);
-            if(filled >= minInsert)
+            if (filled >= minInsert)
                 return true;
         }
         return false;
@@ -37,12 +35,12 @@ public class ResultFluid extends ResultBase {
 
     @Override
     public void produce(ComponentBase.Slot slot) {
-        ((ComponentFluid.Slot) slot).fill(stack,false);
+        ((ComponentFluid.Slot) slot).fill(stack, false);
     }
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof FluidSlot && slot.group.equals(group) && !slot.isFilled()) {
+        if (slot instanceof FluidSlot && slot.group.equals(group) && !slot.isFilled()) {
             FluidSlot fluidSlot = (FluidSlot) slot;
             fluidSlot.addFluid(stack);
             return true;

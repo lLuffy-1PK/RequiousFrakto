@@ -10,17 +10,17 @@ public interface IParticleAnchor {
 
     static IParticleAnchor get(Entity entity) {
         return partialTicks -> new Vec3d(
-                MathHelper.clampedLerp(entity.prevPosX,entity.posX,partialTicks),
-                MathHelper.clampedLerp(entity.prevPosY,entity.posY,partialTicks),
-                MathHelper.clampedLerp(entity.prevPosZ,entity.posZ,partialTicks)
+                MathHelper.clampedLerp(entity.prevPosX, entity.posX, partialTicks),
+                MathHelper.clampedLerp(entity.prevPosY, entity.posY, partialTicks),
+                MathHelper.clampedLerp(entity.prevPosZ, entity.posZ, partialTicks)
         );
     }
 
     static IParticleAnchor get(EntitySpark entity) {
         return partialTicks -> new Vec3d(
-                MathHelper.clampedLerp(entity.lastX,entity.posX,partialTicks),
-                MathHelper.clampedLerp(entity.lastY,entity.posY,partialTicks),
-                MathHelper.clampedLerp(entity.lastZ,entity.posZ,partialTicks)
+                MathHelper.clampedLerp(entity.lastX, entity.posX, partialTicks),
+                MathHelper.clampedLerp(entity.lastY, entity.posY, partialTicks),
+                MathHelper.clampedLerp(entity.lastZ, entity.posZ, partialTicks)
         );
     }
 

@@ -78,12 +78,12 @@ public class LaserUtil {
     }
 
     public void setTarget(Vec3i zoneA, Vec3i zoneB) {
-        int xMin = Math.min(zoneA.getX(),zoneB.getX());
-        int yMin = Math.min(zoneA.getY(),zoneB.getY());
-        int zMin = Math.min(zoneA.getZ(),zoneB.getZ());
-        int xMax = Math.max(zoneA.getX(),zoneB.getX());
-        int yMax = Math.max(zoneA.getY(),zoneB.getY());
-        int zMax = Math.max(zoneA.getZ(),zoneB.getZ());
+        int xMin = Math.min(zoneA.getX(), zoneB.getX());
+        int yMin = Math.min(zoneA.getY(), zoneB.getY());
+        int zMin = Math.min(zoneA.getZ(), zoneB.getZ());
+        int xMax = Math.max(zoneA.getX(), zoneB.getX());
+        int yMax = Math.max(zoneA.getY(), zoneB.getY());
+        int zMax = Math.max(zoneA.getZ(), zoneB.getZ());
         if (xMin != x1 || xMax != x2 || yMin != y1 || yMax != y2 || zMin != z1 || zMax != z2) {
             x1 = xMin;
             y1 = yMin;
@@ -124,15 +124,15 @@ public class LaserUtil {
 
     private boolean moveCursor() {
         x++;
-        if(x > x2) {
+        if (x > x2) {
             x = x1;
             y++;
         }
-        if(y > y2) {
+        if (y > y2) {
             y = y1;
             z++;
         }
-        if(z > z2) {
+        if (z > z2) {
             z = z1;
             return true;
         }
@@ -140,7 +140,7 @@ public class LaserUtil {
     }
 
     public void next() {
-        for(int i = 0; i < 88 && state == State.SEARCHING; i++) {
+        for (int i = 0; i < 88 && state == State.SEARCHING; i++) {
             BlockPos targetPos = Misc.posOffset(emitPos, new Vec3i(x, y, z), emitFacing);
             TileEntity target = world.getTileEntity(targetPos);
             if (!targetPos.equals(emitPos) && target instanceof ILaserAcceptor) {
@@ -163,7 +163,7 @@ public class LaserUtil {
     public boolean foundNew() {
         HashSet<ILaserAcceptor> test = new HashSet<>(acceptors);
         for (ILaserAcceptor acceptor : searchAcceptors) {
-            if(!test.contains(acceptor))
+            if (!test.contains(acceptor))
                 return true;
         }
         return false;
@@ -176,7 +176,7 @@ public class LaserUtil {
         targets.clear();
         int required = maxTargets;
         List<ILaserAcceptor> acceptorSet = new ArrayList<>(acceptors);
-        while(targets.size() < required && !acceptorSet.isEmpty()) {
+        while (targets.size() < required && !acceptorSet.isEmpty()) {
             ILaserAcceptor acceptor = acceptorSet.get(random.nextInt(acceptorSet.size()));
             //ILaserAcceptor acceptor = acceptorSet.stream().min(Comparator.comparingDouble(this::getDistance)).get();
             targets.add(new Target(acceptor));
@@ -192,7 +192,7 @@ public class LaserUtil {
     public void fire(int power) {
         readTarget();
         boolean dirty = false;
-        if(hasTargets()) {
+        if (hasTargets()) {
             for (Target currentTarget : targets) {
                 if (currentTarget.target.isValid()) {
                     ILaserStorage storage = currentTarget.target.getLaserStorage(emitFacing);
@@ -205,20 +205,20 @@ public class LaserUtil {
                 }
             }
         }
-        if(dirty) {
+        if (dirty) {
             setDirty();
         }
     }
 
     private void readTarget() { //Deserialize only
-        if(world != null && !lazyTargets.isEmpty()) {
+        if (world != null && !lazyTargets.isEmpty()) {
             targets.clear();
             Iterator<LazyTarget> iterator = lazyTargets.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 LazyTarget target = iterator.next();
                 TileEntity tile = world.getTileEntity(target.targetPos);
-                if(tile instanceof ILaserAcceptor)
-                    targets.add(new Target((ILaserAcceptor) tile,target.sent));
+                if (tile instanceof ILaserAcceptor)
+                    targets.add(new Target((ILaserAcceptor) tile, target.sent));
                 iterator.remove();
             }
         }
@@ -228,7 +228,7 @@ public class LaserUtil {
         readTarget();
         if (visual != null && world != null && world.isRemote) {
             for (Target target : targets) {
-                if(target.sent <= 0)
+                if (target.sent <= 0)
                     System.out.println("Test2");
                 if (target.target.isValid() && target.sent > 0) {
                     visual.render(world, emitPos, target.getPosition(), target.sent);
@@ -258,25 +258,25 @@ public class LaserUtil {
         }
 
         compound.setTag("targets", targetList);
-        compound.setInteger("x1",x1);
-        compound.setInteger("y1",y1);
-        compound.setInteger("z1",z1);
-        compound.setInteger("x2",x2);
-        compound.setInteger("y2",y2);
-        compound.setInteger("z2",z2);
+        compound.setInteger("x1", x1);
+        compound.setInteger("y1", y1);
+        compound.setInteger("z1", z1);
+        compound.setInteger("x2", x2);
+        compound.setInteger("y2", y2);
+        compound.setInteger("z2", z2);
         return compound;
     }
 
     public void readFromNBT(NBTTagCompound compound) {
         state = State.NOT_FOUND;
-        if(compound.hasKey("targets")) {
+        if (compound.hasKey("targets")) {
             lazyTargets.clear();
             NBTTagList targetList = compound.getTagList("targets", 10);
-            for(int i = 0; i < targetList.tagCount(); i++){
+            for (int i = 0; i < targetList.tagCount(); i++) {
                 NBTTagCompound targetCompound = targetList.getCompoundTagAt(i);
                 BlockPos targetPos = new BlockPos(targetCompound.getInteger("targetX"), targetCompound.getInteger("targetY"), targetCompound.getInteger("targetZ"));
 
-                lazyTargets.add(new LazyTarget(targetPos,targetCompound.getInteger("sent")));
+                lazyTargets.add(new LazyTarget(targetPos, targetCompound.getInteger("sent")));
                 state = State.FOUND;
             }
         }

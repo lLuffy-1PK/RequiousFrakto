@@ -13,58 +13,58 @@ import requious.data.AssemblyProcessor;
 import requious.util.color.ICustomColor;
 import stanhebben.zenscript.annotations.ZenClass;
 
-import java.awt.Color;
+import java.awt.*;
 
 //Helper class for making a parameter either constant or variable
 @ZenRegister
 @ZenClass("mods.requious.Parameter")
 public abstract class Parameter {
     private static int toInt(Object value) {
-        if(value instanceof Number)
+        if (value instanceof Number)
             return ((Number) value).intValue();
         return 0;
     }
 
     private static double toDouble(Object value) {
-        if(value instanceof Number)
+        if (value instanceof Number)
             return ((Number) value).doubleValue();
         return 0;
     }
 
     private static String toString(Object value) {
-        if(value instanceof String)
+        if (value instanceof String)
             return (String) value;
         return "";
     }
 
     private static Vec3d toVector(Object value) {
-        if(value instanceof Vec3d)
+        if (value instanceof Vec3d)
             return (Vec3d) value;
         return Vec3d.ZERO;
     }
 
     private static EnumFacing toFacing(Object value) {
-        if(value instanceof EnumFacing)
+        if (value instanceof EnumFacing)
             return (EnumFacing) value;
         return EnumFacing.UP;
     }
 
     private static Color toColor(Object value) {
-        if(value instanceof ICustomColor)
+        if (value instanceof ICustomColor)
             return ((ICustomColor) value).get();
         return Color.WHITE;
     }
 
     private static ItemStack toItem(Object value) {
-        if(value instanceof ItemStack)
+        if (value instanceof ItemStack)
             return (ItemStack) value;
-        if(value instanceof IItemStack)
+        if (value instanceof IItemStack)
             return CraftTweakerMC.getItemStack((IItemStack) value);
         return ItemStack.EMPTY;
     }
 
     private static FluidStack toFluid(Object value) {
-        if(value instanceof FluidStack)
+        if (value instanceof FluidStack)
             return (FluidStack) value;
         return null;
     }
@@ -77,7 +77,7 @@ public abstract class Parameter {
         int current = toInt(getValue(assembly));
         int last = toInt(getLastValue(assembly));
 
-        return (int) MathHelper.clampedLerp(last,current,partialTicks);
+        return (int) MathHelper.clampedLerp(last, current, partialTicks);
     }
 
     public double getDouble(AssemblyProcessor assembly) {
@@ -88,7 +88,7 @@ public abstract class Parameter {
         double current = toDouble(getValue(assembly));
         double last = toDouble(getLastValue(assembly));
 
-        return MathHelper.clampedLerp(last,current,partialTicks);
+        return MathHelper.clampedLerp(last, current, partialTicks);
     }
 
     public String getString(AssemblyProcessor assembly) {
@@ -107,7 +107,7 @@ public abstract class Parameter {
         double y = MathHelper.clampedLerp(last.y, current.y, partialTicks);
         double z = MathHelper.clampedLerp(last.z, current.z, partialTicks);
 
-        return new Vec3d(x,y,z);
+        return new Vec3d(x, y, z);
     }
 
     public EnumFacing getFacing(AssemblyProcessor assembly) {
@@ -122,7 +122,7 @@ public abstract class Parameter {
         Color current = toColor(getValue(assembly));
         Color last = toColor(getLastValue(assembly));
 
-        return Misc.lerpColorRGB(last,current,partialTicks);
+        return Misc.lerpColorRGB(last, current, partialTicks);
     }
 
     public ItemStack getItem(AssemblyProcessor assembly) {

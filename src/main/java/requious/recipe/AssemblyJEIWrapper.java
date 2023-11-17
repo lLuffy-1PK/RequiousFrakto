@@ -21,7 +21,7 @@ public class AssemblyJEIWrapper implements IRecipeWrapper {
     public void getIngredients(IIngredients ingredients) {
         recipe.generateJEI();
         IngredientCollector collector = new IngredientCollector();
-        for(JEISlot slot : recipe.jeiSlots) {
+        for (JEISlot slot : recipe.jeiSlots) {
             slot.getIngredients(collector);
         }
         collector.collect(ingredients); //Possibly cache since it doesn't change ever.
@@ -30,7 +30,7 @@ public class AssemblyJEIWrapper implements IRecipeWrapper {
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         for (JEISlot slot : recipe.jeiSlots) {
-            slot.render(minecraft,recipeWidth,recipeHeight,mouseX,mouseY);
+            slot.render(minecraft, recipeWidth, recipeHeight, mouseX, mouseY);
         }
     }
 
@@ -39,8 +39,8 @@ public class AssemblyJEIWrapper implements IRecipeWrapper {
         ITooltipFlag.TooltipFlags tooltipFlag = Minecraft.getMinecraft().gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
         List<String> tooltip = new ArrayList<>();
         for (JEISlot slot : recipe.jeiSlots) {
-            if(mouseX >= slot.x*18 && mouseY >= slot.y*18 && mouseX < slot.x*18+18 && mouseY < slot.y*18+18)
-                slot.getTooltip(tooltip,tooltipFlag);
+            if (mouseX >= slot.x * 18 && mouseY >= slot.y * 18 && mouseX < slot.x * 18 + 18 && mouseY < slot.y * 18 + 18)
+                slot.getTooltip(tooltip, tooltipFlag);
         }
         return tooltip;
     }

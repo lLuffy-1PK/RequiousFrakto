@@ -3,7 +3,6 @@ package requious.util;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.INBTSerializable;
 import requious.Requious;
 import requious.particle.IParticleAnchor;
 
@@ -16,7 +15,7 @@ public abstract class LaserVisual {
     private static HashMap<String, Supplier<LaserVisual>> REGISTRY = new HashMap<>();
 
     public static void register(String type, Supplier<LaserVisual> supplier) {
-        REGISTRY.put(type,supplier);
+        REGISTRY.put(type, supplier);
     }
 
     public static LaserVisual deserializeNBT(NBTTagCompound compound) {
@@ -39,13 +38,13 @@ public abstract class LaserVisual {
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setString("type",type);
-        compound.setInteger("color",color.getRGB());
+        compound.setString("type", type);
+        compound.setInteger("color", color.getRGB());
         return compound;
     }
 
     public void readFromNBT(NBTTagCompound compound) {
-        color = new Color(compound.getInteger("color"),true);
+        color = new Color(compound.getInteger("color"), true);
     }
 
     public static class None extends LaserVisual {
@@ -86,7 +85,7 @@ public abstract class LaserVisual {
         @Override
         public NBTTagCompound writeToNBT(NBTTagCompound compound) {
             compound = super.writeToNBT(compound);
-            compound.setFloat("thickness",thickness);
+            compound.setFloat("thickness", thickness);
             return compound;
         }
     }
@@ -124,9 +123,9 @@ public abstract class LaserVisual {
         @Override
         public NBTTagCompound writeToNBT(NBTTagCompound compound) {
             compound = super.writeToNBT(compound);
-            compound.setFloat("thickness",thickness);
-            compound.setFloat("wildness",wildness);
-            compound.setInteger("segments",segments);
+            compound.setFloat("thickness", thickness);
+            compound.setFloat("wildness", wildness);
+            compound.setInteger("segments", segments);
             return compound;
         }
     }
@@ -164,7 +163,7 @@ public abstract class LaserVisual {
             double dy = target.getY() + 0.5 - y1;
             double dz = target.getZ() + 0.5 - z1;
 
-            for(int i = 0; i < amount; i++) {
+            for (int i = 0; i < amount; i++) {
                 double rx = (random.nextDouble() - 0.5) * 2 * wildness;
                 double ry = (random.nextDouble() - 0.5) * 2 * wildness;
                 double rz = (random.nextDouble() - 0.5) * 2 * wildness;
@@ -186,11 +185,11 @@ public abstract class LaserVisual {
         @Override
         public NBTTagCompound writeToNBT(NBTTagCompound compound) {
             compound = super.writeToNBT(compound);
-            compound.setFloat("size",size);
-            compound.setFloat("wildness",wildness);
-            compound.setFloat("length",length);
-            compound.setInteger("amount",amount);
-            compound.setInteger("time",time);
+            compound.setFloat("size", size);
+            compound.setFloat("wildness", wildness);
+            compound.setFloat("length", length);
+            compound.setInteger("amount", amount);
+            compound.setInteger("time", time);
             return compound;
         }
     }

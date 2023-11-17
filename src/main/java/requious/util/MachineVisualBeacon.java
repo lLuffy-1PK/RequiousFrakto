@@ -26,25 +26,21 @@ public class MachineVisualBeacon extends MachineVisual {
         private final float[] colors;
         private int height;
 
-        public BeamSegment(float[] colorsIn)
-        {
+        public BeamSegment(float[] colorsIn) {
             this.colors = colorsIn;
             this.height = 1;
         }
 
-        protected void incrementHeight()
-        {
+        protected void incrementHeight() {
             ++this.height;
         }
 
-        public float[] getColors()
-        {
+        public float[] getColors() {
             return this.colors;
         }
 
         @SideOnly(Side.CLIENT)
-        public int getHeight()
-        {
+        public int getHeight() {
             return this.height;
         }
     }
@@ -65,7 +61,7 @@ public class MachineVisualBeacon extends MachineVisual {
     @Override
     public void render(TileEntityAssembly tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
-        if(!isActive(tile.getProcessor()))
+        if (!isActive(tile.getProcessor()))
             return;
         this.renderBeacon(tile, x, y, z, partialTicks);
     }
@@ -78,22 +74,16 @@ public class MachineVisualBeacon extends MachineVisual {
         boolean flag = true;
         BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
 
-        for (int i1 = 1; i1 < length; ++i1)
-        {
-            IBlockState state = world.getBlockState(pos.offset(facing,i1));
+        for (int i1 = 1; i1 < length; ++i1) {
+            IBlockState state = world.getBlockState(pos.offset(facing, i1));
             float[] color;
 
-            if (state.getBlock() == Blocks.STAINED_GLASS)
-            {
+            if (state.getBlock() == Blocks.STAINED_GLASS) {
                 color = state.getValue(BlockStainedGlass.COLOR).getColorComponentValues();
-            }
-            else
-            {
-                if (state.getBlock() != Blocks.STAINED_GLASS_PANE)
-                {
-                    if (state.getLightOpacity(world, checkPos) >= 15 && state.getBlock() != Blocks.BEDROCK)
-                    {
-                        if(cancelOnHit)
+            } else {
+                if (state.getBlock() != Blocks.STAINED_GLASS_PANE) {
+                    if (state.getLightOpacity(world, checkPos) >= 15 && state.getBlock() != Blocks.BEDROCK) {
+                        if (cancelOnHit)
                             segments.clear();
                         break;
                     }
@@ -104,23 +94,18 @@ public class MachineVisualBeacon extends MachineVisual {
                         segment.incrementHeight();
                         continue;
                     }
-                }
-                else
+                } else
                     color = state.getValue(BlockStainedGlassPane.COLOR).getColorComponentValues();
             }
 
             float[] segmentColor = segment.getColors();
-            if (!flag)
-            {
-                color = new float[] {(segmentColor[0] + color[0]) / 2.0F, (segmentColor[1] + color[1]) / 2.0F, (segmentColor[2] + color[2]) / 2.0F};
+            if (!flag) {
+                color = new float[]{(segmentColor[0] + color[0]) / 2.0F, (segmentColor[1] + color[1]) / 2.0F, (segmentColor[2] + color[2]) / 2.0F};
             }
 
-            if (Arrays.equals(color, segmentColor))
-            {
+            if (Arrays.equals(color, segmentColor)) {
                 segment.incrementHeight();
-            }
-            else
-            {
+            } else {
                 segment = new BeamSegment(color);
                 segments.add(segment);
             }
@@ -145,7 +130,7 @@ public class MachineVisualBeacon extends MachineVisual {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-        switch(facing) {
+        switch (facing) {
             case DOWN:
                 GlStateManager.rotate(180, 1, 0, 0);
                 break;
@@ -171,7 +156,7 @@ public class MachineVisualBeacon extends MachineVisual {
             GlStateManager.disableFog();
             int i = 0;
 
-            List<BeamSegment> segments = getSegments(tile.getWorld(),tile.getPos(), facing, variableLength.getInteger(assembly, partialTicks));
+            List<BeamSegment> segments = getSegments(tile.getWorld(), tile.getPos(), facing, variableLength.getInteger(assembly, partialTicks));
 
             for (int j = 0; j < segments.size(); ++j) {
                 BeamSegment segment = segments.get(j);

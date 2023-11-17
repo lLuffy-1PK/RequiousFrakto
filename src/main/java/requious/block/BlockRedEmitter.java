@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 public class BlockRedEmitter extends BlockEmitter {
     public BlockRedEmitter(Material materialIn, RedEmitterData data) {
-        super(materialIn,data);
+        super(materialIn, data);
     }
 
     @Nullable

@@ -22,10 +22,10 @@ public class BracketHandlerAssembly implements IBracketHandler {
 
     @Override
     public IZenSymbol resolve(IEnvironmentGlobal environment, List<Token> tokens) {
-        if(tokens == null || tokens.size() < 3 || !tokens.get(0).getValue().equalsIgnoreCase("assembly"))
+        if (tokens == null || tokens.size() < 3 || !tokens.get(0).getValue().equalsIgnoreCase("assembly"))
             return null;
         String name = tokens.get(2).getValue();
-        return position -> new ExpressionCallStatic(position,environment,method, new ExpressionString(position, name));
+        return position -> new ExpressionCallStatic(position, environment, method, new ExpressionString(position, name));
     }
 
     public static AssemblyData getFromString(String name) {

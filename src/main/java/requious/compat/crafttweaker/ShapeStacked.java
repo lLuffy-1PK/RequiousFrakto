@@ -5,13 +5,13 @@ import requious.item.Shape;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 public class ShapeStacked implements IShape {
     List<Shape> shapes = new ArrayList<>();
 
-    public ShapeStacked() {}
+    public ShapeStacked() {
+    }
 
     public ShapeStacked(Collection<Shape> shapes) {
         this.shapes.addAll(shapes);
@@ -21,10 +21,10 @@ public class ShapeStacked implements IShape {
     public Shape getShape() {
         Shape base = null;
         Shape top = null;
-        for(Shape shape : shapes) {
-            for(Shape piece = shape; piece != null; piece = piece.getInner()) {
+        for (Shape shape : shapes) {
+            for (Shape piece = shape; piece != null; piece = piece.getInner()) {
                 Shape layer = piece.toLayer();
-                if(top == null) {
+                if (top == null) {
                     base = layer;
                     top = layer;
                 } else {
@@ -33,7 +33,7 @@ public class ShapeStacked implements IShape {
                 }
             }
         }
-        if(base == null)
+        if (base == null)
             base = new Shape();
         return base;
     }

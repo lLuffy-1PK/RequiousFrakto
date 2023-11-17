@@ -55,7 +55,7 @@ public class EntitySpark extends Entity {
     }
 
     public void pushHistory(Comparable token) {
-        if(history.contains(token))
+        if (history.contains(token))
             this.setDead();
         history.add(token);
     }
@@ -72,9 +72,9 @@ public class EntitySpark extends Entity {
     }
 
     private void updateVisuals() {
-        this.getDataManager().set(size,value.getSize(this));
-        this.getDataManager().set(color,value.getColor(this).getRGB());
-        this.getDataManager().set(effect,value.getEffect(this));
+        this.getDataManager().set(size, value.getSize(this));
+        this.getDataManager().set(color, value.getColor(this).getRGB());
+        this.getDataManager().set(effect, value.getEffect(this));
     }
 
     @Override
@@ -84,31 +84,30 @@ public class EntitySpark extends Entity {
     }
 
     @Override
-    public void onUpdate(){
+    public void onUpdate() {
         super.onUpdate();
-        lifetime --;
-        if (!isDead && lifetime <= 0 || received){
+        lifetime--;
+        if (!isDead && lifetime <= 0 || received) {
             setDead();
         }
-        if(lastX == 0 && lastY == 0 && lastZ == 0)
-        {
+        if (lastX == 0 && lastY == 0 && lastZ == 0) {
             lastX = posX;
             lastY = posY;
             lastZ = posZ;
         }
-        if (world.isRemote){
+        if (world.isRemote) {
             double deltaX = posX - lastX;
             double deltaY = posY - lastY;
             double deltaZ = posZ - lastZ;
-            double dist = Math.ceil(Math.sqrt(deltaX*deltaX+deltaY*deltaY+deltaZ*deltaZ) * 20);
-            for (double i = 0; i < dist; i ++){
-                double coeff = i/dist;
+            double dist = Math.ceil(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) * 20);
+            for (double i = 0; i < dist; i++) {
+                double coeff = i / dist;
                 //Requious.PROXY.emitGlow(world,(partialTicks) -> new Vec3d(0,0,0),(float)(prevPosX+ deltaX *coeff), (float)(prevPosY+ deltaY *coeff), (float)(prevPosZ+ deltaZ *coeff), 0.0125f*(rand.nextFloat()-0.5f), 0.0125f*(rand.nextFloat()-0.5f), 0.0125f*(rand.nextFloat()-0.5f), new Color(255, 64, 16), 1.0f, 2.0f, 12, 0);
             }
             int segments = 1;
-            Requious.PROXY.spawnLightning(world,  IParticleAnchor.zero(), lastX,  lastY,  lastZ, posX, posY, posZ, 4, 0.2, new Color(255, 16, 16), 1.4f, 10);
+            Requious.PROXY.spawnLightning(world, IParticleAnchor.zero(), lastX, lastY, lastZ, posX, posY, posZ, 4, 0.2, new Color(255, 16, 16), 1.4f, 10);
             double distanceMod = rand.nextDouble();
-            for(int i = 0; i < segments; i++) {
+            for (int i = 0; i < segments; i++) {
                 double distanceA = rand.nextDouble() * 0.2 + 0.2;
                 double distanceB = rand.nextDouble() * 0.4 + 0.2;
                 Vec3d offsetA = Vec3d.fromPitchYaw((float) (rand.nextDouble() * 360), (float) (rand.nextDouble() * 360)).scale(0);
@@ -119,26 +118,26 @@ public class EntitySpark extends Entity {
             lastY = posY;
             lastZ = posZ;
         }
-        if(!world.isRemote && (target == null || !target.isValid(this)))
+        if (!world.isRemote && (target == null || !target.isValid(this)))
             setDead();
-        if (!received && !world.isRemote){
+        if (!received && !world.isRemote) {
             Vec3d dest = target.getPosition(this);
             boolean cont = true;
-            for(int i = 0; i < 4 && cont && !received; i++) {
+            for (int i = 0; i < 4 && cont && !received; i++) {
                 cont = moveStep(dest);
             }
             updateVisuals();
         }
-        setPosition(posX,posY,posZ);
+        setPosition(posX, posY, posZ);
     }
 
     private boolean moveStep(Vec3d dest) {
         double targetX = dest.x;
         double targetY = dest.y;
         double targetZ = dest.z;
-        Vec3d targetVector = new Vec3d(targetX-posX,targetY-posY,targetZ-posZ);
+        Vec3d targetVector = new Vec3d(targetX - posX, targetY - posY, targetZ - posZ);
         double length = targetVector.length();
-        if(length != 0) {
+        if (length != 0) {
             targetVector = targetVector.scale(0.3 / length);
             double weight = 0;
             if (length <= 3) {
@@ -152,9 +151,9 @@ public class EntitySpark extends Entity {
         posY += motionY;
         posZ += motionZ;
         double distanceSq = this.getDistanceSq(targetX, targetY, targetZ);
-        if (distanceSq < 0.1){
+        if (distanceSq < 0.1) {
             ISparkAcceptor acceptor = target.getAcceptor(this);
-            if(acceptor != null) {
+            if (acceptor != null) {
                 posX = targetX;
                 posY = targetY;
                 posZ = targetZ;

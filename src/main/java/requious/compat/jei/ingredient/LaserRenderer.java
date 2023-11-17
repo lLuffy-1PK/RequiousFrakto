@@ -13,16 +13,16 @@ import java.util.List;
 public class LaserRenderer extends FakeIngredientRenderer<Laser> {
     @Override
     public void render(Minecraft minecraft, int xPosition, int yPosition, @Nullable Laser ingredient) {
-        if(ingredient != null) {
+        if (ingredient != null) {
             GlStateManager.enableAlpha();
-            ingredient.visual.render(minecraft,xPosition-1,yPosition-1, 100, new Fill(0,0));
+            ingredient.visual.render(minecraft, xPosition - 1, yPosition - 1, 100, new Fill(0, 0));
         }
     }
 
     @Override
     public List<String> getTooltip(Minecraft minecraft, Laser ingredient, ITooltipFlag tooltipFlag) {
         List<String> tooltip = new ArrayList<>();
-        tooltip.add(I18n.format("requious.unit.laser."+ingredient.type,ingredient.energy));
+        tooltip.add(I18n.format("requious.unit.laser." + ingredient.type, ingredient.energy));
         return tooltip;
     }
 }

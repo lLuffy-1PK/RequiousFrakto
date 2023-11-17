@@ -28,9 +28,9 @@ public class ResultJEI extends ResultBase {
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof JEIInfoSlot && slot.group.equals(group) && !slot.isFilled()) {
+        if (slot instanceof JEIInfoSlot && slot.group.equals(group) && !slot.isFilled()) {
             JEIInfoSlot laserSlot = (JEIInfoSlot) slot;
-            laserSlot.info = new JEIInfo(langKey,slotVisual);
+            laserSlot.info = new JEIInfo(langKey, slotVisual);
             return true;
         }
 

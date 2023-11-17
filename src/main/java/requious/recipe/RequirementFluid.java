@@ -14,7 +14,7 @@ public class RequirementFluid extends RequirementBase {
     int min, max;
 
     public RequirementFluid(String group, ILiquidStack ingredient) {
-        this(group,ingredient,ingredient.getAmount(),ingredient.getAmount());
+        this(group, ingredient, ingredient.getAmount(), ingredient.getAmount());
     }
 
     public RequirementFluid(String group, ILiquidStack ingredient, int min, int max) {
@@ -26,10 +26,10 @@ public class RequirementFluid extends RequirementBase {
 
     @Override
     public MatchResult matches(ComponentBase.Slot slot, ConsumptionResult result) {
-        if(slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
+        if (slot instanceof ComponentFluid.Slot && slot.isGroup(group)) {
             FluidStack stack = ((ComponentFluid.Slot) slot).getContents();
-            if(stack != null && ingredient.matches(CraftTweakerMC.getILiquidStack(stack)) && stack.amount >= min) {
-                result.add(Math.min(stack.amount,max));
+            if (stack != null && ingredient.matches(CraftTweakerMC.getILiquidStack(stack)) && stack.amount >= min) {
+                result.add(Math.min(stack.amount, max));
                 return MatchResult.MATCHED;
             }
         }
@@ -38,27 +38,27 @@ public class RequirementFluid extends RequirementBase {
 
     @Override
     public void fillContainer(ComponentBase.Slot slot, ConsumptionResult result, RecipeContainer container) {
-        if(ingredient.getMark() != null)
-            container.addInput(ingredient.getMark(),((ComponentFluid.Slot) slot).drain((int)result.getConsumed(),true));
+        if (ingredient.getMark() != null)
+            container.addInput(ingredient.getMark(), ((ComponentFluid.Slot) slot).drain((int) result.getConsumed(), true));
     }
 
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
-        if(slot instanceof ComponentFluid.Slot && result instanceof ConsumptionResult.Integer) {
-            ((ComponentFluid.Slot) slot).drain((int)result.getConsumed(),false);
+        if (slot instanceof ComponentFluid.Slot && result instanceof ConsumptionResult.Integer) {
+            ((ComponentFluid.Slot) slot).drain((int) result.getConsumed(), false);
         }
     }
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this,0);
+        return new ConsumptionResult.Integer(this, 0);
     }
 
     @Override
     public boolean fillJEI(JEISlot slot) {
-        if(slot instanceof FluidSlot && slot.group.equals(group) && !slot.isFilled()) {
+        if (slot instanceof FluidSlot && slot.group.equals(group) && !slot.isFilled()) {
             FluidSlot fluidSlot = (FluidSlot) slot;
-            if(ingredient.getLiquids() != null) {
+            if (ingredient.getLiquids() != null) {
                 for (ILiquidStack fluid : ingredient.getLiquids()) {
                     fluidSlot.addFluid(CraftTweakerMC.getLiquidStack(fluid));
                 }

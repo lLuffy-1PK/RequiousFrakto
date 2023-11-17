@@ -36,12 +36,12 @@ public class Misc {
     public static AxisAlignedBB rotateAABB(AxisAlignedBB aabb, EnumFacing direction) {
         Vec3d pointA = new Vec3d(aabb.minX - 0.5, aabb.minY - 0.5, aabb.minZ - 0.5);
         Vec3d pointB = new Vec3d(aabb.maxX - 0.5, aabb.maxY - 0.5, aabb.maxZ - 0.5);
-        return new AxisAlignedBB(0.5+xOffset(pointA, direction),
-                0.5+yOffset(pointA, direction),
-                0.5+zOffset(pointA, direction),
-                0.5+xOffset(pointB, direction),
-                0.5+yOffset(pointB, direction),
-                0.5+zOffset(pointB, direction));
+        return new AxisAlignedBB(0.5 + xOffset(pointA, direction),
+                0.5 + yOffset(pointA, direction),
+                0.5 + zOffset(pointA, direction),
+                0.5 + xOffset(pointB, direction),
+                0.5 + yOffset(pointB, direction),
+                0.5 + zOffset(pointB, direction));
     }
 
     public static double xOffset(Vec3d offset, EnumFacing direction) {
@@ -153,7 +153,7 @@ public class Misc {
     }
 
     public static void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
-        drawTexturedModalRect(x,y,100,textureX,textureY,width,height);
+        drawTexturedModalRect(x, y, 100, textureX, textureY, width, height);
     }
 
     public static void drawTexturedModalRect(int x, int y, int z, int textureX, int textureY, int width, int height) {
@@ -170,41 +170,41 @@ public class Misc {
     }
 
     public static Color lerpColorRGB(List<Color> colors, double lerp) {
-        if(colors.size() <= 1)
+        if (colors.size() <= 1)
             throw new IllegalArgumentException("Needs atleast two colors.");
-        if(lerp >= 1)
-            return colors.get(colors.size()-1);
-        int index = MathHelper.clamp((int)(lerp * (colors.size()-1)), 0, colors.size() - 2);
-        return lerpColorRGB(colors.get(index),colors.get(index+1),lerp * (colors.size()-1) % 1);
+        if (lerp >= 1)
+            return colors.get(colors.size() - 1);
+        int index = MathHelper.clamp((int) (lerp * (colors.size() - 1)), 0, colors.size() - 2);
+        return lerpColorRGB(colors.get(index), colors.get(index + 1), lerp * (colors.size() - 1) % 1);
     }
 
     public static Color lerpColorHSB(List<Color> colors, double lerp) {
-        if(colors.size() <= 1)
+        if (colors.size() <= 1)
             throw new IllegalArgumentException("Needs atleast two colors.");
-        if(lerp >= 1)
-            return colors.get(colors.size()-1);
+        if (lerp >= 1)
+            return colors.get(colors.size() - 1);
         int expectedIndex = (int) (lerp * (colors.size() - 1));
         int index = MathHelper.clamp(expectedIndex, 0, colors.size() - 2);
-        return lerpColorHSB(colors.get(index),colors.get(index+1),lerp * (colors.size()-1) % 1);
+        return lerpColorHSB(colors.get(index), colors.get(index + 1), lerp * (colors.size() - 1) % 1);
     }
 
     public static Color lerpColorRGB(Color colorA, Color colorB, double lerp) {
-        int r = (int)MathHelper.clampedLerp(colorA.getRed(),colorB.getRed(),lerp);
-        int g = (int)MathHelper.clampedLerp(colorA.getGreen(),colorB.getGreen(),lerp);
-        int b = (int)MathHelper.clampedLerp(colorA.getBlue(),colorB.getBlue(),lerp);
-        int a = (int)MathHelper.clampedLerp(colorA.getAlpha(),colorB.getAlpha(),lerp);
-        return new Color(r,g,b,a);
+        int r = (int) MathHelper.clampedLerp(colorA.getRed(), colorB.getRed(), lerp);
+        int g = (int) MathHelper.clampedLerp(colorA.getGreen(), colorB.getGreen(), lerp);
+        int b = (int) MathHelper.clampedLerp(colorA.getBlue(), colorB.getBlue(), lerp);
+        int a = (int) MathHelper.clampedLerp(colorA.getAlpha(), colorB.getAlpha(), lerp);
+        return new Color(r, g, b, a);
     }
 
     public static Color lerpColorHSB(Color colorA, Color colorB, double lerp) {
-        float[] hsbA = Color.RGBtoHSB(colorA.getRed(),colorA.getGreen(),colorA.getBlue(),null);
-        float[] hsbB = Color.RGBtoHSB(colorB.getRed(),colorB.getGreen(),colorB.getBlue(),null);
-        float h = (float)MathHelper.clampedLerp(hsbA[0],hsbB[0],lerp);
-        float s = (float)MathHelper.clampedLerp(hsbA[1],hsbB[1],lerp);
-        float b = (float)MathHelper.clampedLerp(hsbA[2],hsbB[2],lerp);
-        int a = (int)MathHelper.clampedLerp(colorA.getAlpha(),colorB.getAlpha(),lerp);
+        float[] hsbA = Color.RGBtoHSB(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), null);
+        float[] hsbB = Color.RGBtoHSB(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), null);
+        float h = (float) MathHelper.clampedLerp(hsbA[0], hsbB[0], lerp);
+        float s = (float) MathHelper.clampedLerp(hsbA[1], hsbB[1], lerp);
+        float b = (float) MathHelper.clampedLerp(hsbA[2], hsbB[2], lerp);
+        int a = (int) MathHelper.clampedLerp(colorA.getAlpha(), colorB.getAlpha(), lerp);
         Color hsbColor = Color.getHSBColor(h, s, b);
-        return new Color(hsbColor.getRed(),hsbColor.getGreen(),hsbColor.getBlue(),a);
+        return new Color(hsbColor.getRed(), hsbColor.getGreen(), hsbColor.getBlue(), a);
     }
 
     public static Color parseColor(int[] rgb) {
@@ -215,6 +215,6 @@ public class Misc {
     }
 
     public static Vec3d getLocalVector(Vec3d vector, EnumFacing facing) {
-        return new Vec3d(xOffset(vector, facing), yOffset(vector,facing), zOffset(vector,facing));
+        return new Vec3d(xOffset(vector, facing), yOffset(vector, facing), zOffset(vector, facing));
     }
 }

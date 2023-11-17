@@ -19,7 +19,7 @@ public class ItemData {
     @SerializedName("model")
     public ResourceLocation model;
     @SerializedName("colors")
-    public Color[] colorsSerialized = new Color[]{ Color.WHITE};
+    public Color[] colorsSerialized = new Color[]{Color.WHITE};
     @SerializedName("stackSize")
     public int stackSize = 64;
 
@@ -30,7 +30,7 @@ public class ItemData {
 
     public void init() {
         for (int i = 0; i < colorsSerialized.length; i++)
-            colors.put(i,new NormalColor(colorsSerialized[i]));
+            colors.put(i, new NormalColor(colorsSerialized[i]));
     }
 
     protected void setBaseColor(ICustomColor color) {
@@ -39,12 +39,12 @@ public class ItemData {
 
     @ZenMethod
     public void setColor(int index, ColorCT color) {
-        colors.put(index,color.get());
+        colors.put(index, color.get());
     }
 
     public Color getColor(ItemStack stack, int index) {
         ICustomColor color = colors.get(index);
-        if(color == null)
+        if (color == null)
             return baseColor.get(stack);
         else
             return color.get(stack);

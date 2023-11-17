@@ -36,24 +36,24 @@ public class ItemSlot extends JEISlot {
 
     @Override
     public JEISlot copy() {
-        ItemSlot itemSlot = new ItemSlot(x,y,group,visual);
+        ItemSlot itemSlot = new ItemSlot(x, y, group, visual);
         return itemSlot;
     }
 
     @Override
     public void getIngredients(IngredientCollector collector) {
         for (ItemStack item : items) {
-            if(isInput())
-                collector.addInput(VanillaTypes.ITEM,item);
+            if (isInput())
+                collector.addInput(VanillaTypes.ITEM, item);
             else
-                collector.addOutput(VanillaTypes.ITEM,item);
+                collector.addOutput(VanillaTypes.ITEM, item);
         }
     }
 
     @Override
     public void render(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID,"textures/gui/assembly_slots.png"));
-        Misc.drawTexturedModalRect(x*18,y*18, 0, 0, 18,18);
-        visual.render(minecraft,x*18,y*18, 100, new Fill(0,0));
+        minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID, "textures/gui/assembly_slots.png"));
+        Misc.drawTexturedModalRect(x * 18, y * 18, 0, 0, 18, 18);
+        visual.render(minecraft, x * 18, y * 18, 100, new Fill(0, 0));
     }
 }

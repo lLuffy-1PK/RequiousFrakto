@@ -1,7 +1,6 @@
 package requious.compat.crafttweaker.expand;
 
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import requious.util.Parameter;

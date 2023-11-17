@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -23,7 +22,6 @@ import requious.data.AssemblyData;
 import requious.gui.GuiHandler;
 import requious.tile.TileEntityAssembly;
 import requious.util.Misc;
-import requious.util.PlaceType;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -39,10 +37,10 @@ public class BlockAssembly extends Block implements IDynamicModel {
     public BlockAssembly(Material materialIn, AssemblyData data) {
         super(materialIn);
         this.data = data;
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            aabbs[facing.getIndex()] = Misc.rotateAABB(data.aabb,facing);
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            aabbs[facing.getIndex()] = Misc.rotateAABB(data.aabb, facing);
         }
-        setDefaultState(getBlockState().getBaseState().withProperty(active,false));
+        setDefaultState(getBlockState().getBaseState().withProperty(active, false));
     }
 
     public AssemblyData getData() {
@@ -66,10 +64,10 @@ public class BlockAssembly extends Block implements IDynamicModel {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        state = super.getActualState(state,world,pos);
+        state = super.getActualState(state, world, pos);
         TileEntity tile = world.getTileEntity(pos);
-        if(tile instanceof TileEntityAssembly)
-            return state.withProperty(active, ((TileEntityAssembly)tile).isActive());
+        if (tile instanceof TileEntityAssembly)
+            return state.withProperty(active, ((TileEntityAssembly) tile).isActive());
         return state;
     }
 
@@ -96,7 +94,7 @@ public class BlockAssembly extends Block implements IDynamicModel {
         switch (data.placeType) {
 
             case Any:
-                face = EnumFacing.getDirectionFromEntityLiving(pos,placer);
+                face = EnumFacing.getDirectionFromEntityLiving(pos, placer);
                 break;
             case Up:
                 face = EnumFacing.UP;
@@ -143,7 +141,7 @@ public class BlockAssembly extends Block implements IDynamicModel {
         super.onBlockPlacedBy(world, pos, state, placer, stack);
 
         TileEntity tile = world.getTileEntity(pos);
-        if(tile instanceof TileEntityAssembly && placer instanceof EntityPlayer) {
+        if (tile instanceof TileEntityAssembly && placer instanceof EntityPlayer) {
             ((TileEntityAssembly) tile).setOwner((EntityPlayer) placer);
         }
     }
@@ -194,8 +192,8 @@ public class BlockAssembly extends Block implements IDynamicModel {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tile = worldIn.getTileEntity(pos);
-        if(tile instanceof TileEntityAssembly) {
-            ((TileEntityAssembly) tile).breakBlock(worldIn,pos);
+        if (tile instanceof TileEntityAssembly) {
+            ((TileEntityAssembly) tile).breakBlock(worldIn, pos);
         }
         super.breakBlock(worldIn, pos, state);
     }
