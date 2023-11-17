@@ -4,6 +4,8 @@ requious.unit.fe=%1$s/%2$s FE
 requious.unit.fe.cost=%1$s FE
 requious.unit.rf=%1$s/%2$s RF
 requious.unit.rf.cost=%1$s RF
+requious.unit.eu=%1$s/%2$s EU
+requious.unit.eu.cost=%1$s EU
 
 requious.duration.ticks=%s ticks
 requious.duration.seconds=%s seconds

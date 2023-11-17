@@ -131,6 +131,11 @@ public class AssemblyData extends BaseData {
     }
 
     @ZenMethod
+    public ComponentEnergy setEUSlot(int x, int y, ComponentFaceCT face, int capacity) {
+        return setEnergySlot(x, y, face, capacity * 4).setUnit("eu").acceptEU(true);
+    }
+
+    @ZenMethod
     public ComponentLaser setLaserSlot(int x, int y, ComponentFaceCT face) {
         ComponentLaser component = new ComponentLaser(face.get());
         setSlot(x,y,component);

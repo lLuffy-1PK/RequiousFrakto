@@ -79,6 +79,16 @@ public class AssemblyRecipe {
     }
 
     @ZenMethod
+    public AssemblyRecipe requireEU(String group, int energy, @Optional String mark) {
+        return requireEnergy(group, energy * 4, mark);
+    }
+
+    @ZenMethod
+    public AssemblyRecipe requireEU(String group, int min, int max, @Optional String mark) {
+        return requireEnergy(group, min * 4, max * 4, mark);
+    }
+
+    @ZenMethod
     public AssemblyRecipe requireLaser(String group, int energy, @Optional String mark, @Optional SlotVisualCT slotVisual) {
         requirements.add(new RequirementLaser(group, energy, mark, SlotVisualCT.unpack(slotVisual)));
         return this;

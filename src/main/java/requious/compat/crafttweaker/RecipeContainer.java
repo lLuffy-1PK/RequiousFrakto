@@ -99,6 +99,16 @@ public class RecipeContainer {
     }
 
     @ZenMethod
+    public void addEUOutput(String group, int energy) {
+        addEnergyOutput(group, energy * 4);
+    }
+
+    @ZenMethod
+    public void addEUOutput(String group, int energy, int minInsert) {
+        addEnergyOutput(group, energy * 4, minInsert * 4);
+    }
+
+    @ZenMethod
     public void addLaserOutput(String group, String type, int amount, LaserVisualCT visual, @Optional SlotVisualCT slotVisual) {
         outputs.add(new ResultLaser(group,type,amount,visual.get(),SlotVisualCT.unpack(slotVisual)));
     }

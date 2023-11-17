@@ -1,5 +1,7 @@
 package requious.tile;
 
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import requious.block.BlockAssembly;
@@ -27,6 +30,7 @@ import requious.util.MachineVisual;
 import requious.util.Misc;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "ic2.api.energy.tile.IEnergyTile", modid = "ic2"), @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "ic2"), @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "ic2")})
@@ -37,6 +41,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     boolean shouldSync;
     EntityPlayer owner;
     boolean active;
+    boolean addedToEnet = false;
 
     public void setBlock(BlockAssembly block) {
         this.block = block.getRegistryName();
@@ -60,7 +65,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     public static EnumFacing toLocalSide(EnumFacing facing, EnumFacing side) {
-        if(side == null)
+        if ((facing == null) || (side == null))
             return null;
         switch (facing) {
             case DOWN:
@@ -81,7 +86,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     public static EnumFacing toGlobalSide(EnumFacing facing, EnumFacing side) {
-        if(side == null)
+        if ((facing == null) || (side == null))
             return null;
         switch (facing) {
             case DOWN:
@@ -110,6 +115,9 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        if (this.getWorld().isAirBlock(this.getPos())) {
+            return false;
+        }
         boolean hasCapability = false;
         if (processor != null)
             hasCapability = processor.hasCapability(capability, toLocalSide(getFacing(),facing), facing);
@@ -198,6 +206,10 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         }
         if(shouldSync)
             Misc.syncTE(this, false);
+        if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
+            addedToEnet = true;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((TileEntityAssembly) (Object) this));
+        }
     }
 
     private void initProcessor() {
@@ -209,7 +221,10 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
 
     public EnumFacing getFacing() {
         IBlockState state = getWorld().getBlockState(getPos());
-        return state.getValue(BlockAssembly.facing);
+        if (state.getPropertyKeys().contains(BlockAssembly.facing)) {
+            return state.getValue(BlockAssembly.facing);
+        }
+        return null;
     }
 
     public void setOwner(EntityPlayer player) {
@@ -292,5 +307,23 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         if(getData() != null)
             dataName = getData().resourceName;
         return String.format("%s (%s)",super.toString(),dataName);
+    }
+
+    @Override
+    public void invalidate() {
+        if (!world.isRemote && addedToEnet) {
+            addedToEnet = false;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((TileEntityAssembly) (Object) this));
+        }
+        super.invalidate();
+    }
+
+    @Override
+    public void onChunkUnload() {
+        if (!world.isRemote && addedToEnet) {
+            addedToEnet = false;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((TileEntityAssembly) (Object) this));
+        }
+        super.onChunkUnload();
     }
 }
