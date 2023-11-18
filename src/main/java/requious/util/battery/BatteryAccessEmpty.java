@@ -9,22 +9,22 @@ public class BatteryAccessEmpty implements IBatteryAccess {
     }
 
     @Override
-    public int getMaxEnergyStored() {
+    public long getMaxEnergyStored() {
         return 0;
     }
 
     @Override
-    public int getEnergyStored() {
+    public long getEnergyStored() {
         return 0;
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
+    public long receiveEnergy(long maxReceive, boolean simulate) {
         return 0;
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
+    public long extractEnergy(long maxExtract, boolean simulate) {
         return 0;
     }
 

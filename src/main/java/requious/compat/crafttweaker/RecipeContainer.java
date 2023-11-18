@@ -41,7 +41,7 @@ public class RecipeContainer {
         inputs.put(mark, object);
     }
 
-    public void addInput(String mark, int object) {
+    public void addInput(String mark, long object) {
         inputs.put(mark, object);
     }
 
@@ -89,12 +89,12 @@ public class RecipeContainer {
     }
 
     @ZenMethod
-    public void addEnergyOutput(String group, int energy) {
+    public void addEnergyOutput(String group, long energy) {
         outputs.add(new ResultEnergy(group, energy));
     }
 
     @ZenMethod
-    public void addEnergyOutput(String group, int energy, int minInsert) {
+    public void addEnergyOutput(String group, long energy, int minInsert) {
         outputs.add(new ResultEnergy(group, energy, minInsert));
     }
 
@@ -105,7 +105,7 @@ public class RecipeContainer {
 
     @ZenMethod
     public void addEUOutput(String group, int energy, int minInsert) {
-        addEnergyOutput(group, energy * 4, minInsert * 4);
+        addEnergyOutput(group, energy * 4L, minInsert * 4);
     }
 
     @ZenMethod
@@ -136,7 +136,7 @@ public class RecipeContainer {
     }
 
     @ZenMethod
-    public int getEnergy(String mark) {
-        return (int) inputs.getOrDefault(mark, 0);
+    public long getEnergy(String mark) {
+        return (long) inputs.getOrDefault(mark, 0L);
     }
 }

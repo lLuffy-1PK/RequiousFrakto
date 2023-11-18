@@ -1,7 +1,7 @@
 package requious.util;
 
 public interface IConversion {
-    int getUnit(int base);
+    long getUnit(long base);
 
-    int getBase(int unit);
+    long getBase(long unit);
 }

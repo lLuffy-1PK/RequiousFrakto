@@ -64,7 +64,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
 
-    implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
+    compileOnly("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+")
     compileOnly(fg.deobf("curse.maven:had-enough-items-557549:4810661"))
     compileOnly(fg.deobf("curse.maven:gregtech-ce-unofficial-557242:4799055"))
     compileOnly(fg.deobf("curse.maven:CodeChickenLib-242818:2779848"))
@@ -93,6 +93,7 @@ jar {
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
     classifier "dev"
 }
 

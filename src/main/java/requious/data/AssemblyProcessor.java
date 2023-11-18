@@ -167,10 +167,10 @@ public class AssemblyProcessor {
         return null;
     }
 
-    public int insertEnergy(String group, int energy) {
+    public long insertEnergy(String group, long energy) {
         for (Slot slot : getSlots()) {
             if (slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
-                int filled = ((ComponentEnergy.Slot) slot).receive(energy, false);
+                long filled = ((ComponentEnergy.Slot) slot).receive(energy, false);
                 if (filled > 0)
                     return energy - filled;
             }
@@ -178,10 +178,10 @@ public class AssemblyProcessor {
         return energy;
     }
 
-    public int extractEnergy(String group, int energy) {
+    public long extractEnergy(String group, long energy) {
         for (Slot slot : getSlots()) {
             if (slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
-                int filled = ((ComponentEnergy.Slot) slot).extract(energy, false);
+                long filled = ((ComponentEnergy.Slot) slot).extract(energy, false);
                 if (filled > 0)
                     return filled;
             }

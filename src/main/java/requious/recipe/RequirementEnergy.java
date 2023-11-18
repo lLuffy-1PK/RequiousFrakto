@@ -9,13 +9,14 @@ import requious.data.component.ComponentEnergy;
 
 public class RequirementEnergy extends RequirementBase {
     String mark;
-    int min, max;
+    long min;
+    long max;
 
-    public RequirementEnergy(String group, int energy, String mark) {
+    public RequirementEnergy(String group, long energy, String mark) {
         this(group, energy, energy, mark);
     }
 
-    public RequirementEnergy(String group, int min, int max, String mark) {
+    public RequirementEnergy(String group, long min, long max, String mark) {
         super(group);
         this.mark = mark;
         this.min = min;
@@ -25,7 +26,7 @@ public class RequirementEnergy extends RequirementBase {
     @Override
     public MatchResult matches(ComponentBase.Slot slot, ConsumptionResult result) {
         if (slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
-            int extracted = ((ComponentEnergy.Slot) slot).extract(max, true);
+            long extracted = ((ComponentEnergy.Slot) slot).extract(max, true);
             if (extracted >= min) {
                 result.add(extracted);
                 return MatchResult.MATCHED;
@@ -37,19 +38,19 @@ public class RequirementEnergy extends RequirementBase {
     @Override
     public void fillContainer(ComponentBase.Slot slot, ConsumptionResult result, RecipeContainer container) {
         if (mark != null)
-            container.addInput(mark, (int) result.consumed);
+            container.addInput(mark, (long) result.consumed);
     }
 
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
-        if (slot instanceof ComponentEnergy.Slot && result instanceof ConsumptionResult.Integer) {
-            ((ComponentEnergy.Slot) slot).extract((int) result.getConsumed(), false);
+        if (slot instanceof ComponentEnergy.Slot && result instanceof ConsumptionResult.Long) {
+            ((ComponentEnergy.Slot) slot).extract((long) result.getConsumed(), false);
         }
     }
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this, 0);
+        return new ConsumptionResult.Long(this, 0L);
     }
 
     @Override

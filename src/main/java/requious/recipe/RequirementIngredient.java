@@ -45,14 +45,14 @@ public class RequirementIngredient extends RequirementBase {
 
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
-        if (slot instanceof ComponentItem.Slot && result instanceof ConsumptionResult.Integer) {
+        if (slot instanceof ComponentItem.Slot && result instanceof ConsumptionResult.Long) {
             ((ComponentItem.Slot) slot).getItem().extract((int) result.getConsumed(), false);
         }
     }
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this, 0);
+        return new ConsumptionResult.Long(this, 0L);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class RequirementWorld extends RequirementBase {
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this, 0);
+        return new ConsumptionResult.Long(this, 0L);
     }
 
     @Override

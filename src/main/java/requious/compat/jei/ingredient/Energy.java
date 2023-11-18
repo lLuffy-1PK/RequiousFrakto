@@ -1,10 +1,10 @@
 package requious.compat.jei.ingredient;
 
 public class Energy implements IFakeIngredient {
-    public int energy;
+    public long energy;
     public String unit;
 
-    public Energy(int energy, String unit) {
+    public Energy(long energy, String unit) {
         this.energy = energy;
         this.unit = unit;
     }

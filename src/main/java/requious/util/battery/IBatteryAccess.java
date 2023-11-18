@@ -3,13 +3,13 @@ package requious.util.battery;
 import net.minecraft.item.ItemStack;
 
 public interface IBatteryAccess {
-    int getMaxEnergyStored();
+    long getMaxEnergyStored();
 
-    int getEnergyStored();
+    long getEnergyStored();
 
-    int receiveEnergy(int maxReceive, boolean simulate);
+    long receiveEnergy(long maxReceive, boolean simulate);
 
-    int extractEnergy(int maxExtract, boolean simulate);
+    long extractEnergy(long maxExtract, boolean simulate);
 
     ItemStack getStack();
 }

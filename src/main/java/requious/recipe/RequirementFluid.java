@@ -44,14 +44,14 @@ public class RequirementFluid extends RequirementBase {
 
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
-        if (slot instanceof ComponentFluid.Slot && result instanceof ConsumptionResult.Integer) {
+        if (slot instanceof ComponentFluid.Slot && result instanceof ConsumptionResult.Long) {
             ((ComponentFluid.Slot) slot).drain((int) result.getConsumed(), false);
         }
     }
 
     @Override
     public ConsumptionResult createResult() {
-        return new ConsumptionResult.Integer(this, 0);
+        return new ConsumptionResult.Long(this, 0L);
     }
 
     @Override

@@ -67,25 +67,25 @@ public class AssemblyRecipe {
     }
 
     @ZenMethod
-    public AssemblyRecipe requireEnergy(String group, int energy, @Optional String mark) {
+    public AssemblyRecipe requireEnergy(String group, long energy, @Optional String mark) {
         requirements.add(new RequirementEnergy(group, energy, mark));
         return this;
     }
 
     @ZenMethod
-    public AssemblyRecipe requireEnergy(String group, int min, int max, @Optional String mark) {
+    public AssemblyRecipe requireEnergy(String group, long min, long max, @Optional String mark) {
         requirements.add(new RequirementEnergy(group, min, max, mark));
         return this;
     }
 
     @ZenMethod
     public AssemblyRecipe requireEU(String group, int energy, @Optional String mark) {
-        return requireEnergy(group, energy * 4, mark);
+        return requireEnergy(group, energy * 4L, mark);
     }
 
     @ZenMethod
     public AssemblyRecipe requireEU(String group, int min, int max, @Optional String mark) {
-        return requireEnergy(group, min * 4, max * 4, mark);
+        return requireEnergy(group, min * 4L, max * 4L, mark);
     }
 
     @ZenMethod

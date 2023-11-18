@@ -7,14 +7,14 @@ import requious.data.component.ComponentBase;
 import requious.data.component.ComponentEnergy;
 
 public class ResultEnergy extends ResultBase {
-    int energy;
-    int minInsert;
+    long energy;
+    long minInsert;
 
-    public ResultEnergy(String group, int energy) {
+    public ResultEnergy(String group, long energy) {
         this(group, energy, energy);
     }
 
-    public ResultEnergy(String group, int energy, int minInsert) {
+    public ResultEnergy(String group, long energy, long minInsert) {
         super(group);
         this.energy = energy;
         this.minInsert = minInsert;
@@ -23,7 +23,7 @@ public class ResultEnergy extends ResultBase {
     @Override
     public boolean matches(ComponentBase.Slot slot) {
         if (slot instanceof ComponentEnergy.Slot && slot.isGroup(group)) {
-            int filled = ((ComponentEnergy.Slot) slot).receive(energy, true);
+            long filled = ((ComponentEnergy.Slot) slot).receive(energy, true);
             if (filled >= minInsert)
                 return true;
         }

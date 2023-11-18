@@ -222,7 +222,7 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
-    public int getEnergy(int x, int y) {
+    public long getEnergy(int x, int y) {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentEnergy.Slot) {
             return ((ComponentEnergy.Slot) slot).getAmount();
@@ -279,14 +279,14 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
-    public int insertEnergy(String group, int energy) {
-        int remainder = assembly.insertEnergy(group, energy);
+    public long insertEnergy(String group, long energy) {
+        long remainder = assembly.insertEnergy(group, energy);
         return remainder;
     }
 
     @ZenMethod
-    public int extractEnergy(String group, int energy) {
-        int extracted = assembly.extractEnergy(group, energy);
+    public long extractEnergy(String group, long energy) {
+        long extracted = assembly.extractEnergy(group, energy);
         return extracted;
     }
 }

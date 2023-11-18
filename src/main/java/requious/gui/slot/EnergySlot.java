@@ -69,16 +69,16 @@ public class EnergySlot extends BaseSlot<ComponentEnergy.Slot> {
     @Override
     public void renderBackground(GuiAssembly assembly, int x, int y, float partialTicks, int mousex, int mousey) {
         SlotVisual background = binding.getBackground();
-        int energy = binding.getAmount();
-        int capacity = binding.getCapacity();
+        long energy = binding.getAmount();
+        long capacity = binding.getCapacity();
         background.render(assembly.mc, x - 1, y - 1, 100, new Fill(energy, capacity));
     }
 
     @Override
     public void renderForeground(GuiAssembly assembly, int x, int y, int mousex, int mousey) {
         SlotVisual foreground = binding.getForeground();
-        int energy = binding.getAmount();
-        int capacity = binding.getCapacity();
+        long energy = binding.getAmount();
+        long capacity = binding.getCapacity();
         if (foreground != null)
             foreground.render(assembly.mc, x - 1, y - 1, 1000, new Fill(energy, capacity));
     }
@@ -94,8 +94,8 @@ public class EnergySlot extends BaseSlot<ComponentEnergy.Slot> {
         String unit = binding.getUnit();
 
         if (unit != null && I18n.hasKey("requious.unit." + unit)) {
-            int amount = binding.getEUConversion().getUnit(binding.getAmount());
-            int capacity = binding.getEUConversion().getUnit(binding.getCapacity());
+            long amount = binding.getEUConversion().getUnit(binding.getAmount());
+            long capacity = binding.getEUConversion().getUnit(binding.getCapacity());
 
             if (unit.equals("eu")) {
                 tooltip.add(I18n.format("requious.unit.eu", amount, capacity));

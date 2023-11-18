@@ -3,6 +3,8 @@ package requious.util.battery;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class BatteryAccessFE implements IBatteryAccess {
     ItemStack battery;
     IEnergyStorage storage;
@@ -13,23 +15,23 @@ public class BatteryAccessFE implements IBatteryAccess {
     }
 
     @Override
-    public int getMaxEnergyStored() {
+    public long getMaxEnergyStored() {
         return storage.getMaxEnergyStored();
     }
 
     @Override
-    public int getEnergyStored() {
+    public long getEnergyStored() {
         return storage.getEnergyStored();
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return storage.receiveEnergy(maxReceive, simulate);
+    public long receiveEnergy(long maxReceive, boolean simulate) {
+        return storage.receiveEnergy(new AtomicLong(maxReceive).intValue(), simulate);
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return storage.extractEnergy(maxExtract, simulate);
+    public long extractEnergy(long maxExtract, boolean simulate) {
+        return storage.extractEnergy(new AtomicLong(maxExtract).intValue(), simulate);
     }
 
     @Override

@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @ZenRegister
 @ZenClass("mods.requious.EnergySlot")
@@ -47,7 +48,7 @@ public class ComponentEnergy extends ComponentBase {
     public Ingredient filter = new IngredientAny();
     public IOParameters pushItem = new IOParameters();
     public IOParameters pushEnergy = new IOParameters();
-    public int capacity;
+    public AtomicLong capacity = new AtomicLong();
     public float powerLoss;
 
     public int maxInput = Integer.MAX_VALUE;
@@ -63,9 +64,9 @@ public class ComponentEnergy extends ComponentBase {
     public SlotVisual foreground = SlotVisual.EMPTY;
     public SlotVisual background = SlotVisual.ENERGY_SLOT;
 
-    public ComponentEnergy(ComponentFace face, int capacity) {
+    public ComponentEnergy(ComponentFace face, long capacity) {
         super(face);
-        this.capacity = capacity;
+        this.capacity.set(capacity);
     }
 
     @Override
@@ -180,7 +181,7 @@ public class ComponentEnergy extends ComponentBase {
     }
 
     public static class Slot extends ComponentBase.Slot<ComponentEnergy> implements ComponentItem.IItemSlot {
-        int energy;
+        AtomicLong energy = new AtomicLong();
         float powerLoss;
         ItemComponentHelper battery;
         boolean active;
@@ -243,11 +244,11 @@ public class ComponentEnergy extends ComponentBase {
 
         @Override
         public void update() {
-            if (!active && energy > 0) {
+            if (!active && energy.get() > 0) {
                 powerLoss += component.powerLoss;
                 int intLoss = (int) powerLoss;
                 if (intLoss > 0) {
-                    energy = Math.max(0, energy - intLoss);
+                    energy.set(Math.max(0, energy.get() - intLoss));
                     powerLoss -= intLoss;
                 }
                 markDirty();
@@ -266,7 +267,7 @@ public class ComponentEnergy extends ComponentBase {
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
-            compound.setInteger("energy", energy);
+            compound.setLong("energy", energy.get());
             compound.setFloat("loss", powerLoss);
             compound.setTag("battery", battery.writeToNBT(new NBTTagCompound()));
             return compound;
@@ -274,7 +275,7 @@ public class ComponentEnergy extends ComponentBase {
 
         @Override
         public void deserializeNBT(NBTTagCompound compound) {
-            energy = compound.getInteger("energy");
+            energy.set(compound.getLong("energy"));
             powerLoss = compound.getFloat("loss");
             battery.readFromNBT(compound.getCompoundTag("battery"));
         }
@@ -318,20 +319,20 @@ public class ComponentEnergy extends ComponentBase {
             return component.batteryAllowed;
         }
 
-        public int getCapacity() {
+        public long getCapacity() {
             if (canOverfill() && getAmount() <= 0)
-                return Integer.MAX_VALUE;
+                return Long.MAX_VALUE;
             IBatteryAccess battery = getBatteryStorage();
-            return component.capacity + battery.getMaxEnergyStored();
+            return component.capacity.get() + battery.getMaxEnergyStored();
         }
 
-        public int getAmount() {
+        public long getAmount() {
             IBatteryAccess battery = getBatteryStorage();
-            return energy + battery.getEnergyStored();
+            return energy.get() + battery.getEnergyStored();
         }
 
         public void setAmount(int energy) {
-            this.energy = energy;
+            this.energy.set(energy);
         }
 
         private IBatteryAccess getBatteryStorage() {
@@ -353,12 +354,12 @@ public class ComponentEnergy extends ComponentBase {
             return battery;
         }
 
-        public int receive(int amount, boolean simulate) {
+        public long receive(long amount, boolean simulate) {
             IBatteryAccess batteryAccess = getBatteryStorage();
-            int internalReceived = Math.min(amount, getCapacity() - energy);
-            int batteryReceived = batteryAccess.receiveEnergy(Math.max(amount - internalReceived, 0), simulate);
+            long internalReceived = Math.min(amount, getCapacity() - energy.get());
+            long batteryReceived = batteryAccess.receiveEnergy(Math.max(amount - internalReceived, 0), simulate);
             if (!simulate) {
-                energy += internalReceived;
+                energy.set(energy.get() + internalReceived);
                 active = true;
                 battery.setStack(batteryAccess.getStack());
                 markDirty();
@@ -366,12 +367,12 @@ public class ComponentEnergy extends ComponentBase {
             return internalReceived + batteryReceived;
         }
 
-        public int extract(int amount, boolean simulate) {
+        public long extract(long amount, boolean simulate) {
             IBatteryAccess batteryAccess = getBatteryStorage();
-            int internalExtracted = Math.min(amount, energy);
-            int batteryExtracted = batteryAccess.extractEnergy(Math.max(amount - internalExtracted, 0), simulate);
+            long internalExtracted = Math.min(amount, energy.get());
+            long batteryExtracted = batteryAccess.extractEnergy(Math.max(amount - internalExtracted, 0), simulate);
             if (!simulate) {
-                energy -= internalExtracted;
+                energy.set(energy.get() - internalExtracted);
                 active = false;
                 battery.setStack(batteryAccess.getStack());
                 markDirty();
@@ -448,7 +449,7 @@ public class ComponentEnergy extends ComponentBase {
             amount += extraDraw;
             for (Slot slot : slots) {
                 if (slot.canOutputItem()) {
-                    int extracted = slot.extract(slot.getEUConversion().getBase((int) Math.ceil(amount)), false);
+                    long extracted = slot.extract(slot.getEUConversion().getBase((int) Math.ceil(amount)), false);
                     amount -= slot.getEUConversion().getUnit(extracted);
                 }
             }
@@ -458,7 +459,7 @@ public class ComponentEnergy extends ComponentBase {
         public double inject(EnumFacing localSide, EnumFacing globalSide, double amount, double voltage) {
             for (Slot slot : slots) {
                 if (slot.canInput() && slot.getFace().matches(localSide, globalSide)) {
-                    int inserted = slot.receive(slot.getEUConversion().getBase((int) Math.floor(amount)), false);
+                    long inserted = slot.receive(slot.getEUConversion().getBase((long) Math.floor(amount)), false);
                     amount -= slot.getEUConversion().getUnit(inserted);
                 }
             }
@@ -466,7 +467,7 @@ public class ComponentEnergy extends ComponentBase {
         }
 
         public int getInputTier() {
-            int maxVoltage = 0;
+            long maxVoltage = 0;
             for (Slot slot : slots) {
                 maxVoltage = Math.max(maxVoltage, slot.getEUConversion().getUnit(slot.getMaxInput()));
             }
@@ -474,7 +475,7 @@ public class ComponentEnergy extends ComponentBase {
         }
 
         public int getOutputTier() {
-            int maxVoltage = 0;
+            long maxVoltage = 0;
             for (Slot slot : slots) {
                 maxVoltage = Math.max(maxVoltage, slot.getEUConversion().getUnit(slot.getMaxOutput()));
             }
@@ -498,19 +499,19 @@ public class ComponentEnergy extends ComponentBase {
         }
 
         public double getOutputEnergy() {
-            int toSend = 0;
+            long toSend = 0;
             for (Slot slot : slots) {
                 if (slot.canOutputItem())
-                    toSend += Math.min(slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.energy);
+                    toSend += Math.min(slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.energy.get());
             }
             return toSend;
         }
 
         public double getInputEnergy() {
-            int toReceive = 0;
+            long toReceive = 0;
             for (Slot slot : slots) {
                 if (slot.canInput())
-                    toReceive += slot.getEUConversion().getUnit(slot.getCapacity() - slot.energy);
+                    toReceive += slot.getEUConversion().getUnit(slot.getCapacity() - slot.energy.get());
             }
             return toReceive;
         }
@@ -578,9 +579,9 @@ public class ComponentEnergy extends ComponentBase {
                     IEnergyStorage battery = checkTile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
                     for (Slot slot : slots) {
                         if (slot.getPushEnergy().active) {
-                            int maxSize = slot.getPushEnergy().size;
-                            int energy = slot.extract(maxSize, true);
-                            int filled = battery.receiveEnergy(energy, false);
+                            long maxSize = slot.getPushEnergy().size;
+                            AtomicLong energy = new AtomicLong(slot.extract(maxSize, true));
+                            long filled = battery.receiveEnergy(energy.intValue(), false);
                             if (filled > 0) {
                                 slot.extract(filled, false);
                             }

@@ -1,21 +1,21 @@
 package requious.util;
 
 public class RatioConversion implements IConversion {
-    int valueOfBase;
-    int valueOfUnit;
+    long valueOfBase;
+    long valueOfUnit;
 
-    public RatioConversion(int valueOfBase, int valueOfUnit) {
+    public RatioConversion(long valueOfBase, long valueOfUnit) {
         this.valueOfBase = valueOfBase;
         this.valueOfUnit = valueOfUnit;
     }
 
     @Override
-    public int getUnit(int base) {
+    public long getUnit(long base) {
         return (base * valueOfUnit) / valueOfBase;
     }
 
     @Override
-    public int getBase(int unit) {
+    public long getBase(long unit) {
         return (unit * valueOfBase) / valueOfUnit;
     }
 }

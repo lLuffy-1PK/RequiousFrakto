@@ -26,13 +26,13 @@ public abstract class ConsumptionResult<T> {
         requirement.consume(slot, this);
     }
 
-    public static class Integer extends ConsumptionResult<java.lang.Integer> {
-        public Integer(RequirementBase requirement, java.lang.Integer consumed) {
+    public static class Long extends ConsumptionResult<java.lang.Long> {
+        public Long(RequirementBase requirement, java.lang.Long consumed) {
             super(requirement, consumed);
         }
 
         @Override
-        public void add(java.lang.Integer amount) {
+        public void add(java.lang.Long amount) {
             consumed += amount;
         }
     }

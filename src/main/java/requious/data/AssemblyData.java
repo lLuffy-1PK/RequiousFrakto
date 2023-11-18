@@ -124,7 +124,7 @@ public class AssemblyData extends BaseData {
     }
 
     @ZenMethod
-    public ComponentEnergy setEnergySlot(int x, int y, ComponentFaceCT face, int capacity) {
+    public ComponentEnergy setEnergySlot(int x, int y, ComponentFaceCT face, long capacity) {
         ComponentEnergy component = new ComponentEnergy(face.get(), capacity);
         setSlot(x, y, component);
         return component;
@@ -132,7 +132,7 @@ public class AssemblyData extends BaseData {
 
     @ZenMethod
     public ComponentEnergy setEUSlot(int x, int y, ComponentFaceCT face, int capacity) {
-        return setEnergySlot(x, y, face, capacity * 4).setUnit("eu").acceptEU(true);
+        return setEnergySlot(x, y, face, capacity * 4L).setUnit("eu").acceptEU(true);
     }
 
     @ZenMethod
