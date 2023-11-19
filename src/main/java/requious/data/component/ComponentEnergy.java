@@ -47,12 +47,12 @@ public class ComponentEnergy extends ComponentBase {
     public boolean canOverfill = false;
     public Ingredient filter = new IngredientAny();
     public IOParameters pushItem = new IOParameters();
-    public IOParameters pushEnergy = new IOParameters();
+    public IOParametersEnergy pushEnergy = new IOParametersEnergy();
     public AtomicLong capacity = new AtomicLong();
     public float powerLoss;
 
-    public int maxInput = Integer.MAX_VALUE;
-    public int maxOutput = 0;
+    public long maxInput = Long.MAX_VALUE;
+    public long maxOutput = 0;
 
     public boolean acceptsFE = true;
     public boolean acceptsEU = false;
@@ -125,7 +125,7 @@ public class ComponentEnergy extends ComponentBase {
 
     @ReturnsSelf
     @ZenMethod
-    public ComponentEnergy setLimits(int input, int output) {
+    public ComponentEnergy setLimits(long input, long output) {
         this.maxInput = input;
         this.maxOutput = output;
         return this;
@@ -147,8 +147,8 @@ public class ComponentEnergy extends ComponentBase {
 
     @ReturnsSelf
     @ZenMethod
-    public ComponentEnergy pushEnergy(int size) {
-        this.pushEnergy = new IOParameters(size);
+    public ComponentEnergy pushEnergy(long size) {
+        this.pushEnergy = new IOParametersEnergy(size);
         return this;
     }
 
@@ -208,11 +208,11 @@ public class ComponentEnergy extends ComponentBase {
             return component.conversionEU;
         }
 
-        public int getMaxInput() {
+        public long getMaxInput() {
             return component.maxInput;
         }
 
-        public int getMaxOutput() {
+        public long getMaxOutput() {
             return component.maxOutput;
         }
 
@@ -391,7 +391,7 @@ public class ComponentEnergy extends ComponentBase {
             battery.markClean();
         }
 
-        public IOParameters getPushEnergy() {
+        public IOParametersEnergy getPushEnergy() {
             return component.pushEnergy;
         }
 

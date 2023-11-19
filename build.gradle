@@ -72,6 +72,7 @@ dependencies {
     implementation(fg.deobf("curse.maven:industrialcraft-2-242638:3078604"))
     implementation(fg.deobf("curse.maven:applied-energistics-2-223794:2747063"))
     implementation(fg.deobf("curse.maven:mystical-mechanics-api-300742:3006392"))
+    implementation(fg.deobf("curse.maven:flux-networks-248020:3178199"))
 }
 
 afterEvaluate {
