@@ -152,6 +152,30 @@ public class Misc {
         return s;
     }
 
+    public static String formatNumber(long value) {
+        String symbol = "";
+        if (value < 0) {
+            value = Math.abs(value);
+            symbol = "-";
+        }
+
+        if (value < 1_000L) {
+            return symbol + value;
+        } else if (value < 1_000_000L) {
+            return symbol + (double) Math.round((double) value) / 1000.0 + "K";
+        } else if (value < 1_000_000_000L) {
+            return symbol + (double) Math.round((double) (value / 1_000L)) / 1000.0 + "M";
+        } else if (value < 1_000_000_000_000L) {
+            return symbol + (double) Math.round((double) (value / 1_000_000L)) / 1000.0 + "G";
+        } else if (value < 1_000_000_000_000_000L) {
+            return symbol + (double) Math.round((double) (value / 1_000_000_000L)) / 1000.0 + "T";
+        } else if (value < 1_000_000_000_000_000_000L) {
+            return symbol + (double) Math.round((double) (value / 1_000_000_000_000L)) / 1000.0 + "P";
+        } else {
+            return symbol + (double) Math.round((double) (value / 1_000_000_000_000_000L)) / 1000.0 + "E";
+        }
+    }
+
     public static void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
         drawTexturedModalRect(x, y, 100, textureX, textureY, width, height);
     }

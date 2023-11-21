@@ -9,6 +9,7 @@ import requious.data.AssemblyProcessor;
 import requious.data.component.ComponentEnergy;
 import requious.gui.GuiAssembly;
 import requious.util.Fill;
+import requious.util.Misc;
 import requious.util.SlotVisual;
 
 import javax.annotation.Nonnull;
@@ -98,9 +99,9 @@ public class EnergySlot extends BaseSlot<ComponentEnergy.Slot> {
             long capacity = binding.getEUConversion().getUnit(binding.getCapacity());
 
             if (unit.equals("eu")) {
-                tooltip.add(I18n.format("requious.unit.eu", amount, capacity));
+                tooltip.add(I18n.format("requious.unit.eu", Misc.formatNumber(amount), Misc.formatNumber(capacity)));
             } else {
-                tooltip.add(I18n.format("requious.unit." + unit, binding.getAmount(), binding.getCapacity()));
+                tooltip.add(I18n.format("requious.unit." + unit, Misc.formatNumber(binding.getAmount()), Misc.formatNumber(binding.getCapacity())));
             }
         }
         return tooltip;

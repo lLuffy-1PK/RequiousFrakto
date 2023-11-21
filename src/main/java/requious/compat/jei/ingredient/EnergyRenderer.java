@@ -26,9 +26,9 @@ public class EnergyRenderer extends FakeIngredientRenderer<Energy> {
     public List<String> getTooltip(Minecraft minecraft, Energy ingredient, ITooltipFlag tooltipFlag) {
         List<String> tooltip = new ArrayList<>();
         if (ingredient.unit.equals("eu")) {
-            tooltip.add(I18n.format("requious.unit.eu.cost", ingredient.energy / 4));
+            tooltip.add(I18n.format("requious.unit.eu.cost", Misc.formatNumber(ingredient.energy / 4)));
         } else {
-            tooltip.add(I18n.format("requious.unit." + ingredient.unit + ".cost", ingredient.energy));
+            tooltip.add(I18n.format("requious.unit." + ingredient.unit + ".cost", Misc.formatNumber(ingredient.energy)));
         }
         return tooltip;
     }
