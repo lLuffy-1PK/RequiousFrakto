@@ -23,6 +23,7 @@ import requious.util.*;
 import requious.util.battery.BatteryAccessEmpty;
 import requious.util.battery.BatteryAccessFE;
 import requious.util.battery.IBatteryAccess;
+import sonar.fluxnetworks.common.tileentity.TileFluxPlug;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ReturnsSelf;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -520,7 +521,6 @@ public class ComponentEnergy extends ComponentBase {
     public static class Collector extends ComponentBase.Collector implements IEnergyStorage {
         ComponentFace face;
         List<Slot> slots = new ArrayList<>();
-        int pushIndex;
 
         public Collector(ComponentFace face) {
             this.face = face;
@@ -572,23 +572,42 @@ public class ComponentEnergy extends ComponentBase {
             if (canAutoOutput() && tile instanceof TileEntityAssembly) {
                 World world = tile.getWorld();
                 BlockPos pos = tile.getPos();
-                EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), face.getSide(pushIndex));
 
-                TileEntity checkTile = world.getTileEntity(pos.offset(facing));
-                if (checkTile != null && checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite())) {
-                    IEnergyStorage battery = checkTile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
-                    for (Slot slot : slots) {
-                        if (slot.getPushEnergy().active) {
-                            long maxSize = slot.getPushEnergy().size;
-                            AtomicLong energy = new AtomicLong(slot.extract(maxSize, true));
-                            long filled = battery.receiveEnergy(energy.intValue(), false);
-                            if (filled > 0) {
-                                slot.extract(filled, false);
+                for (Slot slot : slots) {
+                    if (slot.getPushEnergy().active) {
+                        long maxCanExtract = Math.min(slot.getPushEnergy().size, slot.getAmount());
+                        if (maxCanExtract <= 0) {
+                            return;
+                        }
+
+                        for (Facing side : face.getSides()) {
+                            EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), side);
+                            TileEntity checkTile = world.getTileEntity(pos.offset(facing));
+
+                            if (checkTile instanceof TileFluxPlug) {
+                                final TileFluxPlug plug = (TileFluxPlug) checkTile;
+                                long maxCanReceive = Math.min(plug.getMaxTransferLimit() - plug.getTransferBuffer(), maxCanExtract);
+                                long filled = plug.getTransferHandler().receiveFromSupplier(maxCanReceive, facing.getOpposite(), false);
+
+                                if (filled > 0) {
+                                    maxCanExtract -= slot.extract(filled, false);
+                                }
+                            } else if ((checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))) {
+                                IEnergyStorage battery = checkTile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
+                                int energy = (maxCanExtract >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) maxCanExtract;
+                                int filled = battery.receiveEnergy(energy, false);
+
+                                if (filled > 0) {
+                                    maxCanExtract -= slot.extract(filled, false);
+                                }
+                            }
+
+                            if (maxCanExtract <= 0) {
+                                break;
                             }
                         }
                     }
                 }
-                pushIndex++;
             }
         }
 
