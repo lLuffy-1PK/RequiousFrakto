@@ -39,6 +39,7 @@ public class AssemblyData extends BaseData {
     public LayerType layerType = LayerType.Cutout;
     public boolean hasGUI = true;
     public String[] extraVariants = new String[0];
+    public String pathTextureGui = "textures/gui/assembly.png";
 
     @Expose(serialize = false, deserialize = false)
     public transient List<JEISlot> jeiSlots = new ArrayList<>();

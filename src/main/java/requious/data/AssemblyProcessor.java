@@ -66,6 +66,10 @@ public class AssemblyProcessor {
         return EnumFacing.UP;
     }
 
+    public AssemblyData getData() {
+        return data;
+    }
+
     public void setOwner(EntityPlayer player) {
         setVariable("owner", player.getName());
         setVariable("ownerUUID", player.getGameProfile().getId().toString());

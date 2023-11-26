@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GuiAssembly extends GuiContainer {
-    private static final ResourceLocation boxGuiLocation = new ResourceLocation(Requious.MODID, "textures/gui/assembly.png");
+    private final ResourceLocation boxGuiLocation;
     private AssemblyProcessor assembly;
     private EntityPlayer player;
 
@@ -31,6 +31,7 @@ public class GuiAssembly extends GuiContainer {
         this.ySize = 184;
         this.assembly = assembly;
         this.player = player;
+        boxGuiLocation = new ResourceLocation(Requious.MODID, assembly.getData().pathTextureGui);
     }
 
     @Override

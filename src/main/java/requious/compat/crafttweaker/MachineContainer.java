@@ -231,6 +231,15 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
+    public long getSlotCapacity(int x, int y) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
+            return ((ComponentEnergy.Slot) slot).getSlotCapacity();
+        }
+        return 0;
+    }
+
+    @ZenMethod
     public void setItem(int x, int y, IItemStack stack) {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentItem.IItemSlot) {
@@ -251,6 +260,14 @@ public class MachineContainer implements ICommandSender {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentEnergy.Slot) {
             ((ComponentEnergy.Slot) slot).setAmount(amount);
+        }
+    }
+
+    @ZenMethod
+    public void setSlotCapacity(int x, int y, long capacity) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
+            ((ComponentEnergy.Slot) slot).setSlotCapacity(capacity);
         }
     }
 

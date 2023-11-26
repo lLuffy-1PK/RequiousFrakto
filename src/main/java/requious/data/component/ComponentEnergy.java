@@ -327,6 +327,14 @@ public class ComponentEnergy extends ComponentBase {
             return component.capacity.get() + battery.getMaxEnergyStored();
         }
 
+        public long getSlotCapacity() {
+            return component.capacity.get();
+        }
+
+        public void setSlotCapacity(long capacity) {
+            component.capacity.set(capacity);
+        }
+
         public long getAmount() {
             IBatteryAccess battery = getBatteryStorage();
             return energy.get() + battery.getEnergyStored();
