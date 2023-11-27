@@ -49,7 +49,7 @@ public class ComponentEnergy extends ComponentBase {
     public Ingredient filter = new IngredientAny();
     public IOParameters pushItem = new IOParameters();
     public IOParametersEnergy pushEnergy = new IOParametersEnergy();
-    public AtomicLong capacity = new AtomicLong();
+    public long capacity;
     public float powerLoss;
 
     public long maxInput = Long.MAX_VALUE;
@@ -67,7 +67,7 @@ public class ComponentEnergy extends ComponentBase {
 
     public ComponentEnergy(ComponentFace face, long capacity) {
         super(face);
-        this.capacity.set(capacity);
+        this.capacity = capacity;
     }
 
     @Override
@@ -183,6 +183,7 @@ public class ComponentEnergy extends ComponentBase {
 
     public static class Slot extends ComponentBase.Slot<ComponentEnergy> implements ComponentItem.IItemSlot {
         AtomicLong energy = new AtomicLong();
+        long capacity;
         float powerLoss;
         ItemComponentHelper battery;
         boolean active;
@@ -195,6 +196,7 @@ public class ComponentEnergy extends ComponentBase {
                     return 1;
                 }
             };
+            this.capacity = component.capacity;
         }
 
         public boolean acceptsFE() {
@@ -268,6 +270,7 @@ public class ComponentEnergy extends ComponentBase {
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
+            compound.setLong("capacity", capacity);
             compound.setLong("energy", energy.get());
             compound.setFloat("loss", powerLoss);
             compound.setTag("battery", battery.writeToNBT(new NBTTagCompound()));
@@ -276,6 +279,7 @@ public class ComponentEnergy extends ComponentBase {
 
         @Override
         public void deserializeNBT(NBTTagCompound compound) {
+            capacity = compound.getLong("capacity");
             energy.set(compound.getLong("energy"));
             powerLoss = compound.getFloat("loss");
             battery.readFromNBT(compound.getCompoundTag("battery"));
@@ -324,15 +328,15 @@ public class ComponentEnergy extends ComponentBase {
             if (canOverfill() && getAmount() <= 0)
                 return Long.MAX_VALUE;
             IBatteryAccess battery = getBatteryStorage();
-            return component.capacity.get() + battery.getMaxEnergyStored();
+            return capacity + battery.getMaxEnergyStored();
         }
 
         public long getSlotCapacity() {
-            return component.capacity.get();
+            return capacity;
         }
 
         public void setSlotCapacity(long capacity) {
-            component.capacity.set(capacity);
+            this.capacity = capacity;
         }
 
         public long getAmount() {
