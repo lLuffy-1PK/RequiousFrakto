@@ -220,6 +220,9 @@ public class AssemblyProcessor {
         if (value instanceof Integer) {
             return new NBTTagInt((int) value);
         }
+        if (value instanceof Long) {
+            return new NBTTagLong((long) value);
+        }
         if (value instanceof Double) {
             return new NBTTagDouble((double) value);
         }
@@ -242,6 +245,9 @@ public class AssemblyProcessor {
     private Object deserializeVariable(NBTBase nbt) {
         if (nbt instanceof NBTTagInt) {
             return ((NBTTagInt) nbt).getInt();
+        }
+        if (nbt instanceof NBTTagLong) {
+            return ((NBTTagLong) nbt).getLong();
         }
         if (nbt instanceof NBTTagDouble) {
             return ((NBTTagDouble) nbt).getDouble();

@@ -116,6 +116,15 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
+    public long getLong(String name) {
+        Object value = assembly.getVariable(name);
+        if (value instanceof Long)
+            return (long) value;
+        else
+            return 0;
+    }
+
+    @ZenMethod
     public double getDouble(String name) {
         Object value = assembly.getVariable(name);
         if (value instanceof Double)
@@ -162,6 +171,11 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public void setInteger(String name, int value) {
+        assembly.setVariable(name, value);
+    }
+
+    @ZenMethod
+    public void setLong(String name, long value) {
         assembly.setVariable(name, value);
     }
 
