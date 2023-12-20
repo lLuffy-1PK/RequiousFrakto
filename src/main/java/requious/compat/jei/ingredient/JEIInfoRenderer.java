@@ -2,12 +2,11 @@ package requious.compat.jei.ingredient;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import requious.util.Fill;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JEIInfoRenderer extends FakeIngredientRenderer<JEIInfo> {
@@ -21,8 +20,6 @@ public class JEIInfoRenderer extends FakeIngredientRenderer<JEIInfo> {
 
     @Override
     public List<String> getTooltip(Minecraft minecraft, JEIInfo ingredient, ITooltipFlag tooltipFlag) {
-        List<String> tooltip = new ArrayList<>();
-        tooltip.add(I18n.format(ingredient.langKey));
-        return tooltip;
+        return Arrays.asList(ingredient.tooltips);
     }
 }

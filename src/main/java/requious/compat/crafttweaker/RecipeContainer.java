@@ -119,8 +119,8 @@ public class RecipeContainer {
     }
 
     @ZenMethod
-    public void addJEIInfo(String group, String langKey, SlotVisualCT slotVisual) {
-        outputs.add(new ResultJEI(group, langKey, SlotVisualCT.unpack(slotVisual)));
+    public void addJEIInfo(String group, String[] tooltips, SlotVisualCT slotVisual) {
+        outputs.add(new ResultJEI(group, tooltips, SlotVisualCT.unpack(slotVisual)));
     }
 
     @ZenMethod

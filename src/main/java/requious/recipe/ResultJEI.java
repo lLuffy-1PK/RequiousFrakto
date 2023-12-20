@@ -7,12 +7,12 @@ import requious.data.component.ComponentBase;
 import requious.util.SlotVisual;
 
 public class ResultJEI extends ResultBase {
-    String langKey;
+    String[] tooltips;
     SlotVisual slotVisual;
 
-    public ResultJEI(String group, String langKey, SlotVisual slotVisual) {
+    public ResultJEI(String group, String[] tooltips, SlotVisual slotVisual) {
         super(group);
-        this.langKey = langKey;
+        this.tooltips = tooltips;
         this.slotVisual = slotVisual;
     }
 
@@ -30,7 +30,7 @@ public class ResultJEI extends ResultBase {
     public boolean fillJEI(JEISlot slot) {
         if (slot instanceof JEIInfoSlot && slot.group.equals(group) && !slot.isFilled()) {
             JEIInfoSlot laserSlot = (JEIInfoSlot) slot;
-            laserSlot.info = new JEIInfo(langKey, slotVisual);
+            laserSlot.info = new JEIInfo(tooltips, slotVisual);
             return true;
         }
 

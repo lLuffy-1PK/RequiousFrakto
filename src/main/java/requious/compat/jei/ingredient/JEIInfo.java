@@ -3,11 +3,11 @@ package requious.compat.jei.ingredient;
 import requious.util.SlotVisual;
 
 public class JEIInfo implements IFakeIngredient {
-    public String langKey;
+    public String[] tooltips;
     public SlotVisual visual;
 
-    public JEIInfo(String langKey, SlotVisual visual) {
-        this.langKey = langKey;
+    public JEIInfo(String[] tooltips, SlotVisual visual) {
+        this.tooltips = tooltips;
         this.visual = visual;
     }
 
