@@ -606,7 +606,7 @@ public class ComponentEnergy extends ComponentBase {
                                 }
                             }
 
-                            if ((checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))) {
+                            if ((checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite())) && (maxCanExtract > 0)) {
                                 IEnergyStorage battery = checkTile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
                                 int energy = (maxCanExtract >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) maxCanExtract;
                                 int filled = battery.receiveEnergy(energy, false);
