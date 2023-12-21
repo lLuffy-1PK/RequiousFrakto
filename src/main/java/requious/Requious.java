@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import requious.base.Mods;
 import requious.compat.fluxnetworks.ModIntegrationFluxNetworks;
 import requious.entity.EntitySpark;
 import requious.gui.GuiHandler;
@@ -50,7 +51,9 @@ public class Requious {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
-        ModIntegrationFluxNetworks.preInit();
+        if (Mods.FLUX_NETWORKS.isPresent()) {
+            ModIntegrationFluxNetworks.preInit();
+        }
     }
 
     @Mod.EventHandler

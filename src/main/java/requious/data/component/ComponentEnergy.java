@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import requious.base.Mods;
 import requious.compat.crafttweaker.SlotVisualCT;
 import requious.data.AssemblyProcessor;
 import requious.gui.slot.EnergySlot;
@@ -596,15 +597,16 @@ public class ComponentEnergy extends ComponentBase {
                             EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), side);
                             TileEntity checkTile = world.getTileEntity(pos.offset(facing));
 
-                            if (checkTile instanceof TileFluxPlug) {
-                                final TileFluxPlug plug = (TileFluxPlug) checkTile;
-                                long maxCanReceive = Math.min(plug.getMaxTransferLimit() - plug.getTransferBuffer(), maxCanExtract);
-                                long filled = plug.getTransferHandler().receiveFromSupplier(maxCanReceive, facing.getOpposite(), false);
+                            // Flux Network Transfer
+                            if (Mods.FLUX_NETWORKS.isPresent()) {
+                                long filled = attemptFluxNetworksTransfer(facing, checkTile, maxCanExtract);
 
                                 if (filled > 0) {
                                     maxCanExtract -= slot.extract(filled, false);
                                 }
-                            } else if ((checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))) {
+                            }
+
+                            if ((checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))) {
                                 IEnergyStorage battery = checkTile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
                                 int energy = (maxCanExtract >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) maxCanExtract;
                                 int filled = battery.receiveEnergy(energy, false);
@@ -620,6 +622,17 @@ public class ComponentEnergy extends ComponentBase {
                         }
                     }
                 }
+            }
+        }
+
+        @net.minecraftforge.fml.common.Optional.Method(modid = "fluxnetworks")
+        private long attemptFluxNetworksTransfer(EnumFacing facing, TileEntity checkTile, long maxCanExtract) {
+            if (checkTile instanceof TileFluxPlug) {
+                final TileFluxPlug plug = (TileFluxPlug) checkTile;
+                long maxCanReceive = Math.min(plug.getMaxTransferLimit() - plug.getTransferBuffer(), maxCanExtract);
+                return plug.getTransferHandler().receiveFromSupplier(maxCanReceive, facing.getOpposite(), false);
+            } else {
+                return 0;
             }
         }
 
