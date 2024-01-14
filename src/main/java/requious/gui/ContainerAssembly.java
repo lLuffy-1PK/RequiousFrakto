@@ -25,8 +25,8 @@ public class ContainerAssembly extends Container {
         this.processor = processor;
         this.player = player;
 
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 5; y++) {
+        for (int x = 0; x < processor.getData().slots.length; x++) {
+            for (int y = 0; y < processor.getData().slots[0].length; y++) {
                 ComponentBase.Slot slot = processor.getSlot(x, y);
                 if (slot != null) {
                     Slot guiSlot = slot.createGui(processor, 8 + x * 18, 7 + y * 18);

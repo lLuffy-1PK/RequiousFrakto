@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 
 public class AssemblyProcessor {
     AssemblyData data;
-    Slot[][] slots = new Slot[9][5];
+    Slot[][] slots;
     List<Collector> collectors = new ArrayList<>();
     TileEntity tile;
     Map<String, CheckCache> cache = new HashMap<>();
@@ -44,6 +44,7 @@ public class AssemblyProcessor {
 
     public AssemblyProcessor(AssemblyData data) {
         this.data = data;
+        this.slots = new Slot[data.slots.length][data.slots[0].length];
         container = new MachineContainer(this);
         commandSender = new MachineCommandSender(this);
     }

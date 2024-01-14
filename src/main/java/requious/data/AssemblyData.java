@@ -40,13 +40,12 @@ public class AssemblyData extends BaseData {
     public boolean hasGUI = true;
     public String[] extraVariants = new String[0];
     public String pathTextureGui = "textures/gui/assembly.png";
-    public int moveSlotPosX = 0;
-    public int moveSlotPosY = 0;
-    public int moveInvSlotsPosX = 0;
-    public int moveInvSlotsPosY = 0;
-    public int overGuiSizeX = 0;
-    public int overGuiSizeY = 0;
-
+    public int moveSlotPosX;
+    public int moveSlotPosY;
+    public int moveInvSlotsPosX;
+    public int moveInvSlotsPosY;
+    public int overGuiSizeX;
+    public int overGuiSizeY;
     @Expose(serialize = false, deserialize = false)
     public transient List<JEISlot> jeiSlots = new ArrayList<>();
     @Expose(serialize = false, deserialize = false)
@@ -84,6 +83,11 @@ public class AssemblyData extends BaseData {
     @ZenMethod
     public static AssemblyData get(String identifier) {
         return Registry.getAssemblyData(identifier);
+    }
+
+    @ZenMethod
+    public void setSlots(int column, int row) {
+        slots = new ComponentBase[column][row];
     }
 
     private void setSlot(int x, int y, ComponentBase component) {
