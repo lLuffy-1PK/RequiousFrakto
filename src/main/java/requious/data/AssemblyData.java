@@ -44,7 +44,8 @@ public class AssemblyData extends BaseData {
     public int moveSlotPosY = 0;
     public int moveInvSlotsPosX = 0;
     public int moveInvSlotsPosY = 0;
-    public int overGuiSize = 0;
+    public int overGuiSizeX = 0;
+    public int overGuiSizeY = 0;
 
     @Expose(serialize = false, deserialize = false)
     public transient List<JEISlot> jeiSlots = new ArrayList<>();

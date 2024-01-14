@@ -28,8 +28,8 @@ public class GuiAssembly extends GuiContainer {
 
     public GuiAssembly(EntityPlayer player, AssemblyProcessor assembly) {
         super(new ContainerAssembly(player, assembly));
-        this.ySize = 184 + assembly.getData().overGuiSize;
-        this.xSize += assembly.getData().overGuiSize;
+        this.ySize = 184 + assembly.getData().overGuiSizeY;
+        this.xSize += assembly.getData().overGuiSizeX;
         this.assembly = assembly;
         this.player = player;
         boxGuiLocation = new ResourceLocation(Requious.MODID, assembly.getData().pathTextureGui);
