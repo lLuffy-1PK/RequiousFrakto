@@ -24,7 +24,7 @@ public abstract class BaseSlot<T extends ComponentBase.Slot> extends Slot {
     protected final T binding;
 
     public BaseSlot(AssemblyProcessor assembly, T binding, int xPosition, int yPosition) {
-        super(emptyInventory, 0, xPosition, yPosition);
+        super(emptyInventory, 0, xPosition + assembly.getData().moveSlotPosX, yPosition + assembly.getData().moveSlotPosY);
         this.binding = binding;
         this.assembly = assembly;
     }

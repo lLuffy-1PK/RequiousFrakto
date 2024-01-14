@@ -40,6 +40,11 @@ public class AssemblyData extends BaseData {
     public boolean hasGUI = true;
     public String[] extraVariants = new String[0];
     public String pathTextureGui = "textures/gui/assembly.png";
+    public int moveSlotPosX = 0;
+    public int moveSlotPosY = 0;
+    public int moveInvSlotsPosX = 0;
+    public int moveInvSlotsPosY = 0;
+    public int overGuiSize = 0;
 
     @Expose(serialize = false, deserialize = false)
     public transient List<JEISlot> jeiSlots = new ArrayList<>();

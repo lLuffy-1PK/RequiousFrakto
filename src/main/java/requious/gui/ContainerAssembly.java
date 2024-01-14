@@ -44,12 +44,12 @@ public class ContainerAssembly extends Container {
     protected void bindPlayerInventory(IItemHandler inventoryPlayer) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new SlotItemHandler(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 102 + i * 18));
+                addSlotToContainer(new SlotItemHandler(inventoryPlayer, j + i * 9 + 9, 8 + j * 18 + processor.getData().moveInvSlotsPosX, 102 + i * 18 + processor.getData().moveInvSlotsPosY));
             }
         }
 
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new SlotItemHandler(inventoryPlayer, i, 8 + i * 18, 160));
+            addSlotToContainer(new SlotItemHandler(inventoryPlayer, i, 8 + i * 18 + processor.getData().moveInvSlotsPosX, 160 + processor.getData().moveInvSlotsPosY));
         }
     }
 
