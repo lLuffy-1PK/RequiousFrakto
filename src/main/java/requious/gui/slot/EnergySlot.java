@@ -81,7 +81,7 @@ public class EnergySlot extends BaseSlot<ComponentEnergy.Slot> {
         long energy = binding.getAmount();
         long capacity = binding.getCapacity();
         if (foreground != null)
-            foreground.render(assembly.mc, x - 1, y - 1, 1000, new Fill(energy, capacity));
+            foreground.render(assembly.mc, x - 1, y - 1, 100, new Fill(energy, capacity));
     }
 
     @Override
