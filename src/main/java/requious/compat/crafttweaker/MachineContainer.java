@@ -26,6 +26,7 @@ import requious.data.component.ComponentBase;
 import requious.data.component.ComponentEnergy;
 import requious.data.component.ComponentFluid;
 import requious.data.component.ComponentItem;
+import requious.gui.slot.EnergySlot;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -311,13 +312,28 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public long insertEnergy(String group, long energy) {
-        long remainder = assembly.insertEnergy(group, energy);
-        return remainder;
+        return assembly.insertEnergy(group, energy);
     }
 
     @ZenMethod
     public long extractEnergy(String group, long energy) {
-        long extracted = assembly.extractEnergy(group, energy);
-        return extracted;
+        return assembly.extractEnergy(group, energy);
+    }
+
+    @ZenMethod
+    public void setPushEnergySlot(int x, int y, long pushEnergy) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
+            ((ComponentEnergy.Slot) slot).setPushEnergy(pushEnergy);
+        }
+    }
+
+    @ZenMethod
+    public long getPushEnergySlot(int x, int y) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
+            return ((ComponentEnergy.Slot) slot).getPushEnergy().size;
+        }
+        return 0;
     }
 }

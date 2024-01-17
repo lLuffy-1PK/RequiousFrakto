@@ -425,6 +425,12 @@ public class ComponentEnergy extends ComponentBase {
             return component.pushEnergy;
         }
 
+        public void setPushEnergy(long energy) {
+            if (component.pushEnergy.active) {
+                component.pushEnergy.size = energy;
+            }
+        }
+
         @Override
         public IOParameters getPushItem() {
             return component.pushItem;
