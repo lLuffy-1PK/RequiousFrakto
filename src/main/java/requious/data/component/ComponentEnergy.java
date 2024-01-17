@@ -216,8 +216,16 @@ public class ComponentEnergy extends ComponentBase {
             return component.maxInput;
         }
 
+        public void setMaxInput(long input) {
+            component.maxInput = input;
+        }
+
         public long getMaxOutput() {
             return component.maxOutput;
+        }
+
+        public void setMaxOutput(long output) {
+            component.maxOutput = output;
         }
 
         @Override
@@ -484,7 +492,7 @@ public class ComponentEnergy extends ComponentBase {
         public void draw(double amount) {
             amount += extraDraw;
             for (Slot slot : slots) {
-                if (slot.canOutputItem()) {
+                if (slot.canOutput()) {
                     long extracted = slot.extract(slot.getEUConversion().getBase((int) Math.ceil(amount)), false);
                     amount -= slot.getEUConversion().getUnit(extracted);
                 }
@@ -520,16 +528,18 @@ public class ComponentEnergy extends ComponentBase {
 
         public boolean canInputEnergy(EnumFacing localSide, EnumFacing globalSide) {
             for (Slot slot : slots) {
-                if (slot.canInput() && slot.getFace().matches(localSide, globalSide))
+                if (slot.canInput() && slot.getFace().matches(localSide, globalSide)) {
                     return true;
+                }
             }
             return false;
         }
 
         public boolean canOutputEnergy(EnumFacing localSide, EnumFacing globalSide) {
             for (Slot slot : slots) {
-                if (slot.canOutputItem() && slot.getFace().matches(localSide, globalSide))
+                if (slot.canOutput() && slot.getFace().matches(localSide, globalSide)) {
                     return true;
+                }
             }
             return false;
         }
@@ -537,8 +547,9 @@ public class ComponentEnergy extends ComponentBase {
         public double getOutputEnergy() {
             long toSend = 0;
             for (Slot slot : slots) {
-                if (slot.canOutputItem())
+                if (slot.canOutput()) {
                     toSend += Math.min(slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.energy.get());
+                }
             }
             return toSend;
         }
@@ -546,8 +557,9 @@ public class ComponentEnergy extends ComponentBase {
         public double getInputEnergy() {
             long toReceive = 0;
             for (Slot slot : slots) {
-                if (slot.canInput())
+                if (slot.canInput()) {
                     toReceive += slot.getEUConversion().getUnit(slot.getCapacity() - slot.energy.get());
+                }
             }
             return toReceive;
         }

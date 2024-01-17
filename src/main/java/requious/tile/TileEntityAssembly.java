@@ -32,8 +32,13 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
 
-@Optional.InterfaceList({@Optional.Interface(iface = "ic2.api.energy.tile.IEnergyTile", modid = "ic2"), @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "ic2"), @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "ic2")})
-public class TileEntityAssembly extends TileEntity implements ITickable, ILaserAcceptor, IEnergyTile, IEnergySink, IEnergySource {
+@Optional.InterfaceList({@Optional.Interface(iface = "ic2.api.energy.tile.IEnergyTile", modid = "ic2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "ic2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "ic2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyEmitter", modid = "ic2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyAcceptor", modid = "ic2")
+})
+public class TileEntityAssembly extends TileEntity implements ITickable, ILaserAcceptor, IEnergyTile, IEnergySink, IEnergySource, IEnergyEmitter, IEnergyAcceptor {
     Random random = new Random();
     AssemblyProcessor processor;
     ResourceLocation block;
@@ -207,7 +212,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
             Misc.syncTE(this, false);
         if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
             addedToEnet = true;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((TileEntityAssembly) (Object) this));
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
         }
     }
 
@@ -312,7 +317,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     public void invalidate() {
         if (!world.isRemote && addedToEnet) {
             addedToEnet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((TileEntityAssembly) (Object) this));
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
         }
         super.invalidate();
     }
@@ -321,7 +326,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     public void onChunkUnload() {
         if (!world.isRemote && addedToEnet) {
             addedToEnet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((TileEntityAssembly) (Object) this));
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
         }
         super.onChunkUnload();
     }
