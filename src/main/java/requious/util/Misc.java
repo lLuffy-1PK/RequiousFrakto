@@ -1,5 +1,6 @@
 package requious.util;
 
+import crafttweaker.annotations.ZenRegister;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -12,10 +13,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.awt.*;
 import java.util.List;
 
+@ZenRegister
+@ZenClass("mods.requious.Mics")
 public class Misc {
     public static void syncTE(TileEntity tile, boolean broken) {
         World world = tile.getWorld();
@@ -152,6 +157,7 @@ public class Misc {
         return s;
     }
 
+    @ZenMethod
     public static String formatNumber(long value) {
         String symbol = "";
         if (value < 0) {
