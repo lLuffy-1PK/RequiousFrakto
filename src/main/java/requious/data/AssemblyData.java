@@ -142,6 +142,24 @@ public class AssemblyData extends BaseData {
     }
 
     @ZenMethod
+    public void setPushEnergySlot(int x, int y, long pushEnergy) {
+        ComponentBase slot = slots[x][y];
+        if (slot instanceof ComponentEnergy && ((ComponentEnergy) slot).pushEnergy.active) {
+            ((ComponentEnergy) slot).pushEnergy.size = pushEnergy;
+        }
+    }
+
+    @ZenMethod
+    public long getPushEnergySlot(int x, int y) {
+        ComponentBase slot = slots[x][y];
+        if (slot instanceof ComponentEnergy && ((ComponentEnergy) slot).pushEnergy.active) {
+            return ((ComponentEnergy) slot).pushEnergy.size;
+        }
+
+        return 0;
+    }
+
+    @ZenMethod
     public ComponentEnergy setEUSlot(int x, int y, ComponentFaceCT face, int capacity) {
         return setEnergySlot(x, y, face, capacity * 4L).setUnit("eu").acceptEU(true);
     }

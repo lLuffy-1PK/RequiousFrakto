@@ -368,7 +368,11 @@ public class ComponentEnergy extends ComponentBase {
             return battery;
         }
 
-        public long receive(long amount, boolean simulate) {
+        public long receive(long amount, boolean simulate, boolean anyway) {
+            if (!canInput() && !anyway) {
+                return 0;
+            }
+
             IBatteryAccess batteryAccess = getBatteryStorage();
             long internalReceived = Math.min(amount, getCapacity() - energy.get());
             long batteryReceived = batteryAccess.receiveEnergy(Math.max(amount - internalReceived, 0), simulate);
@@ -381,7 +385,15 @@ public class ComponentEnergy extends ComponentBase {
             return internalReceived + batteryReceived;
         }
 
-        public long extract(long amount, boolean simulate) {
+        public long receive(long amount, boolean simulate) {
+            return receive(amount, simulate, false);
+        }
+
+        public long extract(long amount, boolean simulate, boolean anyway) {
+            if (!canOutput() && !anyway) {
+                return 0;
+            }
+
             IBatteryAccess batteryAccess = getBatteryStorage();
             long internalExtracted = Math.min(amount, energy.get());
             long batteryExtracted = batteryAccess.extractEnergy(Math.max(amount - internalExtracted, 0), simulate);
@@ -392,6 +404,10 @@ public class ComponentEnergy extends ComponentBase {
                 markDirty();
             }
             return internalExtracted + batteryExtracted;
+        }
+
+        public long extract(long amount, boolean simulate) {
+            return extract(amount, simulate, false);
         }
 
         @Override
@@ -597,22 +613,35 @@ public class ComponentEnergy extends ComponentBase {
                             EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), side);
                             TileEntity checkTile = world.getTileEntity(pos.offset(facing));
 
+                            // Requious Machine Transfer
+                            if (checkTile instanceof TileEntityAssembly) {
+                                long filled = attemptRequiousMachineTransfer(facing, (TileEntityAssembly) checkTile, maxCanExtract);
+
+                                if (filled > 0) {
+                                    maxCanExtract -=slot.extract(filled, false);
+                                    continue;
+                                }
+                            }
+
                             // Flux Network Transfer
-                            if (Mods.FLUX_NETWORKS.isPresent()) {
+                            if ((maxCanExtract > 0) && (Mods.FLUX_NETWORKS.isPresent())) {
                                 long filled = attemptFluxNetworksTransfer(facing, checkTile, maxCanExtract);
 
                                 if (filled > 0) {
                                     maxCanExtract -= slot.extract(filled, false);
+                                    continue;
                                 }
                             }
 
-                            if ((checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite())) && (maxCanExtract > 0)) {
+                            // Forge Energy Transfer
+                            if ((maxCanExtract > 0) && (checkTile != null) && (checkTile.hasCapability(CapabilityEnergy.ENERGY, facing.getOpposite()))) {
                                 IEnergyStorage battery = checkTile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
                                 int energy = (maxCanExtract >= Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) maxCanExtract;
                                 int filled = battery.receiveEnergy(energy, false);
 
                                 if (filled > 0) {
                                     maxCanExtract -= slot.extract(filled, false);
+                                    continue;
                                 }
                             }
 
@@ -634,6 +663,24 @@ public class ComponentEnergy extends ComponentBase {
             } else {
                 return 0;
             }
+        }
+
+        private long attemptRequiousMachineTransfer(EnumFacing facing, TileEntityAssembly assembly, long maxCanExtract) {
+            long recievedSum = 0;
+            final AssemblyProcessor processor = assembly.getProcessor();
+            if (processor != null) {
+                for (ComponentBase.Slot slot : processor.getSlots()) {
+                    if (slot instanceof Slot) {
+                        if (slot.getFace().matches(facing.getOpposite(), facing.getOpposite())) {
+                            long maxCanReceive = Math.min(((Slot) slot).getCapacity(), maxCanExtract);
+                            long received = ((Slot) slot).receive(maxCanReceive, false);
+                            recievedSum += received;
+                            maxCanExtract -= received;
+                        }
+                    }
+                }
+            }
+            return recievedSum;
         }
 
         @Override
