@@ -220,6 +220,10 @@ public class ComponentItem extends ComponentBase {
             return component.splitAllowed;
         }
 
+        public void setSlotCapacity(int capacity) {
+            component.capacity = capacity;
+        }
+
         @Override
         public boolean canShift() {
             return component.shiftAllowed;

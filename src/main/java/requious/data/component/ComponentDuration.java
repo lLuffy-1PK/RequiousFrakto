@@ -63,8 +63,24 @@ public class ComponentDuration extends ComponentBase {
             return time;
         }
 
+        public void setTime(int time) {
+            this.time = time;
+        }
+
+        public void setDuration(int duration) {
+            this.duration = duration;
+        }
+
         public int getDuration() {
             return duration;
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
+        public boolean isActive() {
+            return active;
         }
 
         @Override

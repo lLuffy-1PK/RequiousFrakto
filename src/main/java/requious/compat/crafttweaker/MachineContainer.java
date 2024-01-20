@@ -23,10 +23,10 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fluids.FluidStack;
 import requious.data.AssemblyProcessor;
 import requious.data.component.ComponentBase;
+import requious.data.component.ComponentDuration;
 import requious.data.component.ComponentEnergy;
 import requious.data.component.ComponentFluid;
 import requious.data.component.ComponentItem;
-import requious.gui.slot.EnergySlot;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -279,10 +279,18 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
-    public void setSlotCapacity(int x, int y, long capacity) {
+    public void setEnergySlotCapacity(int x, int y, long capacity) {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentEnergy.Slot) {
             ((ComponentEnergy.Slot) slot).setSlotCapacity(capacity);
+        }
+    }
+
+    @ZenMethod
+    public void setItemSlotCapacity(int x, int y, int capacity) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentItem.Slot) {
+            ((ComponentItem.Slot) slot).setSlotCapacity(capacity);
         }
     }
 
@@ -350,6 +358,26 @@ public class MachineContainer implements ICommandSender {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentEnergy.Slot) {
             ((ComponentEnergy.Slot) slot).setMaxOutput(output);
+        }
+    }
+
+    @ZenMethod
+    public boolean isActive(int x, int y) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentDuration.Slot) {
+            return ((ComponentDuration.Slot) slot).isActive();
+        }
+        return false;
+    }
+
+    @ZenMethod
+    public void setDurationData(int x, int y, boolean active, int duration, int time) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentDuration.Slot) {
+            ComponentDuration.Slot durationSlot = (ComponentDuration.Slot) slot;
+            durationSlot.setActive(active);
+            durationSlot.setDuration(duration);
+            durationSlot.setTime(time);
         }
     }
 }

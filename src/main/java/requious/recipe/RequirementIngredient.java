@@ -30,7 +30,7 @@ public class RequirementIngredient extends RequirementBase {
         if (slot instanceof ComponentItem.Slot && slot.isGroup(group)) {
             ItemStack stack = ((ComponentItem.Slot) slot).getItem().getStack();
             if (ingredient.matches(CraftTweakerMC.getIItemStack(stack)) && stack.getCount() >= min) {
-                result.add(Math.min(max, stack.getCount()));
+                result.add((long) (Math.min(max, stack.getCount())));
                 return MatchResult.MATCHED;
             }
         }
@@ -46,7 +46,7 @@ public class RequirementIngredient extends RequirementBase {
     @Override
     public void consume(ComponentBase.Slot slot, ConsumptionResult result) {
         if (slot instanceof ComponentItem.Slot && result instanceof ConsumptionResult.Long) {
-            ((ComponentItem.Slot) slot).getItem().extract((int) result.getConsumed(), false);
+            ((ComponentItem.Slot) slot).getItem().extract((int) ((long) result.getConsumed()), false);
         }
     }
 
