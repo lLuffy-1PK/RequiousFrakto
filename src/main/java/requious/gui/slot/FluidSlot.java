@@ -136,7 +136,7 @@ public class FluidSlot extends BaseSlot<ComponentFluid.Slot> {
             tessellator.draw();
         }
         if (foreground != null)
-            foreground.render(assembly.mc, x - 1, y - 1, 1000, getFill());
+            foreground.render(assembly.mc, x - 1, y - 1, 100, getFill());
     }
 
     @Override
