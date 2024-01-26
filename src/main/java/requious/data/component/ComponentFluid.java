@@ -416,7 +416,7 @@ public class ComponentFluid extends ComponentBase {
 
                     IFluidHandler tank = checkTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
                     for (Slot slot : slots) {
-                        if (slot.getPushItem().active) {
+                        if (slot.getPushFluid().active) {
                             int maxSize = slot.getPushFluid().size;
                             FluidStack fluid = slot.drain(maxSize, true);
                             int filled = tank.fill(fluid, true);
