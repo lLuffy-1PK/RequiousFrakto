@@ -181,6 +181,8 @@ public class BlockAssembly extends Block implements IDynamicModel {
         switch (data.layerType) {
             case Cutout:
                 return BlockRenderLayer.CUTOUT == layer;
+            case CutoutMipped:
+                return BlockRenderLayer.CUTOUT_MIPPED == layer;
             case Translucent:
                 return BlockRenderLayer.TRANSLUCENT == layer;
             case MultiLayer:
