@@ -117,6 +117,10 @@ public class AssemblyProcessor {
         check.setResult(result, time);
     }
 
+    public MachineContainer getContainer() {
+        return container;
+    }
+
     public ItemStack insertItem(String group, ItemStack stack) {
         for (Slot slot : getSlots()) {
             if (slot instanceof ComponentItem.Slot && slot.isGroup(group)) {

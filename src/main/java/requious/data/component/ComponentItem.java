@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import requious.compat.crafttweaker.ISlotChanged;
+import requious.compat.crafttweaker.MachineContainer;
 import requious.compat.crafttweaker.SlotVisualCT;
 import requious.data.AssemblyProcessor;
 import requious.gui.slot.ItemSlot;
@@ -43,6 +45,7 @@ public class ComponentItem extends ComponentBase {
     public Ingredient filter = new IngredientAny();
     public IOParameters pushItem = new IOParameters();
     public int capacity;
+    public ISlotChanged slotChangedFunction;
 
     public SlotVisual background = SlotVisual.ITEM_SLOT;
     public SlotVisual foreground = SlotVisual.EMPTY;
@@ -127,6 +130,13 @@ public class ComponentItem extends ComponentBase {
     @ZenMethod
     public ComponentItem setForeground(SlotVisualCT visual) {
         this.foreground = SlotVisualCT.unpack(visual);
+        return this;
+    }
+
+    @ReturnsSelf
+    @ZenMethod
+    public ComponentItem onSlotChanged(ISlotChanged slotChangedFunction) {
+        this.slotChangedFunction = slotChangedFunction;
         return this;
     }
 
@@ -222,6 +232,12 @@ public class ComponentItem extends ComponentBase {
 
         public void setSlotCapacity(int capacity) {
             component.capacity = capacity;
+        }
+
+        public void onSlotChanged(MachineContainer machineContainer) {
+            if (component.slotChangedFunction != null) {
+                component.slotChangedFunction.run(machineContainer);
+            }
         }
 
         @Override

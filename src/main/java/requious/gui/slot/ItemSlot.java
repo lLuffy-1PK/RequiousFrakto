@@ -39,6 +39,12 @@ public class ItemSlot extends BaseSlot<ComponentItem.Slot> {
     }
 
     @Override
+    public void onSlotChanged() {
+        binding.onSlotChanged(assembly.getContainer());
+        super.onSlotChanged();
+    }
+
+    @Override
     public int getSlotStackLimit() {
         return binding.getItem().getCapacity();
     }
