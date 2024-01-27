@@ -230,10 +230,6 @@ public class ComponentItem extends ComponentBase {
             return component.splitAllowed;
         }
 
-        public void setSlotCapacity(int capacity) {
-            component.capacity = capacity;
-        }
-
         public void onSlotChanged(MachineContainer machineContainer) {
             if (component.slotChangedFunction != null) {
                 component.slotChangedFunction.run(machineContainer);

@@ -287,14 +287,6 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
-    public void setItemSlotCapacity(int x, int y, int capacity) {
-        ComponentBase.Slot slot = assembly.getSlot(x, y);
-        if (slot instanceof ComponentItem.Slot) {
-            ((ComponentItem.Slot) slot).setSlotCapacity(capacity);
-        }
-    }
-
-    @ZenMethod
     public IItemStack insertItem(String group, IItemStack stack) {
         ItemStack remainder = assembly.insertItem(group, CraftTweakerMC.getItemStack(stack));
         return CraftTweakerMC.getIItemStack(remainder);
