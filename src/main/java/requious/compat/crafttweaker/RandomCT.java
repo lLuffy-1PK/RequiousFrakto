@@ -38,6 +38,11 @@ public class RandomCT {
     }
 
     @ZenMethod
+    public float nextFloat() {
+        return random.nextFloat();
+    }
+
+    @ZenMethod
     public double nextDouble() {
         return random.nextDouble();
     }

@@ -126,6 +126,15 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
+    public float getFloat(String name) {
+        Object value = assembly.getVariable(name);
+        if (value instanceof Float)
+            return (float) value;
+        else
+            return 0;
+    }
+
+    @ZenMethod
     public double getDouble(String name) {
         Object value = assembly.getVariable(name);
         if (value instanceof Double)
@@ -177,6 +186,11 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public void setLong(String name, long value) {
+        assembly.setVariable(name, value);
+    }
+
+    @ZenMethod
+    public void setFloat(String name, float value) {
         assembly.setVariable(name, value);
     }
 
