@@ -185,6 +185,7 @@ public class ComponentEnergy extends ComponentBase {
     public static class Slot extends ComponentBase.Slot<ComponentEnergy> implements ComponentItem.IItemSlot {
         AtomicLong energy = new AtomicLong();
         long capacity;
+        long pushEnergySize;
         float powerLoss;
         ItemComponentHelper battery;
         boolean active;
@@ -198,6 +199,7 @@ public class ComponentEnergy extends ComponentBase {
                 }
             };
             this.capacity = component.capacity;
+            this.pushEnergySize = component.pushEnergy.size;
         }
 
         public boolean acceptsFE() {
@@ -216,16 +218,8 @@ public class ComponentEnergy extends ComponentBase {
             return component.maxInput;
         }
 
-        public void setMaxInput(long input) {
-            component.maxInput = input;
-        }
-
         public long getMaxOutput() {
             return component.maxOutput;
-        }
-
-        public void setMaxOutput(long output) {
-            component.maxOutput = output;
         }
 
         @Override
@@ -281,6 +275,7 @@ public class ComponentEnergy extends ComponentBase {
             NBTTagCompound compound = new NBTTagCompound();
             compound.setLong("capacity", capacity);
             compound.setLong("energy", energy.get());
+            compound.setLong("pushSize", pushEnergySize);
             compound.setFloat("loss", powerLoss);
             compound.setTag("battery", battery.writeToNBT(new NBTTagCompound()));
             return compound;
@@ -290,6 +285,7 @@ public class ComponentEnergy extends ComponentBase {
         public void deserializeNBT(NBTTagCompound compound) {
             capacity = compound.getLong("capacity");
             energy.set(compound.getLong("energy"));
+            pushEnergySize = compound.getLong("pushSize");
             powerLoss = compound.getFloat("loss");
             battery.readFromNBT(compound.getCompoundTag("battery"));
         }
@@ -433,9 +429,13 @@ public class ComponentEnergy extends ComponentBase {
             return component.pushEnergy;
         }
 
-        public void setPushEnergy(long energy) {
+        public long getPushEnergySize() {
+            return pushEnergySize;
+        }
+
+        public void setPushEnergySize(long energy) {
             if (component.pushEnergy.active) {
-                component.pushEnergy.size = energy;
+                pushEnergySize = energy;
             }
         }
 
@@ -622,7 +622,7 @@ public class ComponentEnergy extends ComponentBase {
 
                 for (Slot slot : slots) {
                     if (slot.getPushEnergy().active) {
-                        long maxCanExtract = Math.min(slot.getPushEnergy().size, slot.getAmount());
+                        long maxCanExtract = Math.min(slot.getPushEnergySize(), slot.getAmount());
                         if (maxCanExtract <= 0) {
                             return;
                         }
