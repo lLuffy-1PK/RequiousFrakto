@@ -352,6 +352,22 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
+    public void setEnergySlotMaxInput(int x, int y, long input) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
+            ((ComponentEnergy.Slot) slot).setMaxInput(input);
+        }
+    }
+
+    @ZenMethod
+    public void setEnergySlotMaxOutput(int x, int y, long output) {
+        ComponentBase.Slot slot = assembly.getSlot(x, y);
+        if (slot instanceof ComponentEnergy.Slot) {
+            ((ComponentEnergy.Slot) slot).setMaxOutput(output);
+        }
+    }
+
+    @ZenMethod
     public boolean isActive(int x, int y) {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentDuration.Slot) {

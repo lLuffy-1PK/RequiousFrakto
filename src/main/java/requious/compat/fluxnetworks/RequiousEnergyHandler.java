@@ -83,7 +83,7 @@ public class RequiousEnergyHandler implements ITileEnergyHandler {
         for (ComponentBase.Slot<?> slot : assembly.getProcessor().getSlots()) {
             if (slot.getFace().matches(side, side) && (slot instanceof ComponentEnergy.Slot)) {
                 ComponentEnergy.Slot energySlot = (ComponentEnergy.Slot) slot;
-                long maxOutput = Math.min(energySlot.getMaxOutput(), energySlot.getAmount());
+                long maxOutput = Math.min(energySlot.getPushEnergySize(), energySlot.getAmount());
 
                 if (maxOutput < amount) {
                     return energySlot.extract(maxOutput, false);

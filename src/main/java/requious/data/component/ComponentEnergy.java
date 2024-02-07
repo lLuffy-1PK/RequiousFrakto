@@ -186,6 +186,8 @@ public class ComponentEnergy extends ComponentBase {
         AtomicLong energy = new AtomicLong();
         long capacity;
         long pushEnergySize;
+        long maxInput;
+        long maxOutput;
         float powerLoss;
         ItemComponentHelper battery;
         boolean active;
@@ -200,6 +202,8 @@ public class ComponentEnergy extends ComponentBase {
             };
             this.capacity = component.capacity;
             this.pushEnergySize = component.pushEnergy.size;
+            this.maxInput = component.maxInput;
+            this.maxOutput = component.maxOutput;
         }
 
         public boolean acceptsFE() {
@@ -215,11 +219,19 @@ public class ComponentEnergy extends ComponentBase {
         }
 
         public long getMaxInput() {
-            return component.maxInput;
+            return maxInput;
+        }
+
+        public void setMaxInput(long maxInput) {
+            this.maxInput = maxInput;
         }
 
         public long getMaxOutput() {
-            return component.maxOutput;
+            return maxOutput;
+        }
+
+        public void setMaxOutput(long maxOutput) {
+            this.maxOutput = maxOutput;
         }
 
         @Override
@@ -276,6 +288,8 @@ public class ComponentEnergy extends ComponentBase {
             compound.setLong("capacity", capacity);
             compound.setLong("energy", energy.get());
             compound.setLong("pushSize", pushEnergySize);
+            compound.setLong("maxInput", maxInput);
+            compound.setLong("maxOutput", maxOutput);
             compound.setFloat("loss", powerLoss);
             compound.setTag("battery", battery.writeToNBT(new NBTTagCompound()));
             return compound;
@@ -286,6 +300,8 @@ public class ComponentEnergy extends ComponentBase {
             capacity = compound.getLong("capacity");
             energy.set(compound.getLong("energy"));
             pushEnergySize = compound.getLong("pushSize");
+            maxInput = compound.getLong("maxInput");
+            maxOutput = compound.getLong("maxOutput");
             powerLoss = compound.getFloat("loss");
             battery.readFromNBT(compound.getCompoundTag("battery"));
         }
@@ -593,16 +609,18 @@ public class ComponentEnergy extends ComponentBase {
 
         @Override
         public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
-            if (capability == CapabilityEnergy.ENERGY && face.matches(localSide, globalSide))
+            if (capability == CapabilityEnergy.ENERGY && face.matches(localSide, globalSide)) {
                 return true;
+            }
             return super.hasCapability(capability, localSide, globalSide);
         }
 
         @Nullable
         @Override
         public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing localSide, @Nullable EnumFacing globalSide) {
-            if (capability == CapabilityEnergy.ENERGY && face.matches(localSide, globalSide))
+            if (capability == CapabilityEnergy.ENERGY && face.matches(localSide, globalSide)) {
                 return CapabilityEnergy.ENERGY.cast(this);
+            }
             return super.getCapability(capability, localSide, globalSide);
         }
 
