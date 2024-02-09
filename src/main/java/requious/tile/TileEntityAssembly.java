@@ -190,6 +190,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         shouldSync = true;
     }
 
+    boolean init = true;
     @Override
     public void update() {
         if (processor == null)
@@ -213,6 +214,10 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
             addedToEnet = true;
             MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+        }
+        if (init){
+            world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), true);
+            init = false;
         }
     }
 
