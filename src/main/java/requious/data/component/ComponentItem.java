@@ -336,7 +336,7 @@ public class ComponentItem extends ComponentBase {
                 if (checkTile != null && checkTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
                     IItemHandler inventory = checkTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                     for (IItemSlot slot : slots) {
-                        if (slot.getPushItem().active) {
+                        if (slot.getPushItem().active && !slot.getItem().isEmpty()) {
                             int maxSize = slot.getPushItem().size;
                             int targetSlot = slot.getPushItem().slot;
                             ItemStack insertStack = slot.getItem().extract(maxSize, true);
