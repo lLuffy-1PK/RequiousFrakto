@@ -365,7 +365,7 @@ public class ComponentEnergy extends ComponentBase {
             return energy.get() + battery.getEnergyStored();
         }
 
-        public void setAmount(int energy) {
+        public void setAmount(long energy) {
             this.energy.set(energy);
         }
 

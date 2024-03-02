@@ -39,7 +39,7 @@ public class AssemblyJEIWrapper implements IRecipeWrapper {
         ITooltipFlag.TooltipFlags tooltipFlag = Minecraft.getMinecraft().gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
         List<String> tooltip = new ArrayList<>();
         for (JEISlot slot : recipe.jeiSlots) {
-            if (mouseX >= slot.x * 18 && mouseY >= slot.y * 18 && mouseX < slot.x * 18 + 18 && mouseY < slot.y * 18 + 18)
+            if (mouseX >= slot.x * 9 && mouseY >= slot.y * 9 && mouseX < slot.x * 9 + 18 && mouseY < slot.y * 9 + 18)
                 slot.getTooltip(tooltip, tooltipFlag);
         }
         return tooltip;

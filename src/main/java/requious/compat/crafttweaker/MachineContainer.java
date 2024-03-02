@@ -285,7 +285,7 @@ public class MachineContainer implements ICommandSender {
     }
 
     @ZenMethod
-    public void setEnergy(int x, int y, int amount) {
+    public void setEnergy(int x, int y, long amount) {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentEnergy.Slot) {
             ((ComponentEnergy.Slot) slot).setAmount(amount);

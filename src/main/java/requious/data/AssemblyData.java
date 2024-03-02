@@ -104,8 +104,13 @@ public class AssemblyData extends BaseData {
         int min = Integer.MAX_VALUE;
         int max = 0;
         for (JEISlot slot : jeiSlots) {
+            if (slot instanceof FluidSlot) {
+                min = Math.min(min, slot.x);
+                max = Math.max(max, slot.x + ((FluidSlot) slot).visual.getWidth() * 2);
+                continue;
+            }
             min = Math.min(min, slot.x);
-            max = Math.max(max, slot.x + 1);
+            max = Math.max(max, slot.x + 2);
         }
         return max - min;
     }
@@ -114,8 +119,16 @@ public class AssemblyData extends BaseData {
         int min = Integer.MAX_VALUE;
         int max = 0;
         for (JEISlot slot : jeiSlots) {
-            min = Math.min(min, slot.y);
-            max = Math.max(max, slot.y + 1);
+            if (slot instanceof FluidSlot) {
+                min = Math.min(min, slot.y);
+                max = Math.max(max, slot.y + ((FluidSlot) slot).visual.getHeight() * 2);
+            } else if (slot instanceof EnergySlot) {
+                min = Math.min(min, slot.y);
+                max = Math.max(max, slot.y + 6);
+            } else {
+                min = Math.min(min, slot.y);
+                max = Math.max(max, slot.y + 2);
+            }
         }
         return max - min;
     }
@@ -197,8 +210,8 @@ public class AssemblyData extends BaseData {
     }
 
     @ZenMethod
-    public void setJEIFluidSlot(int x, int y, String group) {
-        setJEISlot(new FluidSlot(x, y, group));
+    public void setJEIFluidSlot(int x, int y, String group, @Optional SlotVisualCT visual) {
+        setJEISlot(new FluidSlot(x, y, group, SlotVisualCT.unpack(visual)));
     }
 
     @ZenMethod

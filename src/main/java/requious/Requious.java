@@ -27,7 +27,7 @@ import java.io.File;
 @Mod.EventBusSubscriber
 public class Requious {
     public static final String MODID = "requious";
-    public static final String MODNAME = "Requious Frakto";
+    public static final String MODNAME = "McSkill - Advanced Technologies";
 
     @SidedProxy(clientSide = "requious.proxy.ClientProxy", serverSide = "requious.proxy.ServerProxy")
     public static IProxy PROXY;

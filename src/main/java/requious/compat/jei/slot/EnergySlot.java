@@ -33,8 +33,7 @@ public class EnergySlot extends JEISlot {
 
     @Override
     public JEISlot copy() {
-        EnergySlot energySlot = new EnergySlot(x, y, group, unit);
-        return energySlot;
+        return new EnergySlot(x, y, group, unit);
     }
 
     @Override
@@ -49,14 +48,14 @@ public class EnergySlot extends JEISlot {
 
     @Override
     public void render(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID, "textures/gui/assembly_slots.png"));
-        Misc.drawTexturedModalRect(x * 18, y * 18, 18, 18 * 4, 18, 18);
+        minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID, "textures/gui/assembly_slots_jei.png"));
+        Misc.drawTexturedModalRect(x * 9, y * 9, 18, 18 * 4, 18, 18);
     }
 
     public Energy getEnergy() {
-        int energy = 0;
+        long energy = 0;
         if (input != null) {
-            energy -= input.energy;
+            energy += input.energy;
         }
         if (output != null) {
             energy += output.energy;

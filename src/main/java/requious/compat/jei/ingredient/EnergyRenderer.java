@@ -17,8 +17,8 @@ public class EnergyRenderer extends FakeIngredientRenderer<Energy> {
     public void render(Minecraft minecraft, int xPosition, int yPosition, @Nullable Energy ingredient) {
         if (ingredient != null && ingredient.energy != 0) {
             GlStateManager.enableAlpha();
-            minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID, "textures/gui/assembly_slots.png"));
-            Misc.drawTexturedModalRect(xPosition - 1, yPosition - 1, 0 * 18, 3 * 18, 18, 18);
+            minecraft.getTextureManager().bindTexture(new ResourceLocation(Requious.MODID, "textures/gui/assembly_slots_jei.png"));
+            Misc.drawTexturedModalRect(xPosition - 1, yPosition - 1, 0, 10 * 18, 18, 54);
         }
     }
 
