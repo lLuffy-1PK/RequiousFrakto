@@ -481,4 +481,8 @@ public class ContainerAssembly extends Container {
 
         return flag;
     }
+
+    public AssemblyProcessor getProcessor() {
+        return processor;
+    }
 }

@@ -46,6 +46,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     EntityPlayer owner;
     boolean active;
     boolean addedToEnet = false;
+    boolean guiContainerOpen = false;
 
     public void setBlock(BlockAssembly block) {
         this.block = block.getRegistryName();
@@ -62,6 +63,10 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     public AssemblyData getData() {
         BlockAssembly assembly = this.getBlock();
         return assembly.getData();
+    }
+
+    public void setGuiContainerOpen(boolean guiContainerOpen) {
+        this.guiContainerOpen = guiContainerOpen;
     }
 
     public boolean isActive() {
@@ -209,8 +214,10 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
                 active = newActive;
             }
         }
-        if (shouldSync)
+        if (shouldSync && guiContainerOpen) {
             Misc.syncTE(this, false);
+            shouldSync = false;
+        }
         if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
             addedToEnet = true;
             MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
