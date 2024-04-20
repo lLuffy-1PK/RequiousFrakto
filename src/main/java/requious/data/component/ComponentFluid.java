@@ -188,10 +188,11 @@ public class ComponentFluid extends ComponentBase {
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound compound = new NBTTagCompound();
-            if (fluid != null)
+            if (getAmount() > 0) {
                 compound.setTag("fluid", fluid.writeToNBT(new NBTTagCompound()));
-            else
+            } else {
                 compound.setString("fluid", "empty");
+            }
             return compound;
         }
 
@@ -321,14 +322,17 @@ public class ComponentFluid extends ComponentBase {
         }
 
         public FluidStack drain(int amount, boolean simulate) {
-            if (fluid == null)
+            if (fluid == null) {
                 return null;
+            }
+
             FluidStack copy = fluid.copy();
             copy.amount = Math.min(amount, getAmount());
             if (!simulate) {
                 fluid.amount -= copy.amount;
-                if (fluid.amount <= 0)
+                if (fluid.amount <= 0) {
                     fluid = null;
+                }
                 markDirty();
             }
             return copy;

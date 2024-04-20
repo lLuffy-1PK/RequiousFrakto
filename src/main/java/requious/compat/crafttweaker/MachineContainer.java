@@ -280,7 +280,7 @@ public class MachineContainer implements ICommandSender {
     public void setFluid(int x, int y, ILiquidStack stack) {
         ComponentBase.Slot slot = assembly.getSlot(x, y);
         if (slot instanceof ComponentFluid.Slot) {
-            ((ComponentFluid.Slot) slot).setContents(CraftTweakerMC.getLiquidStack(stack));
+            ((ComponentFluid.Slot) slot).setContents(CraftTweakerMC.getLiquidStack(stack).copy());
         }
     }
 
@@ -314,7 +314,7 @@ public class MachineContainer implements ICommandSender {
 
     @ZenMethod
     public ILiquidStack insertFluid(String group, ILiquidStack stack) {
-        FluidStack remainder = assembly.insertFluid(group, CraftTweakerMC.getLiquidStack(stack));
+        FluidStack remainder = assembly.insertFluid(group, CraftTweakerMC.getLiquidStack(stack).copy());
         return CraftTweakerMC.getILiquidStack(remainder);
     }
 
