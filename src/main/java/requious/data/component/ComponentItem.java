@@ -279,6 +279,7 @@ public class ComponentItem extends ComponentBase {
         ComponentFace face;
         List<IItemSlot> slots = new ArrayList<>();
         int pushIndex;
+        private int successOperation;
 
         public Collector(ComponentFace face) {
             this.face = face;
@@ -328,35 +329,40 @@ public class ComponentItem extends ComponentBase {
         @Override
         public void update() {
             if (canAutoOutput() && tile instanceof TileEntityAssembly) {
-                World world = tile.getWorld();
-                BlockPos pos = tile.getPos();
-                EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), face.getSide(pushIndex));
+                successOperation++;
 
-                TileEntity checkTile = world.getTileEntity(pos.offset(facing));
-                if (checkTile != null && checkTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
-                    IItemHandler inventory = checkTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
-                    for (IItemSlot slot : slots) {
-                        if (slot.getPushItem().active && !slot.getItem().isEmpty()) {
-                            int maxSize = slot.getPushItem().size;
-                            int targetSlot = slot.getPushItem().slot;
-                            ItemStack insertStack = slot.getItem().extract(maxSize, true);
-                            int startSize = insertStack.getCount();
-                            if (targetSlot < 0) {
-                                for (int i = 0; i < inventory.getSlots(); i++) {
-                                    insertStack = inventory.insertItem(i, insertStack, false);
-                                    if (insertStack.isEmpty())
-                                        break;
+                if (successOperation < 20 || successOperation % 30 == 0) {
+                    World world = tile.getWorld();
+                    BlockPos pos = tile.getPos();
+                    EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), face.getSide(pushIndex));
+
+                    TileEntity checkTile = world.getTileEntity(pos.offset(facing));
+                    if (checkTile != null && checkTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
+                        IItemHandler inventory = checkTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
+                        for (IItemSlot slot : slots) {
+                            if (slot.getPushItem().active && !slot.getItem().isEmpty()) {
+                                int maxSize = slot.getPushItem().size;
+                                int targetSlot = slot.getPushItem().slot;
+                                ItemStack insertStack = slot.getItem().extract(maxSize, true);
+                                int startSize = insertStack.getCount();
+                                if (targetSlot < 0) {
+                                    for (int i = 0; i < inventory.getSlots(); i++) {
+                                        insertStack = inventory.insertItem(i, insertStack, false);
+                                        if (insertStack.isEmpty())
+                                            break;
+                                    }
+                                } else {
+                                    insertStack = inventory.insertItem(targetSlot, insertStack, false);
                                 }
-                            } else {
-                                insertStack = inventory.insertItem(targetSlot, insertStack, false);
-                            }
-                            if (insertStack.getCount() < startSize) {
-                                slot.getItem().extract(startSize - insertStack.getCount(), false);
+                                if (insertStack.getCount() < startSize) {
+                                    slot.getItem().extract(startSize - insertStack.getCount(), false);
+                                    successOperation = 0;
+                                }
                             }
                         }
                     }
+                    pushIndex++;
                 }
-                pushIndex++;
             }
         }
 
