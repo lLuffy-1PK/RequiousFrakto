@@ -52,17 +52,16 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         this.block = block.getRegistryName();
     }
 
-    public BlockAssembly getBlock() {
-        return (BlockAssembly) Block.REGISTRY.getObject(block);
-    }
-
     public AssemblyProcessor getProcessor() {
         return processor;
     }
 
     public AssemblyData getData() {
-        BlockAssembly assembly = this.getBlock();
-        return assembly.getData();
+        Object objectBlock = Block.REGISTRY.getObject(block);
+        if (objectBlock instanceof BlockAssembly) {
+            return ((BlockAssembly) objectBlock).getData();
+        }
+        return null;
     }
 
     public void setGuiContainerOpen(boolean guiContainerOpen) {
@@ -232,10 +231,14 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     private void initProcessor() {
-        processor = getData().constructProcessor();
-        processor.setTile(this);
-        if (owner != null)
-            processor.setOwner(owner);
+        AssemblyData data = getData();
+        if (data != null) {
+            processor = data.constructProcessor();
+            processor.setTile(this);
+            if (owner != null) {
+                processor.setOwner(owner);
+            }
+        }
     }
 
     public EnumFacing getFacing() {
