@@ -335,7 +335,9 @@ public class ComponentItem extends ComponentBase {
                     World world = tile.getWorld();
                     BlockPos pos = tile.getPos();
                     EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), face.getSide(pushIndex));
-
+                    if (facing == null) {
+                        return;
+                    }
                     TileEntity checkTile = world.getTileEntity(pos.offset(facing));
                     if (checkTile != null && checkTile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
                         IItemHandler inventory = checkTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());

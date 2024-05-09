@@ -152,6 +152,9 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     public void breakBlock(World world, BlockPos pos) {
+        if (processor == null) {
+            return;
+        }
         processor.machineBroken(world, new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
     }
 

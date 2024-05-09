@@ -2,6 +2,7 @@ package requious.compat.fluxnetworks;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import requious.data.AssemblyProcessor;
 import requious.data.component.ComponentBase;
 import requious.data.component.ComponentEnergy;
 import requious.tile.TileEntityAssembly;
@@ -20,14 +21,18 @@ public class RequiousEnergyHandler implements ITileEnergyHandler {
         return !tile.isInvalid() && tile instanceof TileEntityAssembly;
     }
 
-    @Override
     public boolean canAddEnergy(@Nonnull TileEntity tile, EnumFacing side) {
-        if (tile instanceof TileEntityAssembly) {
-            final TileEntityAssembly assembly = (TileEntityAssembly) tile;
-            for (ComponentBase.Slot<?> slot : assembly.getProcessor().getSlots()) {
-                if (slot.getFace().matches(side, side) && (slot instanceof ComponentEnergy.Slot)) {
-                    return ((ComponentEnergy.Slot) slot).canInput();
-                }
+        if (!(tile instanceof TileEntityAssembly)) {
+            return false;
+        }
+        final TileEntityAssembly assembly = (TileEntityAssembly) tile;
+        AssemblyProcessor processor = assembly.getProcessor();
+        if (processor == null) {
+            return false;
+        }
+        for (ComponentBase.Slot<?> slot : processor.getSlots()) {
+            if (slot != null && slot.getFace().matches(side, side) && slot instanceof ComponentEnergy.Slot) {
+                return ((ComponentEnergy.Slot) slot).canInput();
             }
         }
         return false;
@@ -35,12 +40,17 @@ public class RequiousEnergyHandler implements ITileEnergyHandler {
 
     @Override
     public boolean canRemoveEnergy(@Nonnull TileEntity tile, EnumFacing side) {
-        if (tile instanceof TileEntityAssembly) {
-            final TileEntityAssembly assembly = (TileEntityAssembly) tile;
-            for (ComponentBase.Slot<?> slot : assembly.getProcessor().getSlots()) {
-                if (slot.getFace().matches(side, side) && (slot instanceof ComponentEnergy.Slot)) {
-                    return ((ComponentEnergy.Slot) slot).canOutput();
-                }
+        if (!(tile instanceof TileEntityAssembly)) {
+            return false;
+        }
+        final TileEntityAssembly assembly = (TileEntityAssembly) tile;
+        AssemblyProcessor processor = assembly.getProcessor();
+        if (processor == null) {
+            return false;
+        }
+        for (ComponentBase.Slot<?> slot : processor.getSlots()) {
+            if (slot != null && slot.getFace().matches(side, side) && slot instanceof ComponentEnergy.Slot) {
+                return ((ComponentEnergy.Slot) slot).canOutput();
             }
         }
         return false;
@@ -52,8 +62,12 @@ public class RequiousEnergyHandler implements ITileEnergyHandler {
             return 0;
         }
         final TileEntityAssembly assembly = (TileEntityAssembly) tile;
+        AssemblyProcessor processor = assembly.getProcessor();
+        if (processor == null){
+            return 0;
+        }
 
-        for (ComponentBase.Slot<?> slot : assembly.getProcessor().getSlots()) {
+        for (ComponentBase.Slot<?> slot : processor.getSlots()) {
             if (slot.getFace().matches(side, side) && (slot instanceof ComponentEnergy.Slot)) {
                 ComponentEnergy.Slot energySlot = (ComponentEnergy.Slot) slot;
                 long remainingCapacity = energySlot.getCapacity() - energySlot.getAmount();
@@ -79,8 +93,12 @@ public class RequiousEnergyHandler implements ITileEnergyHandler {
             return 0;
         }
         final TileEntityAssembly assembly = (TileEntityAssembly) tile;
+        AssemblyProcessor processor = assembly.getProcessor();
+        if (processor == null){
+            return 0;
+        }
 
-        for (ComponentBase.Slot<?> slot : assembly.getProcessor().getSlots()) {
+        for (ComponentBase.Slot<?> slot : processor.getSlots()) {
             if (slot.getFace().matches(side, side) && (slot instanceof ComponentEnergy.Slot)) {
                 ComponentEnergy.Slot energySlot = (ComponentEnergy.Slot) slot;
                 long maxOutput = Math.min(energySlot.getPushEnergySize(), energySlot.getAmount());
