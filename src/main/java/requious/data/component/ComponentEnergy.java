@@ -564,7 +564,7 @@ public class ComponentEnergy extends ComponentBase {
             long toSend = 0;
             for (Slot slot : slots) {
                 if (slot.canOutput()) {
-                    toSend += Math.min(slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.energy.get());
+                    toSend += Math.min(slot.getEUConversion().getUnit(slot.getMaxOutput()), slot.getEUConversion().getUnit(slot.energy.get()));
                 }
             }
             return toSend;
