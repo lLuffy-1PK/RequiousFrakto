@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
+import requious.base.Mods;
 import requious.block.BlockAssembly;
 import requious.data.AssemblyData;
 import requious.data.AssemblyProcessor;
@@ -221,7 +222,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
             Misc.syncTE(this, false);
             shouldSync = false;
         }
-        if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
+        if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler()) && Mods.IC2.isPresent()) {
             addedToEnet = true;
             addToIC2Enet();
         }

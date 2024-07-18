@@ -6,6 +6,7 @@ public enum Mods {
     JEI("jei"),
     REDSTONEFLUXAPI("redstoneflux"),
     FLUX_NETWORKS("fluxnetworks"),
+    IC2("ic2"),
 
     ;
 
