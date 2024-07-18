@@ -331,7 +331,7 @@ public class ComponentItem extends ComponentBase {
             if (canAutoOutput() && tile instanceof TileEntityAssembly) {
                 successOperation++;
 
-                if (successOperation < 20 || successOperation % 30 == 0) {
+                if (successOperation < face.getSides().length * 20 || successOperation % (30 / face.getSides().length) == 0) {
                     World world = tile.getWorld();
                     BlockPos pos = tile.getPos();
                     EnumFacing facing = TileEntityAssembly.toSide(((TileEntityAssembly) tile).getFacing(), face.getSide(pushIndex));
