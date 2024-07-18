@@ -18,7 +18,7 @@ public class ItemSlot extends BaseSlot<ComponentItem.Slot> {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return true;
+        return binding.acceptsItem(stack);
     }
 
     @Override
