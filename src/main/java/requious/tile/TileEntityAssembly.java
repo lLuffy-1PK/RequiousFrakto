@@ -32,11 +32,12 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
 
-@Optional.InterfaceList({@Optional.Interface(iface = "ic2.api.energy.tile.IEnergyTile", modid = "ic2"),
+@Optional.InterfaceList({
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySink", modid = "ic2"),
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergySource", modid = "ic2"),
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyAcceptor", modid = "ic2"),
         @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyEmitter", modid = "ic2"),
-        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyAcceptor", modid = "ic2")
+        @Optional.Interface(iface = "ic2.api.energy.tile.IEnergyTile", modid = "ic2")
 })
 public class TileEntityAssembly extends TileEntity implements ITickable, ILaserAcceptor, IEnergyTile, IEnergySink, IEnergySource, IEnergyEmitter, IEnergyAcceptor {
     Random random = new Random();
@@ -222,7 +223,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         }
         if (!world.isRemote && !addedToEnet && Objects.nonNull(processor.getIC2Handler())) {
             addedToEnet = true;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            addToIC2Enet();
         }
         if (init){
             world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), true);
@@ -276,48 +277,56 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public boolean emitsEnergyTo(IEnergyAcceptor acceptor, EnumFacing side) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.canOutputEnergy(toLocalSide(getFacing(), side), side);
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public double getDemandedEnergy() {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.getInputEnergy();
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public int getSinkTier() {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.getInputTier();
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public double injectEnergy(EnumFacing side, double amount, double voltage) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.inject(toLocalSide(getFacing(), side), side, amount, voltage);
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.canInputEnergy(toLocalSide(getFacing(), side), side);
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public double getOfferedEnergy() {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.getOutputEnergy();
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public void drawEnergy(double amount) {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         handler.draw(amount);
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public int getSourceTier() {
         ComponentEnergy.CollectorIC2 handler = processor.getIC2Handler();
         return handler.getOutputTier();
@@ -331,7 +340,13 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
         return String.format("%s (%s)", super.toString(), dataName);
     }
 
+    @Optional.Method(modid = "ic2")
+    public void addToIC2Enet() {
+        MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+    }
+
     @Override
+    @Optional.Method(modid = "ic2")
     public void invalidate() {
         if (!world.isRemote && addedToEnet) {
             addedToEnet = false;
@@ -341,6 +356,7 @@ public class TileEntityAssembly extends TileEntity implements ITickable, ILaserA
     }
 
     @Override
+    @Optional.Method(modid = "ic2")
     public void onChunkUnload() {
         if (!world.isRemote && addedToEnet) {
             addedToEnet = false;
