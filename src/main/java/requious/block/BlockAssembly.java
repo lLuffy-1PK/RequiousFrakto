@@ -164,7 +164,16 @@ public class BlockAssembly extends Block implements IDynamicModel {
 
     @Override
     public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
+        switch (data.layerType) {
+            case Cutout:
+                return BlockRenderLayer.CUTOUT;
+            case CutoutMipped:
+                return BlockRenderLayer.CUTOUT_MIPPED;
+            case Translucent:
+                return BlockRenderLayer.TRANSLUCENT;
+            default:
+                return BlockRenderLayer.SOLID;
+        }
     }
 
     @Override
@@ -174,20 +183,6 @@ public class BlockAssembly extends Block implements IDynamicModel {
 
     @Override
     public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        switch (data.layerType) {
-            case Cutout:
-                return BlockRenderLayer.CUTOUT == layer;
-            case CutoutMipped:
-                return BlockRenderLayer.CUTOUT_MIPPED == layer;
-            case Translucent:
-                return BlockRenderLayer.TRANSLUCENT == layer;
-            case MultiLayer:
-                return BlockRenderLayer.CUTOUT == layer || BlockRenderLayer.TRANSLUCENT == layer;
-        }
         return false;
     }
 
