@@ -41,6 +41,7 @@ public class AssemblyProcessor {
     Map<String, Object> variablesHistory = new HashMap<>();
     MachineContainer container;
     MachineCommandSender commandSender;
+    boolean variablesDirty = false;
 
     public AssemblyProcessor(AssemblyData data) {
         this.data = data;
@@ -74,7 +75,6 @@ public class AssemblyProcessor {
     public void setOwner(EntityPlayer player) {
         setVariable("owner", player.getName());
         setVariable("ownerUUID", player.getGameProfile().getId().toString());
-        tile.markDirty();
     }
 
     public String getCommandName() {
@@ -91,7 +91,7 @@ public class AssemblyProcessor {
 
     public void setVariable(String name, Object value) {
         variables.put(name, value);
-        tile.markDirty();
+        variablesDirty = true;
     }
 
     public void stashVariable(String name) {
@@ -490,6 +490,10 @@ public class AssemblyProcessor {
                     slot.markClean();
                 }
             }
+        }
+        if (variablesDirty) {
+            dirty = true;
+            variablesDirty = false;
         }
         return dirty;
     }
