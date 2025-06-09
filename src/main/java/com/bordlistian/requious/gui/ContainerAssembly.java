@@ -78,7 +78,11 @@ public class ContainerAssembly extends Container {
 
         if (slot != null && slot.getHasStack() && canShiftTake(slot)) {
             ItemStack stack1 = slot.getStack();
+
             stack = stack1.copy();
+            if (stack.getCount() > stack.getMaxStackSize()) {
+                stack.setCount(stack.getMaxStackSize());
+            }
 
             if (index < slots) {
                 if (!mergeItemStack(stack1, slots, this.inventorySlots.size(), true))
