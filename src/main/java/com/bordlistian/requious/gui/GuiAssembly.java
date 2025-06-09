@@ -1,5 +1,7 @@
 package com.bordlistian.requious.gui;
 
+import com.anthonyhilyard.itemborders.ItemBorders;
+import com.bordlistian.requious.base.Mods;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -150,6 +152,11 @@ public class GuiAssembly extends GuiContainer {
 
             GlStateManager.enableDepth();
             this.itemRender.renderItemAndEffectIntoGUI(this.mc.player, itemstack, i, j);
+
+            if (Mods.ITEM_BORDERS.isPresent()) {
+                ItemBorders.renderBorder(slotIn);
+            }
+
             this.itemRender.renderItemOverlayIntoGUI(this.fontRenderer, itemstack, i, j, s);
         }
 

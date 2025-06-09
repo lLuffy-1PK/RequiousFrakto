@@ -71,7 +71,7 @@ public class ItemSlot extends BaseSlot<ComponentItem.Slot> {
     @Override
     public void renderBackground(GuiAssembly assembly, int x, int y, float partialTicks, int mousex, int mousey) {
         SlotVisual background = binding.getBackground();
-        background.render(assembly.mc, x - 1, y - 1, 100, new Fill(0, 0));
+        background.render(assembly.mc, x - 1, y - 1, 50, new Fill(0, 0));
     }
 
     @Override

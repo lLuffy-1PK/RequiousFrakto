@@ -7,7 +7,7 @@ public enum Mods {
     REDSTONEFLUXAPI("redstoneflux"),
     FLUX_NETWORKS("fluxnetworks"),
     IC2("ic2"),
-
+    ITEM_BORDERS("itemborders"),
     ;
 
     public final String modid;

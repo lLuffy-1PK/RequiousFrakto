@@ -51,6 +51,7 @@ dependencies {
     compileOnly(rfg.deobf("curse.maven:CodeChickenLib-242818:2779848"))
     compileOnly(rfg.deobf("curse.maven:RedstoneFlux-270789:2920436"))
     compileOnly(rfg.deobf("curse.maven:the-one-probe-245211:2667280"))
+    compileOnly(rfg.deobf("curse.maven:item-borders-513769:4590380"))
 
     implementation(rfg.deobf("curse.maven:industrialcraft-2-242638:3078604"))
     implementation(rfg.deobf("curse.maven:applied-energistics-2-223794:2747063"))
